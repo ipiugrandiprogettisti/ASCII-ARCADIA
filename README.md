@@ -1,6 +1,6 @@
 # Progetto-programmazione
 
-PREREQUISITI:
+PREREQUISITI:\n
 gcc, g++, ncurses, curses
 
 ISTRUZIONI:
