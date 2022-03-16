@@ -1,49 +1,82 @@
-/*class Key
+const int NAME_LENGTH = 10;
+struct listArtifacts
+{
+    Key key;
+    char name[NAME_LENGTH];
+    listArtifacts *next;
+    listArtifacts *prev;
+};
+
+struct listEnemies
+{
+    Key key;
+    char name[NAME_LENGTH];
+    listEnemies *next;
+    listEnemies *prev;
+};
+
+struct listObjects
+{
+    Key key;
+    listEnemies mylistEnemies;
+    listArtifacts myListArtifacts;
+};
+
+class Key
 {
 protected:
     int number = -1;
 
 public:
-    int getNumber()
+    // ritorna il valore
+    int get()
+    {
+        return number;
+    }
+
+    // Ritorna il valore number+1, univoco
+    int createNew()
     {
         number += 1;
         return number;
     }
+};
 
-}
-//prova 2
-
-class Stanza
+class Room
 {
 protected:
-    Key key; // numero univoco
-    listaOggetti; //all'interno c'è listaNemici listaTesori....
+    Key key;                   // numero univoco
+    listObjects mylistObjects; // all'interno c'è listEnemies listaTesori....
 
 public:
     int getKey()
     {
-        return key;
+        return key.get();
     }
     void init()
     {
-        key = key.getNumber();
+        key = key.createNew();
     }
-}
-*/
-/*struct listaStanze
+};
+
+// listaStanze e listObjects sono collegate da una chiave univoca, ad esempio se voglio accedere alla lista della Room specifica
+// il valore sarà la chiave comune ad entrambe
+
+struct listaStanze
 {
-    Stanza stanza;
-    listaStanze *porta1;
-    listaStanze *porta2;
-    listaStanze *porta3;
+    Room room;
+    Key key;
+    listaStanze *door1;
+    listaStanze *door2;
+    listaStanze *door3;
     listaStanze *prev;
 };
 
 listaStanze createListStanze()
 {
     // crea lista con key univoca
-    stanza = stanza.init();
+    Room room = room.init();
 }
-*/
-//make main
-// ./main
+
+// make main
+//  ./main
