@@ -1,1 +1,1 @@
-//aa
+#include <ncurses.h>
