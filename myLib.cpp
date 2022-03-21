@@ -1,5 +1,68 @@
 #include <ncurses.h>
 #include <stdlib.h>
+#include <cstring>
+#include <iostream>
+
+// TODO: creare classe MyWindow e implementare print
+
+// Custom string class
+class MyString
+{
+public:
+    char *string;
+    int length = 0;
+
+public:
+    MyString()
+    {
+        string = new char[strlen("\0") + 1];
+        strcpy(string, "\0");
+        this->length = strlen("\0");
+    }
+
+    MyString(char const *text)
+    {
+        this->length = strlen(text);
+        string = new char[strlen(text) + 1];
+        strcpy(string, text);
+    }
+
+    // append string
+    void append(char const *text)
+    {
+        char *oldStr = new char[strlen(string) + 1];
+
+        for (int i = 0; string[i] != '\0'; i++)
+            oldStr[i] = string[i];
+
+        length = strlen(oldStr) + strlen(text);
+        string = new char[length + 1];
+
+        for (int i = 0; oldStr[i] != '\0'; i++)
+            string[i] = oldStr[i];
+
+        int c = 0;
+        for (int i = strlen(oldStr); text[c] != '\0'; i++)
+        {
+            string[i] = text[c];
+            c++;
+        }
+
+        delete oldStr;
+    }
+
+    // returns string length, does not count '\0'
+    int getLength()
+    {
+        return length;
+    }
+
+    // returns string
+    const char *get()
+    {
+        return string;
+    }
+};
 
 // return new window
 WINDOW *newWindow(int height, int width, int starty, int startx)
@@ -44,15 +107,17 @@ draw the main menu and returns choice taken by user:
 - 0: Play
 - 1: Credits
 */
-int getMenu()
+int getMenu(int maxY, int maxX, int offY, int offX)
 {
     const int MAX_ITEMS = 2,
               MIN_ITEMS = 0,
               MAX_LENGTH_ITEM = 20;
     int startX = LINES, startY = COLS, width, height;
-    int ch; // used in event listener, will be the key pressed by the user to choose
     char string[MAX_ITEMS][MAX_LENGTH_ITEM] = {"Play", "Credits"};
     int selectedItem = 0; // could only be -1, 0 or 1. 0 is default
+
+    WINDOW *myWin = newwin(maxY, maxX, offY, offX);
+    wrefresh(myWin);
     if (has_colors() == FALSE)
     {
         endwin();
@@ -62,7 +127,8 @@ int getMenu()
     start_color();                           /* Start color 			*/
     init_pair(1, COLOR_YELLOW, COLOR_BLACK); // first color is font color, second is background color
     init_pair(2, COLOR_BLACK, COLOR_YELLOW); // color for selected item
-
+    wbkgd(myWin, COLOR_PAIR(1));
+    wrefresh(myWin);
     // Activating color for one line
     /*
     attron(COLOR_PAIR(1));
@@ -83,25 +149,37 @@ int getMenu()
             mvaddstr(startY + padding, startX, string[i]);
             attroff(COLOR_PAIR(2));
         }
-        attron(COLOR_PAIR(1));
-        mvaddstr(startY + padding, startX, string[i]);
-        attroff(COLOR_PAIR(1));
-
+        else
+        {
+            attron(COLOR_PAIR(1));
+            mvaddstr(startY + padding, startX, string[i]);
+            attroff(COLOR_PAIR(1));
+        }
         padding += 3;
     }
 
-    // EVENT LISTENER
+    int ch; // pressed key
+    MyString item = MyString((char const *)"STRINGA");
+    // KEYBOARD EVENT LISTENER
     while ((ch = getch()) != KEY_F(1)) // if F1 is pressed quit
     {
         switch (ch)
         {
         case KEY_UP:
+            move(0, 0);
+            clrtoeol();
+            wrefresh(myWin);
+            addstr("a");
             if (selectedItem++ > MAX_ITEMS - 1)
                 selectedItem = MIN_ITEMS; // reset selectedItem to 0
             else
                 selectedItem++;
             break;
         case KEY_DOWN:
+            move(0, 0);
+            clrtoeol();
+            wrefresh(myWin);
+            mvaddstr(0, 0, "freccia giù");
             if (selectedItem-- < MIN_ITEMS - 1)
                 selectedItem = MAX_ITEMS; // reset selectedItem to 0
             else
