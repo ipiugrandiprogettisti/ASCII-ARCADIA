@@ -1,5 +1,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
+#include <cstring>
+#include <iostream>
 #include "myLib.hpp"
 
 int main(int argc, char *argv[])

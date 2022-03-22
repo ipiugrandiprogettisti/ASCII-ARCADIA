@@ -51,6 +51,46 @@ public:
         delete oldStr;
     }
 
+    // appen char
+    void append(char ch)
+    {
+        char *oldStr = new char[strlen(string) + 1];
+
+        for (int i = 0; string[i] != '\0'; i++)
+            oldStr[i] = string[i];
+
+        length = strlen(oldStr) + 1;
+        string = new char[length + 1];
+
+        for (int i = 0; oldStr[i] != '\0'; i++)
+            string[i] = oldStr[i];
+
+        string[strlen(oldStr)] = ch;
+
+        delete oldStr;
+    }
+
+    // reverse string
+    void reverse()
+    {
+        char *tmpStr = new char[strlen(string)];
+        strcpy(tmpStr, string);
+        int c = 0;
+        for (int i = strlen(tmpStr) - 1; i >= 0; i--)
+        {
+            string[c] = tmpStr[i];
+            c++;
+        }
+    }
+
+    // reset string to "\0"
+    void reset()
+    {
+        string = new char[strlen("\0") + 1];
+        strcpy(string, "\0");
+        this->length = strlen("\0");
+    }
+
     // returns string length, does not count '\0'
     int getLength()
     {
@@ -63,6 +103,35 @@ public:
         return string;
     }
 };
+
+// custom itoa, converts int to const char *
+const char *itoa(int num)
+{
+    MyString str = MyString();
+    bool isNeg = false;
+    if (num < 0)
+    {
+        isNeg = true;
+        num *= -1;
+    }
+
+    if (num == 0)
+        str.append('0');
+
+    for (int i = 0; num > 0; i++)
+    {
+        char c = '0' + num % 10;
+        str.append(c);
+        num = num / 10;
+    }
+
+    if (isNeg)
+        str.append('-');
+
+    str.reverse();
+
+    return str.get();
+}
 
 // return new window
 WINDOW *newWindow(int height, int width, int starty, int startx)
@@ -159,7 +228,7 @@ int getMenu(int maxY, int maxX, int offY, int offX)
     }
 
     int ch; // pressed key
-    MyString item = MyString((char const *)"STRINGA");
+    MyString item = MyString();
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()) != KEY_F(1)) // if F1 is pressed quit
     {
@@ -169,21 +238,27 @@ int getMenu(int maxY, int maxX, int offY, int offX)
             move(0, 0);
             clrtoeol();
             wrefresh(myWin);
-            addstr("a");
-            if (selectedItem++ > MAX_ITEMS - 1)
+            if (selectedItem+1 > MAX_ITEMS - 1)
                 selectedItem = MIN_ITEMS; // reset selectedItem to 0
             else
                 selectedItem++;
+            item.reset();
+            item.append(itoa(selectedItem));
+            addstr(item.get());
             break;
+
         case KEY_DOWN:
             move(0, 0);
             clrtoeol();
             wrefresh(myWin);
-            mvaddstr(0, 0, "freccia giù");
-            if (selectedItem-- < MIN_ITEMS - 1)
+            if (selectedItem-1 < MIN_ITEMS - 1)
                 selectedItem = MAX_ITEMS; // reset selectedItem to 0
             else
                 selectedItem--;
+
+            item.reset();
+            item.append(itoa(selectedItem));
+            addstr(item.get());
             break;
         }
     }

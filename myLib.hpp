@@ -8,6 +8,7 @@ class MyString
 {
 public:
     char *string;
+    int length = 0;
 
 public:
     MyString();
@@ -17,12 +18,24 @@ public:
     // append string
     void append(char const *text);
 
+    // append char
+    void append(char ch);
+
+    // reverse string
+    void reverse();
+
+    // reset string to "\0"
+    void reset();
+
     // returns string length, does not count '\0'
     int getLength();
 
     // returns string
     const char *get();
 };
+
+// custom itoa, converts int to const char *
+const char *itoa(int num);
 
 // return new window
 WINDOW *newWindow(int height, int width, int starty, int startx);
