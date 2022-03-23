@@ -12,3 +12,6 @@ Per eseguire:
 
 Per clean:
 - make clean
+
+Per compilare ed eseguire con un solo comando:
+- make run
