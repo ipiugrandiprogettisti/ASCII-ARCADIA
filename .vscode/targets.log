@@ -15,7 +15,7 @@ make: *** No rule to make target 'all'.  Stop.
  
 
  
-# Make data base, printed on Wed Mar 23 11:16:05 2022
+# Make data base, printed on Wed Mar 23 11:21:26 2022
  
 
 # Variables
@@ -53,7 +53,6 @@ LC_NAME = it_IT.UTF-8
 # environment
  
 LC_NUMERIC = it_IT.UTF-8
- 
 # environment
 VSCODE_CWD = /home/annalisa
 # environment
@@ -103,7 +102,7 @@ CURDIR := /home/annalisa/Desktop/progettone/Progetto-programmazione-1
 # environment
 VSCODE_PIPE_LOGGING = true
 # environment
-APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = true
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 LESSOPEN = | /usr/bin/lesspipe %s
 # automatic
@@ -242,9 +241,7 @@ SNAP_CONTEXT = 99W3QpAJIENaWUy3G8xpgGdQEQdSU3uNj6N7wRxcBQP4FMGeJOkC
 MANAGERPID = 705
 # environment
 DBUS_STARTER_BUS_TYPE = session
- 
 # environment
- 
 LC_MEASUREMENT = it_IT.UTF-8
 # environment
 GIO_LAUNCHED_DESKTOP_FILE_PID = 7209
@@ -334,7 +331,9 @@ clean:
 #  File has not been updated.
 #  recipe to execute (from 'makefile', line 8):
 	rm *.o main
+ 
 
+ 
 # Not a target:
 myLib.cpp:
 #  Implicit rule search has not been done.
@@ -354,7 +353,7 @@ all:
 #  File does not exist.
 #  File has not been updated.
 
-run:
+run: main
 #  Implicit rule search has not been done.
 #  Modification time never checked.
 #  File has not been updated.
@@ -384,12 +383,12 @@ main.o: main.cpp
 # Not a target:
 makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-03-23 11:12:51.792821933
+#  Last modified 2022-03-23 11:19:36.146881029
 #  File has been updated.
 #  Successfully updated.
 
 # files hash-table stats:
-# Load=11/1024=1%, Rehash=0, Collisions=0/27=0%
+# Load=11/1024=1%, Rehash=0, Collisions=0/28=0%
 # VPATH Search Paths
 
 # No 'vpath' search paths.
@@ -399,9 +398,9 @@ makefile:
 # strcache buffers: 1 (0) / strings = 23 / storage = 217 B / avg = 9 B
 # current buf: size = 8162 B / used = 217 B / count = 23 / avg = 9 B
 
-# strcache performance: lookups = 39 / hit rate = 41%
+# strcache performance: lookups = 40 / hit rate = 42%
 # hash-table stats:
-# Load=23/8192=0%, Rehash=0, Collisions=0/39=0%
-# Finished Make data base on Wed Mar 23 11:16:05 2022
+# Load=23/8192=0%, Rehash=0, Collisions=0/40=0%
+# Finished Make data base on Wed Mar 23 11:21:26 2022
 
  

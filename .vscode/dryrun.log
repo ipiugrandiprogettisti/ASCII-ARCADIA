@@ -1,0 +1,7 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/annalisa/Desktop/progettone/Progetto-programmazione-1'
+ 
+make: 'main' is up to date.
+ 
+make: Leaving directory '/home/annalisa/Desktop/progettone/Progetto-programmazione-1'
+ 
