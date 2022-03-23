@@ -6,3 +6,5 @@ myLib.o: myLib.cpp
 	g++ -c myLib.cpp
 clean:
 	rm *.o main
+run: 
+	./main
