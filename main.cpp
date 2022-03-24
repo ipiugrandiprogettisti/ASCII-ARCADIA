@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include <cstring>
 #include <iostream>
-#include "myLib.hpp"
-#include "myString.hpp"
+#include "header/myLib.hpp"
 
 int main(int argc, char *argv[])
 {

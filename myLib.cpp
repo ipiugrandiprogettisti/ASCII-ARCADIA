@@ -1,4 +1,4 @@
-#include "myLib.hpp"
+#include "header/myLib.hpp"
 // TODO: creare classe MyWindow e implementare print
 
 // return new window
@@ -23,7 +23,7 @@ void destroyWindow(WINDOW *localWindow)
      * result of erasing the window. It will leave it's four corners
      * and so an ugly remnant of window.
      */
-    wborder(localWindow, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
+    wborder(localWindow, '@', '@', ' ', ' ', ' ', ' ', ' ', ' ');
     /* The parameters taken are
      * 1. win: the window on which to operate
      * 2. ls: character to be used for the left side of the window
