@@ -3,6 +3,7 @@
 #include <cstring>
 #include <iostream>
 #include "myLib.hpp"
+#include "myString.hpp"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +20,7 @@ int main(int argc, char *argv[])
     // draw main menu and get user choice 0 is play, 1 is credits. -1 is error.
     int choice = getMenu(maxX, maxY, 0, 0);
 
-    endwin(); /* End curses mode		  */
+    endwin(); // End curses mode
+
     return 0;
 }

@@ -25,9 +25,8 @@ struct listObjects
 class Key
 {
 protected:
-    int number = -1;
-
 public:
+    int number = -1;
     // ritorna il valore
     int get()
     {
@@ -55,7 +54,7 @@ public:
     }
     void init()
     {
-        key = key.createNew();
+        key.number = key.createNew();
     }
 };
 
