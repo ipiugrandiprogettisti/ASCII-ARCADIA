@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include <cstring>
 #include <iostream>
-#include "header/myLib.hpp"
+#include "header/myWindow.hpp"
+#include "header/startmenu.hpp"
 
 int main(int argc, char *argv[])
 {
