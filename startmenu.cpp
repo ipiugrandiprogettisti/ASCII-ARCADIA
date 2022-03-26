@@ -9,7 +9,7 @@ int getMenu(int maxY, int maxX, int offY, int offX)
     const int MAX_ITEMS = 2,
               MIN_ITEMS = 0,
               MAX_LENGTH_ITEM = 20;
-    int maxX = COLS, maxY = LINES, width, height, halfX, halfY;
+    int width, height, halfX, halfY;
     char string[MAX_ITEMS][MAX_LENGTH_ITEM] = {"Play", "Credits"};
     int selectedItem = 0; // could only be -1, 0 or 1. 0 is default
 
@@ -21,8 +21,10 @@ int getMenu(int maxY, int maxX, int offY, int offX)
         printf("Your terminal does not support color\n");
         exit(1);
     }
-    start_color();               /* Start color 			*/
-    wbkgd(myWin, COLOR_PAIR(1)); // sets all window attribute
+    start_color();                           /* Start color 			*/
+    init_pair(1, COLOR_YELLOW, COLOR_BLACK); // first color is font color, second is background color
+    init_pair(2, COLOR_BLACK, COLOR_YELLOW); // color for selected item
+    wbkgd(myWin, COLOR_PAIR(1));             // sets all window attribute
     wrefresh(myWin);
     // Activating color for one line
     /*
