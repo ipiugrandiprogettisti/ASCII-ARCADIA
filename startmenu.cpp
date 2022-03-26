@@ -21,10 +21,8 @@ int getMenu(int maxY, int maxX, int offY, int offX)
         printf("Your terminal does not support color\n");
         exit(1);
     }
-    start_color();                           /* Start color 			*/
-    init_pair(1, COLOR_YELLOW, COLOR_BLACK); // first color is font color, second is background color
-    init_pair(2, COLOR_BLACK, COLOR_YELLOW); // color for selected item
-    wbkgd(myWin, COLOR_PAIR(1));             // sets all window attribute
+    start_color();               /* Start color 			*/
+    wbkgd(myWin, COLOR_PAIR(1)); // sets all window attribute
     wrefresh(myWin);
     // Activating color for one line
     /*

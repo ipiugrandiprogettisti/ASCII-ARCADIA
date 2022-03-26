@@ -15,4 +15,3 @@ draw the main menu and returns choice taken by user:
 - 0: Play
 - 1: Credits
 */
-int getMenu(int maxY, int maxX, int offY, int offX);
