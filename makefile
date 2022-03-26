@@ -1,7 +1,9 @@
-main: main.o myString.o myWindow.o startmenu.o
-	g++ -o main main.o myString.o myWindow.o startmenu.o -lncurses
-main.o: main.cpp header/myWindow.hpp header/startmenu.hpp
+main: main.o game.o myString.o myWindow.o startmenu.o
+	g++ -o main main.o game.o myString.o myWindow.o startmenu.o -lncurses
+main.o: main.cpp header/game.hpp
 	g++ -c main.cpp
+game.o: game.cpp header/game.hpp
+	g++ -c game.cpp
 myString.o: myString.cpp header/myString.hpp
 	g++ -c myString.cpp
 myWindow.o: myWindow.cpp
