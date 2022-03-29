@@ -1,7 +1,2 @@
-#include "myWindow.hpp"
-#include "startMenu.hpp"
-
-void startgame();
-
-// custom itoa, converts int to const char *
-const char *itoa(int num);
+// draw main menu and get user choice 0 is play, 1 is credits. -1 is error.
+int getMenu(int maxY, int maxX, int offY, int offX);

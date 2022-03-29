@@ -2,6 +2,7 @@
 #include <cstring>
 #include <stdlib.h>
 #include <iostream>
+
 // return new window
 WINDOW *newWindow(int height, int width, int starty, int startx);
 
