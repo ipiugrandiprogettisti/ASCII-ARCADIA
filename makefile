@@ -1,16 +1,16 @@
-main: main.o game.o myString.o myWindow.o startmenu.o
-	g++ -o main main.o game.o myString.o myWindow.o startmenu.o -lncurses
+main: main.o game.o MyString.o myWindow.o startMenu.o
+	g++ -o main main.o game.o MyString.o myWindow.o startMenu.o -lncurses
 main.o: main.cpp header/game.hpp
 	g++ -c main.cpp
 game.o: game.cpp header/game.hpp
 	g++ -c game.cpp
-myString.o: myString.cpp header/myString.hpp
-	g++ -c myString.cpp
+MyString.o: MyString.cpp header/MyString.hpp
+	g++ -c MyString.cpp
 myWindow.o: myWindow.cpp
 	g++ -c myWindow.cpp header/myWindow.hpp
-startmenu.o: startmenu.cpp
-	g++ -c startmenu.cpp header/startmenu.hpp
+startMenu.o: startMenu.cpp
+	g++ -c startMenu.cpp header/startMenu.hpp
 clean:
-	rm *.o main
+	rm *.o ./header/*.gch main
 run: main
 	./main

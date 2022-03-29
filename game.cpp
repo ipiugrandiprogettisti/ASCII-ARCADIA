@@ -1,11 +1,9 @@
 #include "header/game.hpp"
 
-void startgame()
+void    startgame()
 {
-    initscr();            /* Start curses mode 		*/
-                          /* Line buffering disabled, pass
-                           * everything to me 		*/
-    keypad(stdscr, TRUE); /* I need that nifty F1 	*/
+    initscr();
+    keypad(stdscr, TRUE);
     noecho();
     curs_set(0);
 
