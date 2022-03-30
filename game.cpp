@@ -10,8 +10,8 @@ const int MAX_LENGTH_ITEM = 20;
 // print main menu, sel is selected item to highlight
 void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
 {
-    int halfY = LINES / 2 - 1;
-    int halfX = COLS / 2 - 1;
+    int halfY = LINES / 2 - 2;
+    int halfX = COLS / 2 - 2;
     int padding = 0; // set padding between menu items when displayed
     for (int i = 0; i < totItems; i++)
     {
@@ -39,7 +39,7 @@ draw the main menu and returns choice taken by user:
 - 1: Credits
 - 2: Exit
 */
-int getMenu(int maxY, int maxX, int offY, int offX)
+int getMenu(WINDOW *myWin)
 {
     const int MAX_ITEMS = 3,
               MIN_ITEMS = 0;
@@ -47,7 +47,7 @@ int getMenu(int maxY, int maxX, int offY, int offX)
     char menuItems[MAX_ITEMS][MAX_LENGTH_ITEM] = {"Play", "Credits", "Exit"};
     int selectedItem = 0; // could only be -1, 0 or 1. 0 is default
 
-    WINDOW *myWin = newwin(maxY, maxX, offY, offX);
+    // WINDOW *myWin = newwin(maxY, maxX, offY, offX);
     wrefresh(myWin);
     if (has_colors() == FALSE)
     {
@@ -60,22 +60,17 @@ int getMenu(int maxY, int maxX, int offY, int offX)
     init_pair(2, COLOR_BLACK, COLOR_YELLOW); // color for selected item
     wbkgd(myWin, COLOR_PAIR(1));             // sets all window attribute
     wrefresh(myWin);
-    // Activating color for one line
-    /*
-    attron(COLOR_PAIR(1));
-    mvaddstr(startY, startY, "ciao a tutti");
-    attroff(COLOR_PAIR(1));
-    */
-
     printMenu(selectedItem, MAX_ITEMS, menuItems);
 
     int ch; // pressed key
-    MyString item = MyString();
     // KEYBOARD EVENT LISTENER
-    while ((ch = getch()) != KEY_F(1)) // if F1 is pressed quit
+    while ((ch = getch()))
     {
         switch (ch)
         {
+        case 10: // 10 is the ASCII for the enter key
+            return selectedItem;
+            break;
         case KEY_DOWN:
             clrtoeol();
             /*
@@ -90,12 +85,6 @@ int getMenu(int maxY, int maxX, int offY, int offX)
             else
                 selectedItem++;
             printMenu(selectedItem, MAX_ITEMS, menuItems);
-            /*
-            move(0, 0);
-            item.reset();
-            item.append(itoa(selectedItem));
-            addstr(item.get());
-            */
             wrefresh(myWin);
             break;
 
@@ -107,12 +96,6 @@ int getMenu(int maxY, int maxX, int offY, int offX)
             else
                 selectedItem--;
             printMenu(selectedItem, MAX_ITEMS, menuItems);
-            /*
-            move(0, 0);
-            item.reset();
-            item.append(itoa(selectedItem));
-            addstr(item.get());
-            */
             wrefresh(myWin);
             break;
         }

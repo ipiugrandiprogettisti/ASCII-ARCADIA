@@ -1,2 +1,7 @@
-// draw main menu and get user choice 0 is play, 1 is credits. -1 is error.
-int getMenu(int maxY, int maxX, int offY, int offX);
+/*
+draw the main menu and returns choice taken by user:
+- 0: Play
+- 1: Credits
+- 2: Exit
+*/
+int getMenu(WINDOW *myWin);
