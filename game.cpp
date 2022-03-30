@@ -4,8 +4,11 @@
 #include "header/game.hpp"
 #include "header/utils.hpp"
 
-// sel is selected item to highlight
-void printMenu(int sel, int totItems, char menuItems[][20])
+// max length of item string
+const int MAX_LENGTH_ITEM = 20;
+
+// print main menu, sel is selected item to highlight
+void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
 {
     int halfY = LINES / 2 - 1;
     int halfX = COLS / 2 - 1;
@@ -34,14 +37,14 @@ void printMenu(int sel, int totItems, char menuItems[][20])
 draw the main menu and returns choice taken by user:
 - 0: Play
 - 1: Credits
+- 2: Exit
 */
 int getMenu(int maxY, int maxX, int offY, int offX)
 {
-    const int MAX_ITEMS = 2,
-              MIN_ITEMS = 0,
-              MAX_LENGTH_ITEM = 20;
+    const int MAX_ITEMS = 3,
+              MIN_ITEMS = 0;
     int width, height, halfX, halfY;
-    char menuItems[MAX_ITEMS][MAX_LENGTH_ITEM] = {"Play", "Credits"};
+    char menuItems[MAX_ITEMS][MAX_LENGTH_ITEM] = {"Play", "Credits", "Exit"};
     int selectedItem = 0; // could only be -1, 0 or 1. 0 is default
 
     WINDOW *myWin = newwin(maxY, maxX, offY, offX);
@@ -73,7 +76,7 @@ int getMenu(int maxY, int maxX, int offY, int offX)
     {
         switch (ch)
         {
-        case KEY_UP:
+        case KEY_DOWN:
             clrtoeol();
             /*
             clrtoeol():
@@ -96,7 +99,7 @@ int getMenu(int maxY, int maxX, int offY, int offX)
             wrefresh(myWin);
             break;
 
-        case KEY_DOWN:
+        case KEY_UP:
             clrtoeol();
             wrefresh(myWin);
             if (selectedItem - 1 < MIN_ITEMS)

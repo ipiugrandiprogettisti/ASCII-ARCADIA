@@ -10,8 +10,11 @@ int main(int argc, char *argv[])
 
     int maxY, maxX;
     getmaxyx(stdscr, maxY, maxX);
-    // draw main menu and get user choice 0 is play, 1 is credits. -1 is error.
-    int choice = getMenu(maxX, maxY, 0, 0);
+
+   
+    int choice = getMenu(maxX, maxY, 0, 0); //draw main menu and get user choice;:0: Play, 1: Credits, 2: Exit
+    
+    
 
     endwin(); // End curses mode
 
