@@ -28,3 +28,14 @@ const char *itoa(int num)
 
     return str.get();
 }
+
+// check if color is supported by user's terminal
+void checkColors()
+{
+    if (has_colors() == FALSE)
+    {
+        endwin();
+        std::cout << "Your terminal does not support color\n";
+        exit(1);
+    }
+}

@@ -16,6 +16,8 @@ int main(int argc, char *argv[])
     noecho();
     curs_set(0);
 
+    checkColors();
+
     int maxY, maxX, offY = 0, offX = 0;
     getmaxyx(stdscr, maxY, maxX);
 
@@ -25,7 +27,7 @@ int main(int argc, char *argv[])
     wclear(myWin);
     wrefresh(myWin);
 
-    switch (choice)
+    switch (choice) // handle choice
     {
     case 2: // EXIT
         endwin();
