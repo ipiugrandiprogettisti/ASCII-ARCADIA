@@ -40,8 +40,7 @@ int main(int argc, char *argv[])
         return 0;
         break;
     case 0: // PLAY
-        endwin();
-        cout << "You chose to play\n";
+        startGame(myWin);
         return 0;
         break;
     default:

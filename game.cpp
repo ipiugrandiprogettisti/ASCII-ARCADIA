@@ -3,10 +3,7 @@
 #include "header/MyString.hpp"
 #include "header/game.hpp"
 #include "header/utils.hpp"
-
-
-// max length of item string
-const int MAX_LENGTH_ITEM = 20;
+#include "header/map.hpp"
 
 // print main menu, sel is selected item to highlight
 void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
@@ -50,7 +47,7 @@ int getMenu(WINDOW *myWin)
 
     // WINDOW *myWin = newwin(maxY, maxX, offY, offX);
     wrefresh(myWin);
-    
+
     start_color();                           /* Start color 			*/
     init_pair(1, COLOR_YELLOW, COLOR_BLACK); // first color is font color, second is background color
     init_pair(2, COLOR_BLACK, COLOR_YELLOW); // color for selected item
@@ -98,4 +95,24 @@ int getMenu(WINDOW *myWin)
     }
 
     return selectedItem;
+}
+
+// starts the game
+void startGame(WINDOW *myWin)
+{
+    clear();
+    Map myMap = Map(myWin);
+
+    myMap.drawRoom();
+
+    int ch; // pressed key
+    // KEYBOARD EVENT LISTENER
+    while ((ch = getch()))
+    {
+        switch (ch)
+        {
+        default:
+            break;
+        }
+    }
 }
