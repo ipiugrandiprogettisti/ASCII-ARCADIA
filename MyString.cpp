@@ -2,9 +2,14 @@
 
 MyString::MyString()
 {
-    string = new char[strlen("\0") + 1];
+
+    /*string = new char[strlen("\0") + 1];
     strcpy(string, "\0");
-    this->length = strlen("\0");
+    this->length = strlen("\0");*
+    */
+    string = new char[1];
+    string[0] = '\0';
+    this->length = 0;
 }
 
 MyString::MyString(char const *text)
@@ -39,6 +44,7 @@ void MyString::append(char const *text)
 }
 
 // appen char
+// FIXME problema append, a volte viene stampato garbage... problemi con \0 finale DA TESTARE ANCHE QUI SE C'È PROBLEMA
 void MyString::append(char ch)
 {
     char *oldStr = new char[strlen(string) + 1];
@@ -72,10 +78,14 @@ void MyString::reverse()
 
 // reset string to "\0"
 void MyString::reset()
-{
-    string = new char[strlen("\0") + 1];
-    strcpy(string, "\0");
-    this->length = strlen("\0");
+{ /*
+     string = new char[strlen("\0") + 1];
+     strcpy(string, "\0");
+     this->length = strlen("\0");
+     */
+    string = new char[1];
+    string[0] = '\0';
+    this->length = 0;
 }
 
 // returns string length, does not count '\0'
@@ -89,4 +99,3 @@ const char *MyString::get()
 {
     return string;
 }
-

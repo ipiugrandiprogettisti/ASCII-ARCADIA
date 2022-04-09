@@ -105,12 +105,15 @@ void startGame(WINDOW *myWin)
 
     myMap.drawRoom();
 
-    int ch; // pressed key
+    int ch, a; // pressed key
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
     {
         switch (ch)
         {
+        case 10:
+            return;
+            break;
         default:
             break;
         }

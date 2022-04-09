@@ -1,6 +1,7 @@
 #include "header/MyString.hpp"
 
 // custom itoa, converts int to const char *
+// FIXME problema append, a volte viene stampato garbage... problemi con \0 finale DA TESTARE ANCHE QUI SE C'È PROBLEMA
 const char *itoa(int num)
 {
     MyString str = MyString();
@@ -25,7 +26,6 @@ const char *itoa(int num)
         str.append('-');
 
     str.reverse();
-
     return str.get();
 }
 
