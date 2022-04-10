@@ -112,7 +112,8 @@ void startGame(WINDOW *myWin)
         switch (ch)
         {
         case 10:
-            return;
+            // endwin();refresh();clear();
+            //   return;
             break;
         default:
             break;

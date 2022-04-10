@@ -8,17 +8,13 @@ Map ::Map(WINDOW *myWin) : myWin(myWin)
 
 void Map::drawRoom()
 {
-    MyString str = MyString("Colonne: ");
-   // str.append("Colonne: ");
-   // str.append(itoa(COLS));
-  //  str.append(", length =");
-   // str.append(itoa(str.length));
+    MyString str = MyString();
+    str.append("Colonne: ");
+    str.append(itoa(COLS));
     mvaddstr(0, 0, str.get());
     str.reset();
-    str.append("Righe:");
+    str.append("Righe: ");
     str.append(itoa(LINES));
-    str.append(", length =");
-    str.append(itoa(str.length));
     mvaddstr(1, 0, str.get());
     int width = 80, heigth = 15;
     int halfY = LINES / 2;
@@ -28,19 +24,32 @@ void Map::drawRoom()
 
     for (int i = 0; i < width; i++)
     {
-        mvaddstr(halfY - heigth / 2, adjWidth + i, "-");
+        if (i == 0 || i == width)
+            mvaddch(halfY - heigth / 2, adjWidth + i, ACS_PLUS);
+        else
+            mvaddch(halfY - heigth / 2, adjWidth + i, ACS_HLINE);
     }
     for (int i = 0; i < width; i++)
     {
-        mvaddstr(halfY + heigth / 2, adjWidth + i, "-");
+        if (i == 0 || i == width)
+            mvaddch(halfY + heigth / 2, adjWidth + i, ACS_PLUS);
+
+        else
+            mvaddch(halfY + heigth / 2, adjWidth + i, ACS_HLINE);
     }
 
     for (int i = 0; i < heigth; i++)
     {
-        mvaddstr(adjHeigth + i, adjWidth + width, "|");
+        if (i == 0 || i == heigth - 1)
+            mvaddch(adjHeigth + i, adjWidth + width, ACS_PLUS);
+        else
+            mvaddch(adjHeigth + i, adjWidth + width, ACS_VLINE);
     }
     for (int i = 0; i < heigth; i++)
     {
-        mvaddstr(adjHeigth + i, adjWidth, "|");
+        if (i == 0 || i == heigth - 1)
+            mvaddch(adjHeigth + i, adjWidth, ACS_PLUS);
+        else
+            mvaddch(adjHeigth + i, adjWidth, ACS_VLINE);
     }
 }

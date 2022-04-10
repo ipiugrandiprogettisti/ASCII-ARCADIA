@@ -12,6 +12,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     initscr();
+    setlocale(LC_ALL, "");
+
     keypad(stdscr, TRUE);
     noecho();
     curs_set(0);
@@ -27,32 +29,29 @@ int main(int argc, char *argv[])
     wclear(myWin);
     wrefresh(myWin);
 
-    while (true)
+    switch (choice) // handle choice
     {
-
-        switch (choice) // handle choice
-        {
-        case 2: // EXIT
-            endwin();
-            cout << "You chose to exit\n";
-            return 0;
-            break;
-        case 1: // CREDITS
-            endwin();
-            cout << "You chose to see the credits\n";
-            return 0;
-            break;
-        case 0: // PLAY
-            startGame(myWin);
-            //return 0; FIXME TOGLI COMMENTO E WHILETRUE
-            break;
-        default:
-            endwin();
-            cout << "ERROR:\nWrong choice!\n";
-            exit(1);
-            break;
-        }
+    case 2: // EXIT
+        endwin();
+        cout << "You chose to exit\n";
+        return 0;
+        break;
+    case 1: // CREDITS
+        endwin();
+        cout << "You chose to see the credits\n";
+        return 0;
+        break;
+    case 0: // PLAY
+        startGame(myWin);
+        return 0;
+        break;
+    default:
+        endwin();
+        cout << "ERROR:\nWrong choice!\n";
+        exit(1);
+        break;
     }
+
     endwin(); // End curses mode
 
     return 0;

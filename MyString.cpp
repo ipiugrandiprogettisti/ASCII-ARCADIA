@@ -39,12 +39,11 @@ void MyString::append(char const *text)
         string[i] = text[c];
         c++;
     }
-
+    string[strlen(oldStr) + strlen(text)] = '\0';
     delete oldStr;
 }
 
 // appen char
-// FIXME problema append, a volte viene stampato garbage... problemi con \0 finale DA TESTARE ANCHE QUI SE C'È PROBLEMA
 void MyString::append(char ch)
 {
     char *oldStr = new char[strlen(string) + 1];
@@ -60,6 +59,7 @@ void MyString::append(char ch)
 
     string[strlen(oldStr)] = ch;
 
+    string[strlen(oldStr) + 1] = '\0';
     delete oldStr;
 }
 
@@ -69,7 +69,7 @@ void MyString::reverse()
     char *tmpStr = new char[strlen(string)];
     strcpy(tmpStr, string);
     int c = 0;
-    for (int i = strlen(tmpStr) - 1; i >= 0; i--)
+    for (int i = strlen(tmpStr) - 1; tmpStr[c] != '\0'; i--)
     {
         string[c] = tmpStr[i];
         c++;
@@ -83,7 +83,7 @@ void MyString::reset()
      strcpy(string, "\0");
      this->length = strlen("\0");
      */
-    string = new char[1];
+    // string = new char[1];
     string[0] = '\0';
     this->length = 0;
 }
