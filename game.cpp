@@ -101,11 +101,12 @@ int getMenu(WINDOW *myWin)
 void startGame(WINDOW *myWin)
 {
     clear();
-    Map myMap = Map(myWin);
+    int totalRooms = 10;
+    Map myMap = Map(myWin, totalRooms);
 
-    myMap.drawRoom();
+    // myMap.drawRoom(COLS, LINES);
 
-    int ch, a; // pressed key
+    int ch; // pressed key
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
     {

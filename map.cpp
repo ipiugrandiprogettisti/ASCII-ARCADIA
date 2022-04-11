@@ -2,54 +2,28 @@
 #include "header/utils.hpp"
 #include "header/MyString.hpp"
 
-Map ::Map(WINDOW *myWin) : myWin(myWin)
+/*
+Map::Map()
 {
+}*/
+
+Map::Map(WINDOW *win, int totalRooms)
+{
+    mainWin = win;
+    this->totalRooms = totalRooms;
+    currentRoom = 0; // starting room is the first one: rooms[0]
 }
 
-void Map::drawRoom()
+// returns the main window
+WINDOW *Map::getMainWindow()
 {
-    MyString str = MyString();
-    str.append("Colonne: ");
-    str.append(itoa(COLS));
-    mvaddstr(0, 0, str.get());
-    str.reset();
-    str.append("Righe: ");
-    str.append(itoa(LINES));
-    mvaddstr(1, 0, str.get());
-    int width = 80, heigth = 15;
-    int halfY = LINES / 2;
-    int halfX = COLS / 2;
-    int adjWidth = halfX - width / 2;   // adjusted width
-    int adjHeigth = halfY - heigth / 2; // adjusted heigth
+    return mainWin;
+}
 
-    for (int i = 0; i < width; i++)
-    {
-        if (i == 0 || i == width)
-            mvaddch(halfY - heigth / 2, adjWidth + i, ACS_PLUS);
-        else
-            mvaddch(halfY - heigth / 2, adjWidth + i, ACS_HLINE);
-    }
-    for (int i = 0; i < width; i++)
-    {
-        if (i == 0 || i == width)
-            mvaddch(halfY + heigth / 2, adjWidth + i, ACS_PLUS);
-
-        else
-            mvaddch(halfY + heigth / 2, adjWidth + i, ACS_HLINE);
-    }
-
-    for (int i = 0; i < heigth; i++)
-    {
-        if (i == 0 || i == heigth - 1)
-            mvaddch(adjHeigth + i, adjWidth + width, ACS_PLUS);
-        else
-            mvaddch(adjHeigth + i, adjWidth + width, ACS_VLINE);
-    }
-    for (int i = 0; i < heigth; i++)
-    {
-        if (i == 0 || i == heigth - 1)
-            mvaddch(adjHeigth + i, adjWidth, ACS_PLUS);
-        else
-            mvaddch(adjHeigth + i, adjWidth, ACS_VLINE);
-    }
+// returns the room window
+WINDOW *Map::getRoomWindow(int key)
+{
+    // TODO
+    // search in rooms for current room; then returns the room's window
+    return rooms[key].getWindow();
 }
