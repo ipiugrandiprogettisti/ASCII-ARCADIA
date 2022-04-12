@@ -7,7 +7,7 @@
 Room :: Room()
 {
 }
-
+ 
 // Constructor
 Room::Room(WINDOW *win)
 {
