@@ -1,5 +1,5 @@
-main: main.o game.o MyString.o myWindow.o utils.o map.o Room.o
-	g++ -o main main.o game.o MyString.o myWindow.o utils.o map.o Room.o -lncurses
+main: main.o game.o MyString.o myWindow.o utils.o map.o Room.o Entity.o
+	g++ -o main main.o game.o MyString.o myWindow.o utils.o map.o Room.o Entity.o -lncurses
 main.o: main.cpp header/game.hpp
 	g++ -c main.cpp
 game.o: game.cpp header/game.hpp
@@ -14,6 +14,8 @@ map.o: map.cpp
 	g++ -c map.cpp header/map.hpp
 Room.o: Room.cpp
 	g++ -c Room.cpp header/Room.hpp
+Entity.o: Entity.cpp
+	g++ -c Entity.cpp header/Entity.hpp
 clean:
 	rm *.o ./header/*.gch main
 run: main
