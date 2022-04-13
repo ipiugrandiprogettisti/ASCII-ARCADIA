@@ -8,7 +8,7 @@
 Room ::Room()
 {
     int key = -1;  // a room is always created with a given key. if no set it to -1 (error)
-    win = nullptr; // at the moment of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    win = nullptr; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
     objects.artifacts = nullptr; // set the amount of artifacts in the room to 0
@@ -19,7 +19,7 @@ Room ::Room()
 Room::Room(int key)
 {
     this->key = key;     // unique
-    this->win = nullptr; // at the moment of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    this->win = nullptr; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
     objects.artifacts = nullptr; // set the amount of artifacts in the room to 0
@@ -44,13 +44,18 @@ void Room::draw(int maxCols, int maxLines)
 
     // this prints in the main window
     MyString str = MyString();
+    //just debug information
+    str.append("Room key: ");
+    str.append(itoa(this->key));
+    mvaddstr(0, 0, str.get());
+    str.reset();
     str.append("Colonne: ");
     str.append(itoa(maxCols));
-    mvaddstr(0, 0, str.get());
+    mvaddstr(1, 0, str.get());
     str.reset();
     str.append("Righe: ");
     str.append(itoa(maxLines));
-    mvaddstr(1, 0, str.get());
+    mvaddstr(2, 0, str.get());
 
     // this will prints in the room window, which is a smaller window in the terminal
     int roomWidth = maxCols / 1.5 + 1, roomHeigth = maxLines / 2 + 1;

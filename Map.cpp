@@ -7,6 +7,7 @@ Map::Map()
 {
 }*/
 
+// Constructor
 Map::Map(WINDOW *win)
 {
     mainWin = win;
