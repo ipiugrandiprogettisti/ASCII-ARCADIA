@@ -13,15 +13,14 @@ Map::Map(WINDOW *win)
     totalRooms = 1; // game starts with only 1 room. next rooms are one at a time
     this->freeKey = 0;
 
-    
     rooms = new listRooms;
-    rooms->currentRoom=Room(newKey());
+    rooms->currentRoom = Room(newKey());
 
     // sets all next rooms to nullptr; a pointer will be assigned to its room when one is created
     rooms->door1 = nullptr;
-    rooms->door2 = nullptr; 
+    rooms->door2 = nullptr;
     rooms->door3 = nullptr;
-    rooms->previousRoom = nullptr;  //this is nullptr because there is no previous room in the first one
+    rooms->previousRoom = nullptr; // this is nullptr because there is no previous room in the first one
 }
 
 // returns and create a new unique key

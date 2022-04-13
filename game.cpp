@@ -105,6 +105,8 @@ void startGame(WINDOW *myWin)
     Map myMap = Map(myWin);
 
     myMap.rooms->currentRoom.draw(COLS, LINES);
+    refresh();
+    wrefresh(myMap.rooms->currentRoom.getWindow());
 
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER

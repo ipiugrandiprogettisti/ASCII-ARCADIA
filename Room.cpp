@@ -7,16 +7,23 @@
 // Constructor
 Room ::Room()
 {
-    int key = -1; // FIXME da mettere a posto
-    WINDOW *win = nullptr;
+    int key = -1;  // a room is always created with a given key. if no set it to -1 (error)
+    win = nullptr; // at the moment of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    objects.artifacts = new listArtifacts;
+    objects.enemies = new listEnemies;
+    objects.artifacts = nullptr; // set the amount of artifacts in the room to 0
+    objects.enemies = nullptr;   // set the amount of artifacts in the room to 0
 }
-
 
 // Constructor
 Room::Room(int key)
 {
-    this->key = key;
-    this->win = nullptr;    //at the moment of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    this->key = key;     // unique
+    this->win = nullptr; // at the moment of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    objects.artifacts = new listArtifacts;
+    objects.enemies = new listEnemies;
+    objects.artifacts = nullptr; // set the amount of artifacts in the room to 0
+    objects.enemies = nullptr;   // set the amount of artifacts in the room to 0
 }
 
 // returns the key of the room
@@ -55,9 +62,6 @@ void Room::draw(int maxCols, int maxLines)
 
     // create the ROOM (box)
     box(win, 0, 0);
-
-    refresh();
-    wrefresh(win);
 }
 
 /*

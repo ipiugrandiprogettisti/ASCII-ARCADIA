@@ -2,7 +2,7 @@
 #include <ncurses.h>
 #include "Room.hpp"
 
-//list of the rooms
+// list of the rooms
 struct listRooms
 {
     Room currentRoom;
@@ -10,7 +10,7 @@ struct listRooms
     listRooms *previousRoom;
 };
 
-//pointer to list of the rooms
+// pointer to list of the rooms
 typedef listRooms *pListRooms;
 
 const int MAX_ROOMS = 100;
@@ -18,14 +18,14 @@ const int MAX_ROOMS = 100;
 class Map
 {
 private:
-    int freeKey;    //this is the next free key. each room has a unique key
+    int freeKey; // this is the next free key. each room has a unique key
 
 protected:
     WINDOW *mainWin; // main window (terminal)
-    int totalRooms; // number of total rooms
+    int totalRooms;  // number of total rooms
 
 public:
-    pListRooms rooms;   //list of rooms
+    pListRooms rooms; // list of rooms
 
     // Constructor
     Map(WINDOW *win);

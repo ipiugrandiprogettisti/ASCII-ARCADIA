@@ -1,12 +1,44 @@
 // Room class file
 #include <ncurses.h>
 
+// enemies list
+struct listEnemies
+{
+    // current enemy
+    // enemy key
+    listEnemies *next;
+    listEnemies *previous;
+};
+
+// pointer to list of the enemies
+typedef listEnemies *pListEnemies;
+
+// artifacts list
+struct listArtifacts
+{
+    // current artifact
+    // artifact key
+    listArtifacts *next;
+    listArtifacts *previous;
+};
+
+// pointer to list of the enemies
+typedef listArtifacts *pListArtifacts;
+
+// struct that contains all of the dynamic structures that are in the room
+struct objContainer
+{
+    pListEnemies enemies;
+    pListArtifacts artifacts;
+};
+
+// Room class
 class Room
 {
 protected:
     int key; // unique
     WINDOW *win;
-    // listaoggetti
+    objContainer objects;
 
 public:
     // Constructort
