@@ -4,13 +4,16 @@
 class Room
 {
 protected:
-    int key; // DA DECIDERE room.key potrebbe esere uguale alla posizione della stanza nell'array di stanze
+    int key; // unique
     WINDOW *win;
     // listaoggetti
+
 public:
+    // Constructort
     Room();
+
     // Constructor
-    Room(WINDOW *win);
+    Room(int key);
 
     // returns the key of the room
     int getKey();

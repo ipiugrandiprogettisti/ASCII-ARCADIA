@@ -4,16 +4,19 @@
 #include "header/MyString.hpp"
 #include "header/utils.hpp"
 
-Room :: Room()
-{
-}
- 
 // Constructor
-Room::Room(WINDOW *win)
+Room ::Room()
 {
-    // FIXME fixare chiave univoca ogni volta che stanza è creata
-    // key=newKey();
-    this->win = win;
+    int key = -1; // FIXME da mettere a posto
+    WINDOW *win = nullptr;
+}
+
+
+// Constructor
+Room::Room(int key)
+{
+    this->key = key;
+    this->win = nullptr;    //at the moment of creating a room its window will be null. the first time that it will be drawed it also will be assigned
 }
 
 // returns the key of the room
@@ -55,10 +58,6 @@ void Room::draw(int maxCols, int maxLines)
 
     refresh();
     wrefresh(win);
-
-    // box(roomWin, 0, 0);
-    // refresh();
-    // wrefresh(roomWin);
 }
 
 /*

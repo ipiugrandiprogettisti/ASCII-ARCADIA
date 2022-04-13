@@ -3,7 +3,7 @@
 #include "header/MyString.hpp"
 #include "header/game.hpp"
 #include "header/utils.hpp"
-#include "header/map.hpp"
+#include "header/Map.hpp"
 
 // print main menu, sel is selected item to highlight
 void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
@@ -101,10 +101,10 @@ int getMenu(WINDOW *myWin)
 void startGame(WINDOW *myWin)
 {
     clear();
-    int totalRooms = 10;
-    Map myMap = Map(myWin, totalRooms);
 
-    // myMap.drawRoom(COLS, LINES);
+    Map myMap = Map(myWin);
+
+    myMap.rooms->currentRoom.draw(COLS, LINES);
 
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER
