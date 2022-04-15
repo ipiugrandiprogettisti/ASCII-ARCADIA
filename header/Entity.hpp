@@ -1,3 +1,4 @@
+#pragma once
 #include <ncurses.h>
 typedef struct pos
 {
@@ -9,7 +10,7 @@ class Entity
 {
 protected:
     pos position;
-    chtype tag; //entity's character's type
+    chtype tag; // entity's character's type
 
 public:
     // constructor

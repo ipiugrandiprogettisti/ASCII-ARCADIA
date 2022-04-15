@@ -1,3 +1,4 @@
+#pragma once
 // max length of item string
 const int MAX_LENGTH_ITEM = 20;
 
@@ -12,5 +13,5 @@ draw the main menu and returns choice taken by user:
 */
 int getMenu(WINDOW *myWin);
 
-//starts the game
+// starts the game
 void startGame(WINDOW *myWin);

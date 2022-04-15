@@ -1,6 +1,6 @@
 #pragma once
 #include "Entity.hpp"
 
-class Character : public Entity
+class Item : public Entity
 {
 };
