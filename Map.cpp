@@ -44,3 +44,10 @@ WINDOW *Map::getRoomWindow(int key)
     // search in rooms for current room; then returns the room's window
     return rooms->currentRoom.getWindow();
 }
+
+// creates new room in the specified door
+void Map::enterRoom(int prevRoomKey, door doorInfo)
+{
+    int key = newKey();
+    rooms->door1->currentRoom = Room(key);
+}

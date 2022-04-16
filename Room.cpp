@@ -6,27 +6,26 @@
 #include <ctime>
 
 // place a door. y and x are position, i is the side where the door is located
-void placeDoor(WINDOW *win, int y, int x, int i)
+void placeDoor(WINDOW *win, door doorInfo)
 {
-    switch (i)
+    switch (doorInfo.side)
     {
     case 0: // bottom side
     case 2: // top side
-        mvwaddch(win, y, x - 1, ACS_RTEE);
-        mvwaddch(win, y, x, ACS_CKBOARD);
-        mvwaddch(win, y, x + 1, ACS_LTEE);
+        mvwaddch(win, doorInfo.y, doorInfo.x - 1, ACS_RTEE);
+        mvwaddch(win, doorInfo.y, doorInfo.x, ACS_CKBOARD);
+        mvwaddch(win, doorInfo.y, doorInfo.x + 1, ACS_LTEE);
         break;
     case 1: // left side
     case 3: // rigth side
-        mvwaddch(win, y - 1, x, ACS_BTEE);
-        mvwaddch(win, y, x, ACS_CKBOARD);
-        mvwaddch(win, y + 1, x, ACS_TTEE);
+        mvwaddch(win, doorInfo.y - 1, doorInfo.x, ACS_BTEE);
+        mvwaddch(win, doorInfo.y, doorInfo.x, ACS_CKBOARD);
+        mvwaddch(win, doorInfo.y + 1, doorInfo.x, ACS_TTEE);
         break;
     default:
         break;
     }
 }
-
 
 // Constructor
 Room ::Room()
@@ -104,27 +103,48 @@ void Room::draw(int maxCols, int maxLines)
 
     // now we have to draw 1-4 doors
     srand(time(0));                // seed is 0
-    int nDoors = (rand() % 4) + 1; // random number of door from 1 to 4
+    int nDoors = (rand() % 4) + 1; // random number of door from 1 to 4 for first room
     // placing doors
     for (int i = 0; i < nDoors; i++)
     {
-        switch (i) // i = door number = side
+        struct door doorInfo;
+        doorInfo.side = i;
+        switch (doorInfo.side) // match/adjust side to coords
         {
         case 0: // bottom side
-            placeDoor(win, roomHeigth - 1, roomWidth / 2, i);
+            doorInfo.y = roomHeigth - 1;
+            doorInfo.x = roomWidth / 2;
+            placeDoor(win, doorInfo);
             break;
         case 1: // left side
-            placeDoor(win, roomHeigth / 2, 0, i);
+            doorInfo.y = roomHeigth / 2;
+            doorInfo.x = 0;
+            placeDoor(win, doorInfo);
             break;
         case 2: // top side
-            placeDoor(win, 0, roomWidth / 2, i);
+            doorInfo.y = 0;
+            doorInfo.x = roomWidth / 2;
+            placeDoor(win, doorInfo);
             break;
         case 3: // right side
-            placeDoor(win, roomHeigth / 2, roomWidth - 1, i);
+            doorInfo.y = roomHeigth / 2;
+            doorInfo.x = roomWidth - 1;
+            placeDoor(win, doorInfo);
             break;
 
         default:
             break;
         }
     }
+}
+
+// returns the given door (struct door) information
+struct door Room::getDoor(int side)
+{
+    struct door porta;
+    // FIXME: restituire veri parametri porta  e cambiare nome della variabile
+    porta.side = 0;
+    porta.y = 0;
+    porta.x = 0;
+    return porta;
 }

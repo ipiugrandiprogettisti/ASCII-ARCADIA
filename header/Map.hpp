@@ -37,6 +37,9 @@ public:
     // returns the main window
     WINDOW *getMainWindow();
 
-    // returns the room window
-    WINDOW *getRoomWindow(int currentRoom);
+    // returns win of the given room
+    WINDOW *getRoomWindow(int key);
+
+    // creates new room in the specified door
+    void enterRoom(int prevRoomKey, door doorInfo);
 };

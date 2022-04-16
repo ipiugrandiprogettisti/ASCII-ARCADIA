@@ -109,6 +109,7 @@ void startGame(WINDOW *myWin)
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
+    int doorSide = 0;
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
@@ -121,6 +122,11 @@ void startGame(WINDOW *myWin)
             myMap.rooms->currentRoom.draw(COLS, LINES);
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
+            break;
+        case KEY_LEFT:
+            // if(personaggio è dentro la porta) then...
+            // getDoorSide() //per printare poi la porta dal lato giusto nella nuova stanza come previous door
+            myMap.enterRoom(myMap.rooms->previousRoom->currentRoom.getKey(), myMap.rooms->previousRoom->currentRoom.getDoor(doorSide));
             break;
         default:
             break;
