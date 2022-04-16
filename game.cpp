@@ -116,8 +116,11 @@ void startGame(WINDOW *myWin)
         switch (ch)
         {
         case KEY_RIGHT:
-            //mvaddstr(4, 0, "Freccia destra"); //just debug info
-            //myMap.rooms.
+            // mvaddstr(4, 0, "Freccia destra"); //just debug info
+            // myMap.rooms.
+            myMap.rooms->currentRoom.draw(COLS, LINES);
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
             break;
         default:
             break;
