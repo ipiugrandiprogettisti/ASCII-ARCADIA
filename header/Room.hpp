@@ -34,6 +34,9 @@ struct objContainer
     pListArtifacts artifacts;
 };
 
+// place a door. y and x are position, i is the side where the door is located
+void placeDoor(WINDOW *win, int y, int x, int i);
+
 // Room class
 class Room
 {

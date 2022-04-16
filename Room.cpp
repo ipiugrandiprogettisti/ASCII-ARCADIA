@@ -5,6 +5,29 @@
 #include "header/utils.hpp"
 #include <ctime>
 
+// place a door. y and x are position, i is the side where the door is located
+void placeDoor(WINDOW *win, int y, int x, int i)
+{
+    switch (i)
+    {
+    case 0: // bottom side
+    case 2: // top side
+        mvwaddch(win, y, x - 1, ACS_RTEE);
+        mvwaddch(win, y, x, ACS_CKBOARD);
+        mvwaddch(win, y, x + 1, ACS_LTEE);
+        break;
+    case 1: // left side
+    case 3: // rigth side
+        mvwaddch(win, y - 1, x, ACS_BTEE);
+        mvwaddch(win, y, x, ACS_CKBOARD);
+        mvwaddch(win, y + 1, x, ACS_TTEE);
+        break;
+    default:
+        break;
+    }
+}
+
+
 // Constructor
 Room ::Room()
 {
@@ -37,19 +60,6 @@ int Room::getKey()
 WINDOW *Room::getWindow()
 {
     return win;
-}
-
-void placeDoor(int y, int x, int i)
-{
-    switch (i)
-    {
-    case /* constant-expression */:
-        /* code */
-        break;
-    
-    default:
-        break;
-    }
 }
 
 void Room::draw(int maxCols, int maxLines)
@@ -97,7 +107,24 @@ void Room::draw(int maxCols, int maxLines)
     int nDoors = (rand() % 4) + 1; // random number of door from 1 to 4
     // placing doors
     for (int i = 0; i < nDoors; i++)
-    {//i=door number=side
-        placeDoor(y, x, i);
+    {
+        switch (i) // i = door number = side
+        {
+        case 0: // bottom side
+            placeDoor(win, roomHeigth - 1, roomWidth / 2, i);
+            break;
+        case 1: // left side
+            placeDoor(win, roomHeigth / 2, 0, i);
+            break;
+        case 2: // top side
+            placeDoor(win, 0, roomWidth / 2, i);
+            break;
+        case 3: // right side
+            placeDoor(win, roomHeigth / 2, roomWidth - 1, i);
+            break;
+
+        default:
+            break;
+        }
     }
 }
