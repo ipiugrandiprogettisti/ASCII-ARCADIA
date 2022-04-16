@@ -102,8 +102,9 @@ void startGame(WINDOW *myWin)
 {
     clear();
 
-    Map myMap = Map(myWin);
+    Map myMap = Map(myWin); // Map initialize
 
+    // Now game draws first room, where the player spawns safely
     myMap.rooms->currentRoom.draw(COLS, LINES);
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -114,9 +115,9 @@ void startGame(WINDOW *myWin)
     {
         switch (ch)
         {
-        case 10:
-            // endwin();refresh();clear();
-            //   return;
+        case KEY_RIGHT:
+            //mvaddstr(4, 0, "Freccia destra"); //just debug info
+            //myMap.rooms.
             break;
         default:
             break;

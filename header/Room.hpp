@@ -1,5 +1,6 @@
-#pragma once
+
 // Room class file
+
 #include <ncurses.h>
 
 // enemies list

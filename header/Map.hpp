@@ -1,4 +1,4 @@
-#pragma once
+
 // Map class file
 #include <ncurses.h>
 #include "Room.hpp"

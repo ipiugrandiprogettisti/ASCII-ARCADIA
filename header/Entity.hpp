@@ -1,4 +1,4 @@
-#pragma once
+
 #include <ncurses.h>
 typedef struct pos
 {

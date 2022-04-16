@@ -1,4 +1,4 @@
-#pragma once
+
 // max length of item string
 const int MAX_LENGTH_ITEM = 20;
 

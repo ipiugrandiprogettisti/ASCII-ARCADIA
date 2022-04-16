@@ -1,4 +1,4 @@
-#pragma once
+
 #include "Entity.hpp"
 // i could difference between consumable and collectables
 //  classe artefatto -> da vita etc
