@@ -34,8 +34,8 @@ Room ::Room()
     win = nullptr; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
-    objects.artifacts = nullptr; // set the amount of artifacts in the room to 0
-    objects.enemies = nullptr;   // set the amount of artifacts in the room to 0
+    objects.artifacts = NULL; // set the amount of artifacts in the room to 0
+    objects.enemies = NULL;   // set the amount of artifacts in the room to 0
 }
 
 // Constructor
@@ -45,9 +45,11 @@ Room::Room(int key)
     this->win = nullptr; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
-    objects.artifacts = nullptr; // set the amount of artifacts in the room to 0
-    objects.enemies = nullptr;   // set the amount of artifacts in the room to 0
+    objects.artifacts = NULL; // set the amount of artifacts in the room to 0
+    objects.enemies = NULL;   // set the amount of artifacts in the room to 0
 }
+
+
 
 // returns the key of the room
 int Room::getKey()

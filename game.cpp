@@ -126,7 +126,10 @@ void startGame(WINDOW *myWin)
         case KEY_LEFT:
             // if(personaggio è dentro la porta) then...
             // getDoorSide() //per printare poi la porta dal lato giusto nella nuova stanza come previous door
-            myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey(), myMap.rooms->door0->currentRoom.getDoor(doorSide));
+            // creates door0 room
+            myMap.createRoom(myMap.rooms->currentRoom.getDoor(doorSide));
+            //myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey());
+
             break;
         default:
             break;

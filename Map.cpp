@@ -19,10 +19,10 @@ Map::Map(WINDOW *win)
 
     // sets all next rooms to nullptr; a pointer will be assigned to its room when one is created
     // FIXME: nella funzione tailInsert di listRooms ho usato NULL per le stanze vuote non nullptr
-    rooms->door0 = nullptr;
-    rooms->door1 = nullptr;
-    rooms->door2 = nullptr;
-    rooms->door3 = nullptr;
+    rooms->door0 = NULL;
+    rooms->door1 = NULL;
+    rooms->door2 = NULL;
+    rooms->door3 = NULL;
 
     // doorInfo are already set when defined check Room.hpp for more info
 }
@@ -49,10 +49,10 @@ WINDOW *Map::getRoomWindow(int key)
 }
 
 // head insert
-pListRooms insertHead(pListRooms rooms, int doorNumber, Room roomInfo, struct door previousDoorInfo)
+pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomInfo)
 {
     pListRooms list = new listRooms;
-    switch (doorNumber)
+    switch (previousDoorInfo.side)
     {
     case 0:
         list->currentRoom = roomInfo;
@@ -73,6 +73,7 @@ pListRooms insertHead(pListRooms rooms, int doorNumber, Room roomInfo, struct do
         break;
 
     default:
+        return NULL;
         break;
     }
 
@@ -80,7 +81,7 @@ pListRooms insertHead(pListRooms rooms, int doorNumber, Room roomInfo, struct do
 }
 
 // tail insert
-pListRooms tailInsert(pListRooms rooms, int doorNumber, int newRoomKey)
+pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey)
 {
     pListRooms list;
     if (rooms == NULL)
@@ -107,11 +108,10 @@ pListRooms tailInsert(pListRooms rooms, int doorNumber, int newRoomKey)
     return rooms;
 }
 
-// creates new room in the specified door
-void Map::enterRoom(int prevRoomKey, door doorInfo)
+// creates new room
+void Map::createRoom(struct door doorInfo)
 {
     int key = newKey();
-
     switch (doorInfo.side)
     {
     case 0: // bottom side
@@ -120,7 +120,7 @@ void Map::enterRoom(int prevRoomKey, door doorInfo)
         rooms->door0->door2Info = doorInfo; // if player enters room from bottom side; previous room is located top side
         rooms->door0->door2 = rooms;
         */
-        rooms = insertHead(rooms, doorInfo.side, Room(key), rooms->currentRoom.getDoor(doorInfo.side));
+        rooms = insertHead(rooms, doorInfo, Room(key));
         break;
     case 1: // left side
         break;
@@ -131,4 +131,15 @@ void Map::enterRoom(int prevRoomKey, door doorInfo)
     default:
         break;
     }
+}
+
+// enter new room: make it currentRoom
+// FIXME non è piu cosi
+void Map::enterRoom(int key)
+{
+    for (int i = 0; i < 10; i++)
+    {
+        i++;
+    }
+    
 }

@@ -18,6 +18,9 @@ typedef listRooms *pListRooms;
 // head insert
 pListRooms insertHead(pListRooms, int val);
 
+// tail insert
+pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey);
+
 class Map
 {
 private:
@@ -42,6 +45,9 @@ public:
     // returns win of the given room
     WINDOW *getRoomWindow(int key);
 
-    // creates new room in the specified door
-    void enterRoom(int prevRoomKey, door doorInfo);
+    // creates new room
+    void createRoom(struct door doorInfo);
+
+    // enters new room: makes it currentRoom
+    void enterRoom(int key);
 };
