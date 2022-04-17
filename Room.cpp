@@ -99,11 +99,8 @@ void Room::draw(int maxCols, int maxLines)
     If arguments is 0, then is showed default ACS
     */
     wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
-    // mvwhline(win, 0, 0, ACS_BLOCK, 5);
-    // mvwvline(win, 0, 0, ACS_CKBOARD, 5);
 
     // PLACING DOORS
-    const int MAXDOORS = 4;
     // now we have to draw 1-4 doors
     srand(time(0));                       // seed is 0
     int nDoors = (rand() % MAXDOORS) + 1; // random number of door from 1 to 4 for first room
@@ -197,11 +194,10 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
     If arguments is 0, then is showed default ACS
     */
     wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
-    // mvwhline(win, 0, 0, ACS_BLOCK, 5);
-    // mvwvline(win, 0, 0, ACS_CKBOARD, 5);
 
     // PLACING DOORS
-    switch (doorInfo.side) // placing previous door
+    // placing previous door; it has to be placed on the opposite side where it was in the previous room
+    switch (doorInfo.side)
     {
     case 0: // bottom side
         doorInfo.y = 0;
@@ -224,41 +220,59 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
         break;
     }
 
-    const int MAXDOORS = 4;
-    // now we have to draw 1-4 doors
+    // now we have to draw 1 to 4-1 doors (previous one is already placed)
     srand(time(0));                           // seed is 0
     int nDoors = (rand() % MAXDOORS - 1) + 1; // random number of door from 1 to 4-1 because we already have the previous one
 
-    for (int i = 0; i < nDoors; i++) // placing new door(s)
+    int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
+    for (int i = 0; i < nDoors; i++) // init array to not placed
     {
-        struct door doorInfo;
-        doorInfo.side = i;
-        switch (doorInfo.side) // match/adjust side to coords
-        {
-        case 0: // bottom side
-            doorInfo.y = roomHeigth - 1;
-            doorInfo.x = roomWidth / 2;
-            placeDoor(win, doorInfo);
-            break;
-        case 1: // left side
-            doorInfo.y = roomHeigth / 2;
-            doorInfo.x = 0;
-            placeDoor(win, doorInfo);
-            break;
-        case 2: // top side
-            doorInfo.y = 0;
-            doorInfo.x = roomWidth / 2;
-            placeDoor(win, doorInfo);
-            break;
-        case 3: // right side
-            doorInfo.y = roomHeigth / 2;
-            doorInfo.x = roomWidth - 1;
-            placeDoor(win, doorInfo);
-            break;
+        placedDoors[i] = -1;
+    }
 
-        default:
-            break;
+    int i = 0;
+    while (i < nDoors)
+    {
+        int side = rand() % 4; // picking a casual side to place the door
+        bool isOccupied = false;
+        for (int k = 0; k < nDoors; k++)
+        {
+            if (placedDoors[k] == side || doorInfo.side == side) // check if side is already occupied by other doors
+                isOccupied = true;
         }
+
+        if (isOccupied == false) // if side is free place door
+        {
+            struct door doorInfo;
+            doorInfo.side = side;
+            switch (doorInfo.side) // match/adjust side to coords
+            {
+            case 0: // bottom side
+                doorInfo.y = roomHeigth - 1;
+                doorInfo.x = roomWidth / 2;
+                placeDoor(win, doorInfo);
+                break;
+            case 1: // left side
+                doorInfo.y = roomHeigth / 2;
+                doorInfo.x = 0;
+                placeDoor(win, doorInfo);
+                break;
+            case 2: // top side
+                doorInfo.y = 0;
+                doorInfo.x = roomWidth / 2;
+                placeDoor(win, doorInfo);
+                break;
+            case 3: // right side
+                doorInfo.y = roomHeigth / 2;
+                doorInfo.x = roomWidth - 1;
+                placeDoor(win, doorInfo);
+                break;
+
+            default:
+                break;
+            }
+        }
+        i++;
     }
 }
 
