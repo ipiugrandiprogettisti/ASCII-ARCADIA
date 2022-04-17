@@ -1,3 +1,4 @@
+#include "header/utils.hpp"
 #include "header/MyString.hpp"
 
 // custom itoa, converts int to const char *
@@ -39,3 +40,6 @@ void checkColors()
         exit(1);
     }
 }
+
+//listRooms functions
+//head insert

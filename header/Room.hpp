@@ -2,13 +2,15 @@
 
 #include <ncurses.h>
 
+// if any of the values is -1 then it is not been defined yet; meaning that door does not exist on map/room
 struct door
 {
-    int y, x; // position
-    int side; /*- 0: bottom side
-                - 1: left side
-                - 2: top side
-                - 3: right side*/
+    int y = -1, x = -1;  // position
+    int side = -1;       /*- 0: bottom side
+                        - 1: left side
+                        - 2: top side
+                        - 3: right side*/
+    bool isOpen = false; // if door is closed; player can't cross it
 };
 
 // enemies list

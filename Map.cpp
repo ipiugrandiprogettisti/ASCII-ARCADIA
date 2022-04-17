@@ -18,10 +18,12 @@ Map::Map(WINDOW *win)
     rooms->currentRoom = Room(newKey());
 
     // sets all next rooms to nullptr; a pointer will be assigned to its room when one is created
+    rooms->door0 = nullptr;
     rooms->door1 = nullptr;
     rooms->door2 = nullptr;
     rooms->door3 = nullptr;
-    rooms->previousRoom = nullptr; // this is nullptr because there is no previous room in the first one
+
+    // doorInfo are already set when defined check Room.hpp for more info
 }
 
 // returns and create a new unique key
@@ -49,5 +51,21 @@ WINDOW *Map::getRoomWindow(int key)
 void Map::enterRoom(int prevRoomKey, door doorInfo)
 {
     int key = newKey();
-    rooms->door1->currentRoom = Room(key);
+
+    switch (doorInfo.side)
+    {
+    case 0: // bottom side
+        rooms->door0->currentRoom = Room(key);
+        rooms->door0->door2Info = doorInfo; // if player enters room from bottom side; previous room is located top side
+        rooms->door0->door2 = rooms;
+        break;
+    case 1: // left side
+        break;
+    case 2: // top side
+        break;
+    case 3: // right side
+        break;
+    default:
+        break;
+    }
 }

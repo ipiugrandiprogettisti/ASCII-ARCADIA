@@ -7,14 +7,12 @@
 struct listRooms
 {
     Room currentRoom;
-    listRooms *door1, *door2, *door3;
-    listRooms *previousRoom;
+    listRooms *door0, *door1, *door2, *door3;
+    struct door door0Info, door1Info, door2Info, door3Info;
 };
 
 // pointer to list of the rooms
 typedef listRooms *pListRooms;
-
-const int MAX_ROOMS = 100;
 
 class Map
 {

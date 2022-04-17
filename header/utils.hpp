@@ -4,3 +4,4 @@ const char *itoa(int num);
 
 // check if color is supported by user's terminal
 void checkColors();
+
