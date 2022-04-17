@@ -80,6 +80,37 @@ pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomI
     return list;
 }
 
+// search and return specific room. returns NULL if not found
+pListRooms getRoom(pListRooms rooms, int key)
+{
+    if (rooms == NULL)
+        return rooms;
+    else if (rooms->door0->currentRoom.getKey() == key)
+    {
+        return rooms->door0;
+    }
+    else
+    {
+        pListRooms tmp = rooms;
+        pListRooms tmpAfter = rooms->door0;
+        bool found = false;
+        while (!found && tmpAfter != NULL)
+        {
+            if (tmpAfter->currentRoom.getKey() == key)
+            {
+                tmp->door0 = tmpAfter->door0;
+                found = true;
+            }
+            else
+            {
+                tmp = tmpAfter;
+                tmpAfter = tmpAfter->door0;
+            }
+        }
+    }
+    return rooms;
+}
+
 // tail insert
 pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey)
 {
@@ -137,9 +168,5 @@ void Map::createRoom(struct door doorInfo)
 // FIXME non è piu cosi
 void Map::enterRoom(int key)
 {
-    for (int i = 0; i < 10; i++)
-    {
-        i++;
-    }
-    
+    rooms = getRoom(rooms, key);
 }

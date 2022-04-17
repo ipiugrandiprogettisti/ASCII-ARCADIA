@@ -71,6 +71,9 @@ public:
     // returns the given door (struct door) information
     struct door getDoor(int side);
 
-    // funzione bozza per disegnare una stanza
+    // funzione bozza per disegnare una stanza; prima stanza
     void draw(int maxCols, int maxLines);
+
+    // funzione bozza per disegnare una stanza; seconda + stanza
+    void draw(int maxCols, int maxLines, struct door doorInfo);
 };

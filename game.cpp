@@ -128,7 +128,15 @@ void startGame(WINDOW *myWin)
             // getDoorSide() //per printare poi la porta dal lato giusto nella nuova stanza come previous door
             // creates door0 room
             myMap.createRoom(myMap.rooms->currentRoom.getDoor(doorSide));
-            //myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey());
+            if (myMap.rooms->door0 == NULL)
+            {
+                MyString str = MyString();
+                // just debug information
+                str.append("Non esiste");
+                mvaddstr(6, 0, str.get());
+            }
+
+            // myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey());
 
             break;
         default:
