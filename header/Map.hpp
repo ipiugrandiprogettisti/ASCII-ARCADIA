@@ -14,6 +14,10 @@ struct listRooms
 // pointer to list of the rooms
 typedef listRooms *pListRooms;
 
+// listRooms functions
+// head insert
+pListRooms insertHead(pListRooms, int val);
+
 class Map
 {
 private:
