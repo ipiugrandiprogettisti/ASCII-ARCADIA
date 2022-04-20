@@ -45,6 +45,9 @@ public:
     // returns win of the given room
     WINDOW *getRoomWindow(int key);
 
+    // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
+    struct door getDoor(int key, int side);
+
     // creates new room
     void createRoom(struct door doorInfo);
 

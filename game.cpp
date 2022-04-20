@@ -108,7 +108,8 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.draw(COLS, LINES);
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
-
+    door bs;
+    MyString str = MyString();
     int doorSide = 0;
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER
@@ -127,14 +128,46 @@ void startGame(WINDOW *myWin)
             // if(personaggio è dentro la porta) then...
             // getDoorSide() //per printare poi la porta dal lato giusto nella nuova stanza come previous door
             // creates door0 room
-            myMap.createRoom(myMap.rooms->currentRoom.getDoor(doorSide));
+
+            /*myMap.createRoom(myMap.rooms->currentRoom.getDoor(doorSide));
             if (myMap.rooms->door0 == NULL)
             {
                 MyString str = MyString();
                 // just debug information
                 str.append("La stanza rooms->door0 non esiste");
                 mvaddstr(6, 0, str.get());
-            }
+            }*/
+            bs = myMap.getDoor(0, 0);
+            str.append("Bottom side: ");
+            str.append("y: ");
+            str.append(itoa(bs.y));
+            str.append(", x: ");
+            str.append(itoa(bs.x));
+            mvaddstr(0, 15, str.get());
+            str.reset();
+            bs = myMap.getDoor(0, 1);
+            str.append("Left side: ");
+            str.append("y: ");
+            str.append(itoa(bs.y));
+            str.append(", x: ");
+            str.append(itoa(bs.x));
+            mvaddstr(1, 15, str.get());
+            str.reset();
+            bs = myMap.getDoor(0, 2);
+            str.append("Top side: ");
+            str.append("y: ");
+            str.append(itoa(bs.y));
+            str.append(", x: ");
+            str.append(itoa(bs.x));
+            mvaddstr(2, 15, str.get());
+            str.reset();
+            bs = myMap.getDoor(0, 3);
+            str.append("Right side: ");
+            str.append("y: ");
+            str.append(itoa(bs.y));
+            str.append(", x: ");
+            str.append(itoa(bs.x));
+            mvaddstr(3, 15, str.get());
 
             // myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey());
 

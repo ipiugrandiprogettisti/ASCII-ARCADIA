@@ -64,6 +64,10 @@ WINDOW *Room::getWindow()
 // funzione bozza per disegnare una stanza; prima stanza
 void Room::draw(int maxCols, int maxLines)
 {
+    // if room was already drew there is no need to redraw, so function ends
+    if (drawn)
+        return;
+
     WINDOW *room;
 
     // this prints in the main window
@@ -154,11 +158,17 @@ void Room::draw(int maxCols, int maxLines)
         }
         i++;
     }
+
+    drawn = true; // we drew the room; so we set it as so
 }
 
 // funzione bozza per disegnare una stanza; seconda + stanza
 void Room::draw(int maxCols, int maxLines, struct door doorInfo)
 {
+    // if room was already drew there is no need to redraw, so function ends
+    if (drawn)
+        return;
+
     WINDOW *room;
 
     // this prints in the main window
@@ -274,15 +284,6 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
         }
         i++;
     }
-}
 
-// returns the given door (struct door) information
-struct door Room::getDoor(int side)
-{
-    struct door porta;
-    // FIXME: restituire veri parametri porta  e cambiare nome della variabile
-    porta.side = 0;
-    porta.y = 0;
-    porta.x = 0;
-    return porta;
+    drawn = true;
 }

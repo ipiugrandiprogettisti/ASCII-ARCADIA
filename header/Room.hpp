@@ -55,6 +55,7 @@ protected:
     int key; // unique
     WINDOW *win;
     objContainer objects;
+    bool drawn = false; // specifies whether room has already been drawn or not
     // this is what the room looks like; default is only bordered
     chtype look[20][70] = {{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                            {0, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 111, 0},
@@ -89,9 +90,6 @@ public:
 
     // returns the WINDOW of the room
     WINDOW *getWindow();
-
-    // returns the given door (struct door) information
-    struct door getDoor(int side);
 
     // funzione bozza per disegnare una stanza; prima stanza
     void draw(int maxCols, int maxLines);
