@@ -51,9 +51,9 @@ void placeDoor(WINDOW *win, door doorInfo);
 class Room
 {
 protected:
-    int MAXDOORS = 4;
     int key; // unique
     WINDOW *win;
+    struct door door0Info, door1Info, door2Info, door3Info; // these are the door information
     objContainer objects;
     bool drawn = false; // specifies whether room has already been drawn or not
     // this is what the room looks like; default is only bordered
@@ -79,6 +79,9 @@ protected:
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 public:
+    // FIXME const? da errore???
+    int MAXDOORS = 4;
+
     // Constructort
     Room();
 
@@ -90,6 +93,12 @@ public:
 
     // returns the WINDOW of the room
     WINDOW *getWindow();
+
+    // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
+    struct door getDoor(int side);
+
+    //set the given door information
+    void setDoor(int side, struct door doorInfo);
 
     // funzione bozza per disegnare una stanza; prima stanza
     void draw(int maxCols, int maxLines);

@@ -137,7 +137,7 @@ void startGame(WINDOW *myWin)
                 str.append("La stanza rooms->door0 non esiste");
                 mvaddstr(6, 0, str.get());
             }*/
-            bs = myMap.getDoor(0, 0);
+            bs = myMap.rooms->currentRoom.getDoor(0);
             str.append("Bottom side: ");
             str.append("y: ");
             str.append(itoa(bs.y));
@@ -145,7 +145,7 @@ void startGame(WINDOW *myWin)
             str.append(itoa(bs.x));
             mvaddstr(0, 15, str.get());
             str.reset();
-            bs = myMap.getDoor(0, 1);
+            bs = myMap.rooms->currentRoom.getDoor(1);
             str.append("Left side: ");
             str.append("y: ");
             str.append(itoa(bs.y));
@@ -153,7 +153,7 @@ void startGame(WINDOW *myWin)
             str.append(itoa(bs.x));
             mvaddstr(1, 15, str.get());
             str.reset();
-            bs = myMap.getDoor(0, 2);
+            bs = myMap.rooms->currentRoom.getDoor(2);
             str.append("Top side: ");
             str.append("y: ");
             str.append(itoa(bs.y));
@@ -161,7 +161,7 @@ void startGame(WINDOW *myWin)
             str.append(itoa(bs.x));
             mvaddstr(2, 15, str.get());
             str.reset();
-            bs = myMap.getDoor(0, 3);
+            bs = myMap.rooms->currentRoom.getDoor(3);
             str.append("Right side: ");
             str.append("y: ");
             str.append(itoa(bs.y));

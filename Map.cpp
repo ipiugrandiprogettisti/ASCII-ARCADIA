@@ -23,8 +23,6 @@ Map::Map(WINDOW *win)
     rooms->door1 = NULL;
     rooms->door2 = NULL;
     rooms->door3 = NULL;
-
-    // doorInfo are already set when defined check Room.hpp for more info
 }
 
 // returns and create a new unique key
@@ -56,8 +54,8 @@ pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomI
     {
     case 0:
         list->currentRoom = roomInfo;
-        list->door2Info = previousDoorInfo; // if player enters room from bottom side; previous room is located top side
-        list->door2 = rooms;                // if player enters room from bottom side; previous room is located top side
+        list->currentRoom.setDoor(2, previousDoorInfo); // if player enters room from bottom side; previous room is located top side
+        list->door2 = rooms;                            // if player enters room from bottom side; previous room is located top side
         break;
     case 1:
         // copia list->currentRoom=room ecc
@@ -137,31 +135,6 @@ pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey)
         list->door3 = NULL;
     }
     return rooms;
-}
-
-// returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
-struct door Map::getDoor(int key, int side)
-{
-    struct door myDoor;
-    // FIXME: cerca tra le stanze
-    switch (side)
-    {
-    case 0:
-        myDoor = rooms->door0Info;
-        break;
-    case 1:
-        myDoor = rooms->door1Info;
-        break;
-    case 2:
-        myDoor = rooms->door2Info;
-        break;
-    case 3:
-        myDoor = rooms->door3Info;
-        break;
-    default:
-        break;
-    }
-    return myDoor;
 }
 
 // creates new room

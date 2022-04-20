@@ -7,8 +7,8 @@
 struct listRooms
 {
     Room currentRoom;
-    listRooms *door0, *door1, *door2, *door3;
-    struct door door0Info, door1Info, door2Info, door3Info;
+    listRooms *door0, *door1, *door2, *door3; // these are the door pointers
+   // listRooms *doors[Room::MAXDOORS];
 };
 
 // pointer to list of the rooms
@@ -44,9 +44,6 @@ public:
 
     // returns win of the given room
     WINDOW *getRoomWindow(int key);
-
-    // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
-    struct door getDoor(int key, int side);
 
     // creates new room
     void createRoom(struct door doorInfo);

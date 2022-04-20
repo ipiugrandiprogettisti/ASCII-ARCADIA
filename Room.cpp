@@ -36,6 +36,8 @@ Room ::Room()
     objects.enemies = new listEnemies;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
     objects.enemies = NULL;   // set the amount of artifacts in the room to 0
+
+    // doorInfo are already set when defined check Room.hpp for more info
 }
 
 // Constructor
@@ -47,6 +49,8 @@ Room::Room(int key)
     objects.enemies = new listEnemies;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
     objects.enemies = NULL;   // set the amount of artifacts in the room to 0
+
+    // doorInfo are already set when defined check Room.hpp for more info
 }
 
 // returns the key of the room
@@ -59,6 +63,53 @@ int Room::getKey()
 WINDOW *Room::getWindow()
 {
     return win;
+}
+
+// returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
+struct door Room::getDoor(int side)
+{
+    struct door myDoor;
+    // FIXME: cerca tra le stanze
+    switch (side)
+    {
+    case 0:
+        myDoor = door0Info;
+        break;
+    case 1:
+        myDoor = door1Info;
+        break;
+    case 2:
+        myDoor = door2Info;
+        break;
+    case 3:
+        myDoor = door3Info;
+        break;
+    default:
+        break;
+    }
+    return myDoor;
+}
+
+// set the given door information
+void Room::setDoor(int side, struct door doorInfo)
+{
+    switch (side)
+    {
+    case 0:
+        door0Info = doorInfo;
+        break;
+    case 1:
+        door1Info = doorInfo;
+        break;
+    case 2:
+        door2Info = doorInfo;
+        break;
+    case 3:
+        door3Info = doorInfo;
+        break;
+    default:
+        break;
+    }
 }
 
 // funzione bozza per disegnare una stanza; prima stanza
@@ -135,21 +186,25 @@ void Room::draw(int maxCols, int maxLines)
                 doorInfo.y = roomHeigth - 1;
                 doorInfo.x = roomWidth / 2;
                 placeDoor(win, doorInfo);
+                setDoor(0, doorInfo);
                 break;
             case 1: // left side
                 doorInfo.y = roomHeigth / 2;
                 doorInfo.x = 0;
                 placeDoor(win, doorInfo);
+                setDoor(1, doorInfo);
                 break;
             case 2: // top side
                 doorInfo.y = 0;
                 doorInfo.x = roomWidth / 2;
                 placeDoor(win, doorInfo);
+                setDoor(2, doorInfo);
                 break;
             case 3: // right side
                 doorInfo.y = roomHeigth / 2;
                 doorInfo.x = roomWidth - 1;
                 placeDoor(win, doorInfo);
+                setDoor(3, doorInfo);
                 break;
 
             default:
@@ -261,21 +316,25 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
                 doorInfo.y = roomHeigth - 1;
                 doorInfo.x = roomWidth / 2;
                 placeDoor(win, doorInfo);
+                setDoor(0, doorInfo);
                 break;
             case 1: // left side
                 doorInfo.y = roomHeigth / 2;
                 doorInfo.x = 0;
                 placeDoor(win, doorInfo);
+                setDoor(1, doorInfo);
                 break;
             case 2: // top side
                 doorInfo.y = 0;
                 doorInfo.x = roomWidth / 2;
                 placeDoor(win, doorInfo);
+                setDoor(2, doorInfo);
                 break;
             case 3: // right side
                 doorInfo.y = roomHeigth / 2;
                 doorInfo.x = roomWidth - 1;
                 placeDoor(win, doorInfo);
+                setDoor(3, doorInfo);
                 break;
 
             default:
