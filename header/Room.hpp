@@ -51,7 +51,7 @@ void placeDoor(WINDOW *win, door doorInfo);
 class Room
 {
 protected:
-    const int MAXDOORS = 4;
+    int MAXDOORS = 4;
     int key; // unique
     WINDOW *win;
     objContainer objects;

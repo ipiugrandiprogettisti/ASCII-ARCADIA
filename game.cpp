@@ -132,7 +132,7 @@ void startGame(WINDOW *myWin)
             {
                 MyString str = MyString();
                 // just debug information
-                str.append("Non esiste");
+                str.append("La stanza rooms->door0 non esiste");
                 mvaddstr(6, 0, str.get());
             }
 
