@@ -12,9 +12,14 @@ public:
     int length = 0;
 
 public:
+    // Constructor
     MyString();
 
+    // Constructor
     MyString(char const *text);
+    
+    // Constructor
+    MyString(char ch);
 
     // append string
     void append(char const *text);

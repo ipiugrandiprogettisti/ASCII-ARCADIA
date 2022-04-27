@@ -1,5 +1,6 @@
 #include "header/MyString.hpp"
 
+// Constructor
 MyString::MyString()
 {
 
@@ -12,11 +13,21 @@ MyString::MyString()
     this->length = 0;
 }
 
+// Constructor
 MyString::MyString(char const *text)
 {
     this->length = strlen(text);
     string = new char[strlen(text) + 1];
     strcpy(string, text);
+}
+
+// Constructor
+MyString::MyString(char ch)
+{
+    this->length = 1;
+    string = new char[1 + 1];
+    string[0] = ch;
+    string[1] = '\0';
 }
 
 // append string

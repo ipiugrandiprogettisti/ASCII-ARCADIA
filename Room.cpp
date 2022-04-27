@@ -127,7 +127,8 @@ void Room::draw(int maxCols, int maxLines)
     str.append("Room key: ");
     str.append(itoa(this->key));
     mvaddstr(0, 0, str.get());
-    str.reset();
+    // str.reset();
+    str = MyString('A');
     str.append("Colonne: ");
     str.append(itoa(maxCols));
     mvaddstr(1, 0, str.get());
