@@ -72,16 +72,6 @@ const char *MyString::get()
 // Reverses string
 void MyString::reverse()
 {
-    /*char *tmpStr = new char[strlen(data)];
-    strcpy(tmpStr, data);
-    int c = 0;
-    for (int i = strlen(tmpStr) - 1; tmpStr[c] != '\0'; i--)
-    {
-        data[c] = tmpStr[i];
-        c++;
-    }
-    delete tmpStr;*/
-
     MyString tmp = data;
     int c = 0;
     for (int i = length-1; i>=0; i--)
