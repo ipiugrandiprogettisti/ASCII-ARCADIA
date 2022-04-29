@@ -121,19 +121,6 @@ void Room::draw(int maxCols, int maxLines)
 
     WINDOW *room;
 
-    // this prints in the main window
-    MyString str;
-    // just debug information
-    str += "Room key: ";
-    str += itoa(this->key);
-    mvaddstr(0, 0, str.get());
-    str = "Colonne: ";
-    str += itoa(maxCols);
-    mvaddstr(1, 0, str.get());
-    str = "Righe: ";
-    str += itoa(maxLines);
-    mvaddstr(2, 0, str.get());
-
     // this will prints in the room window, which is a smaller window in the terminal
     int roomWidth = maxCols / 1.5 + 1, roomHeigth = maxLines / 2 + 1; // room dimensions
     int halfY = maxCols / 2, halfX = maxLines / 2;
@@ -224,20 +211,7 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
 
     WINDOW *room;
 
-    // this prints in the main window
-    MyString str;
-    // just debug information
-    str += "Room key: ";
-    str += itoa(this->key);
-    mvaddstr(0, 0, str.get());
-    str = "Colonne: ";
-    str += itoa(maxCols);
-    mvaddstr(1, 0, str.get());
-    str = "Righe: ";
-    str += itoa(maxLines);
-    mvaddstr(2, 0, str.get());
-
-    // this will prints in the room window, which is a smaller window in the terminal
+      // this will prints in the room window, which is a smaller window in the terminal
     int roomWidth = maxCols / 1.5 + 1, roomHeigth = maxLines / 2 + 1; // room dimensions
     int halfY = maxCols / 2, halfX = maxLines / 2;
     int adjWidth = halfX - roomWidth / 2;            // adjusted width

@@ -108,8 +108,23 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.draw(COLS, LINES);
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
+
     door bs;
     MyString str;
+
+    // DEBUG INFO
+    // this prints in the main window
+    // just debug information
+    str += "Room key: ";
+    str += itoa(myMap.rooms->currentRoom.getKey());
+    mvaddstr(0, 0, str.get());
+    str = "Colonne: ";
+    str += itoa(COLS);
+    mvaddstr(1, 0, str.get());
+    str = "Righe: ";
+    str += itoa(LINES);
+    mvaddstr(2, 0, str.get());
+    str = "";
     int doorSide = 0;
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER
@@ -137,6 +152,8 @@ void startGame(WINDOW *myWin)
                 str+="La stanza rooms->door0 non esiste");
                 mvaddstr(6, 0, str.get());
             }*/
+
+            // DEBUGGING INFO
             bs = myMap.rooms->currentRoom.getDoor(0);
             str += "Bottom side: ";
             str += "y: ";
