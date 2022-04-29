@@ -1,11 +1,10 @@
 #include "header/utils.hpp"
-#include "header/MyString.hpp"
 
 // custom itoa, converts int to const char *
 // FIXME problema append, a volte viene stampato garbage... problemi con \0 finale DA TESTARE ANCHE QUI SE C'È PROBLEMA
-const char *itoa(int num)
+MyString itoa(int num)
 {
-    MyString str = MyString();
+    MyString str;
     bool isNeg = false;
     if (num < 0)
     {
@@ -30,7 +29,7 @@ const char *itoa(int num)
         str += '-';
 
     str.reverse();
-    return str.get();
+    return str;
 }
 
 // check if color is supported by user's terminal

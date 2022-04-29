@@ -1,6 +1,5 @@
 #include <ncurses.h>
 #include <stdlib.h>
-#include "header/MyString.hpp"
 #include "header/game.hpp"
 #include "header/utils.hpp"
 #include "header/Map.hpp"
@@ -111,20 +110,19 @@ void startGame(WINDOW *myWin)
 
     door bs;
     MyString str;
-
+    MyString string;
     // DEBUG INFO
     // this prints in the main window
     // just debug information
-    str += "Room key: ";
-    str += itoa(myMap.rooms->currentRoom.getKey());
-    mvaddstr(0, 0, str.get());
-    str = "Colonne: ";
-    str += itoa(COLS);
-    mvaddstr(1, 0, str.get());
-    str = "Righe: ";
-    str += itoa(LINES);
-    mvaddstr(2, 0, str.get());
-    str = "";
+    string += "Room key: ";
+    string += itoa(myMap.rooms->currentRoom.getKey());
+    mvaddstr(0, 0, string.get());
+    string = "Colonne: ";
+    string += itoa(COLS);
+    mvaddstr(1, 0, string.get());
+    string = "Righe: ";
+    string += itoa(LINES);
+    mvaddstr(2, 0, string.get());
     int doorSide = 0;
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER

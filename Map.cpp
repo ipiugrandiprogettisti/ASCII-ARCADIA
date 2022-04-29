@@ -1,6 +1,5 @@
 #include "header/Map.hpp"
 #include "header/utils.hpp"
-#include "header/MyString.hpp"
 
 /*
 Map::Map()

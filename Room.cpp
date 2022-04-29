@@ -1,7 +1,6 @@
 // Room class file
 
 #include "header/Room.hpp"
-#include "header/MyString.hpp"
 #include "header/utils.hpp"
 #include <ctime>
 
