@@ -14,17 +14,20 @@ const char *itoa(int num)
     }
 
     if (num == 0)
-        str.append('0');
+        // str.append('0');
+        str += '0';
 
     for (int i = 0; num > 0; i++)
     {
         char c = '0' + num % 10;
-        str.append(c);
+        // str.append(c);
+        str += c;
         num = num / 10;
     }
 
     if (isNeg)
-        str.append('-');
+        // str.append('-');
+        str += '-';
 
     str.reverse();
     return str.get();
@@ -41,5 +44,5 @@ void checkColors()
     }
 }
 
-//listRooms functions
-//head insert
+// listRooms functions
+// head insert

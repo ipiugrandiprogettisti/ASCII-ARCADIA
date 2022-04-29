@@ -3,110 +3,387 @@
 // Constructor
 MyString::MyString()
 {
-
-    /*string = new char[strlen("\0") + 1];
-    strcpy(string, "\0");
-    this->length = strlen("\0");*
-    */
-    string = new char[1];
-    string[0] = '\0';
-    this->length = 0;
+    length = 0;
+    data = new char[0];
 }
 
 // Constructor
-MyString::MyString(char const *text)
+MyString::MyString(char c)
 {
-    this->length = strlen(text);
-    string = new char[strlen(text) + 1];
-    strcpy(string, text);
+    length = 1;
+    data = new char(c);
 }
 
 // Constructor
-MyString::MyString(char ch)
+MyString::MyString(const char *c)
 {
-    this->length = 1;
-    string = new char[1 + 1];
-    string[0] = ch;
-    string[1] = '\0';
-}
-
-// append string
-void MyString::append(char const *text)
-{
-    char *oldStr = new char[strlen(string) + 1];
-
-    for (int i = 0; string[i] != '\0'; i++)
-        oldStr[i] = string[i];
-
-    length = strlen(oldStr) + strlen(text);
-    string = new char[length + 1];
-
-    for (int i = 0; oldStr[i] != '\0'; i++)
-        string[i] = oldStr[i];
-
-    int c = 0;
-    for (int i = strlen(oldStr); text[c] != '\0'; i++)
+    if (c)
     {
-        string[i] = text[c];
-        c++;
+        unsigned n = 0;
+        while (c[n] != '\0')
+            n++;
+        length = n;
+        data = new char[n];
+        for (unsigned j = 0; j < n; j++)
+            data[j] = c[j];
     }
-    string[strlen(oldStr) + strlen(text)] = '\0';
-    delete oldStr;
-}
-
-// appen char
-void MyString::append(char ch)
-{
-    char *oldStr = new char[strlen(string) + 1];
-
-    for (int i = 0; string[i] != '\0'; i++)
-        oldStr[i] = string[i];
-
-    length = strlen(oldStr) + 1;
-    string = new char[length + 1];
-
-    for (int i = 0; oldStr[i] != '\0'; i++)
-        string[i] = oldStr[i];
-
-    string[strlen(oldStr)] = ch;
-
-    string[strlen(oldStr) + 1] = '\0';
-    delete oldStr;
-}
-
-// reverse string
-void MyString::reverse()
-{
-    char *tmpStr = new char[strlen(string)];
-    strcpy(tmpStr, string);
-    int c = 0;
-    for (int i = strlen(tmpStr) - 1; tmpStr[c] != '\0'; i--)
+    else
     {
-        string[c] = tmpStr[i];
-        c++;
+        length = 0;
+        data = new char[0];
     }
 }
 
-// reset string to "\0"
-void MyString::reset()
-{ /*
-     string = new char[strlen("\0") + 1];
-     strcpy(string, "\0");
-     this->length = strlen("\0");
-     */
-    // string = new char[1];
-    string[0] = '\0';
-    this->length = 0;
+// Constructor
+MyString::MyString(const MyString &s)
+{
+    length = s.getLength();
+    data = new char[length];
+    for (unsigned j = 0; j < length; j++)
+        data[j] = s[j];
 }
 
-// returns string length, does not count '\0'
-int MyString::getLength()
+// Deconstructor
+MyString::~MyString()
+{
+    delete[] data;
+}
+
+unsigned MyString::getLength() const
 {
     return length;
 }
 
-// returns string
+// Returns first index of the first char c it founds; -1 if not found
+int MyString::getIndex(char c) const
+{
+    for (unsigned j = 0; j < length; j++)
+        if (data[j] == c)
+            return (int)j;
+    return -1;
+}
+
+// Returns current string
 const char *MyString::get()
 {
-    return string;
+    return data;
+}
+
+// Reverses string
+void MyString::reverse()
+{
+    char *tmpStr = new char[strlen(data)];
+    strcpy(tmpStr, data);
+    int c = 0;
+    for (int i = strlen(tmpStr) - 1; tmpStr[c] != '\0'; i--)
+    {
+        data[c] = tmpStr[i];
+        c++;
+    }
+    delete tmpStr;
+}
+
+// Resets string to "\0"
+void MyString::reset()
+{
+    //TODO: reset string (maybe call constructor?)
+}
+
+// Sets uppercase letters from string[first] to string[last]
+void MyString::upperCase(unsigned first, unsigned last)
+{
+    if ((first >= last) || (last > length))
+        throw 1;
+
+    for (unsigned j = first; j < last; j++)
+        if ('a' <= data[j] && data[j] <= 'z')
+            data[j] -= ('a' - 'A');
+}
+
+// Sets lowercase letters from string[first] to string[last]
+void MyString::lowerCase(unsigned first, unsigned last)
+{
+    if ((first >= last) || (last > length))
+        throw 1;
+
+    for (unsigned j = first; j < last; j++)
+        if ('A' <= data[j] && data[j] <= 'Z')
+            data[j] += ('a' - 'A');
+}
+
+// Returns string[index]. throws 1 if index > length
+char MyString::operator[](unsigned index) const
+{
+    if (index >= length)
+        throw 1;
+    return data[index];
+}
+
+// Returns string[index]. throws 1 if index > length
+char &MyString::operator[](unsigned index)
+{
+    if (index >= length)
+        throw 1;
+    return data[index];
+}
+
+// Sets string = "something"
+MyString &MyString::operator=(const MyString &string)
+{
+    if (this == &string)
+        return *this;
+
+    delete data;
+    length = string.getLength();
+    data = new char[length];
+    for (unsigned j = 0; j < length; j++)
+        data[j] = string[j];
+    return *this;
+}
+
+// Appends string to string. string = "HellO "; string += "world"
+MyString &MyString::operator+=(const MyString &string)
+{
+    unsigned len = length + string.getLength();
+    char *str = new char[len];
+
+    for (unsigned j = 0; j < length; j++)
+        str[j] = data[j];
+
+    for (unsigned i = 0; i < string.getLength(); i++)
+        str[length + i] = string[i];
+
+    delete data;
+    length = len;
+    data = str;
+    return *this;
+}
+
+MyString operator+(const MyString &lhs, const MyString &rhs)
+{
+    return MyString(lhs) += rhs;
+}
+
+// Concatenates lhs string with rhs string
+MyString operator+(const MyString &lhs, char rhs)
+{
+    return MyString(lhs) += MyString(rhs);
+}
+
+// Concatenates lhs string with rhs string
+MyString operator+(const MyString &lhs, const char *rhs)
+{
+    return MyString(lhs) += MyString(rhs);
+}
+
+// Concatenates lhs string with rhs string
+MyString operator+(char lhs, const MyString &rhs)
+{
+    return MyString(lhs) += rhs;
+}
+// Concatenates lhs string with rhs string
+MyString operator+(const char *lhs, const MyString &rhs)
+{
+    return MyString(lhs) += rhs;
+}
+
+// Returns (bool) lhs == rhs
+bool operator==(const MyString &lhs, const MyString &rhs)
+{
+    if (lhs.getLength() != rhs.getLength())
+        return false;
+
+    unsigned cap = lhs.getLength();
+    unsigned n = 0;
+    while ((n < cap) && (lhs[n] == rhs[n]))
+        n++;
+    return (n == cap);
+}
+
+// Returns (bool) lhs == rhs
+bool operator==(const MyString &lhs, char rhs)
+{
+    return (lhs == MyString(rhs));
+}
+
+// Returns (bool) lhs == rhs
+bool operator==(const MyString &lhs, const char *rhs)
+{
+    return (lhs == MyString(rhs));
+}
+
+// Returns (bool) lhs == rhs
+bool operator==(char lhs, const MyString &rhs)
+{
+    return (MyString(lhs) == rhs);
+}
+
+// Returns (bool) lhs == rhs
+bool operator==(const char *lhs, const MyString &rhs)
+{
+    return (MyString(lhs) == rhs);
+}
+// Returns (bool) lhs != rhs
+bool operator!=(const MyString &lhs, const MyString &rhs)
+{
+    return !(lhs == rhs);
+}
+
+// Returns (bool) lhs != rhs
+bool operator!=(const MyString &lhs, char rhs)
+{
+    return !(lhs == rhs);
+}
+
+// Returns (bool) lhs != rhs
+bool operator!=(const MyString &lhs, const char *rhs)
+{
+    return !(lhs == rhs);
+}
+
+// Returns (bool) lhs != rhs
+bool operator!=(char lhs, const MyString &rhs)
+{
+    return !(lhs == rhs);
+}
+
+// Returns (bool) lhs != rhs
+bool operator!=(const char *lhs, const MyString &rhs)
+{
+    return !(lhs == rhs);
+}
+
+// Returns (bool) lhs > rhs
+bool operator>(const MyString &lhs, const MyString &rhs)
+{
+    unsigned cap = (lhs.getLength() < rhs.getLength()) ? lhs.getLength() : rhs.getLength();
+    unsigned n = 0;
+    while ((n < cap) && (lhs[n] == rhs[n]))
+        n++;
+    if (n == cap)
+        return (lhs.getLength() > rhs.getLength());
+
+    if ((('A' <= lhs[n] && lhs[n] <= 'Z') || ('a' <= lhs[n] && lhs[n] <= 'z')) &&
+        (('A' <= rhs[n] && rhs[n] <= 'Z') || ('a' <= rhs[n] && rhs[n] <= 'z')))
+    {
+        char A = (lhs[n] & ~32);
+        char B = (rhs[n] & ~32);
+        if (A != B)
+            return (A > B);
+    }
+    return lhs[n] > rhs[n];
+}
+
+// Returns (bool) lhs > rhs
+bool operator>(const MyString &lhs, char rhs)
+{
+    return (lhs > MyString(rhs));
+}
+
+// Returns (bool) lhs > rhs
+bool operator>(const MyString &lhs, const char *rhs)
+{
+    return (lhs > MyString(rhs));
+}
+
+// Returns (bool) lhs > rhs
+bool operator>(char lhs, const MyString &rhs)
+{
+    return (MyString(lhs) > rhs);
+}
+
+// Returns (bool) lhs > rhs
+bool operator>(const char *lhs, const MyString &rhs)
+{
+    return (MyString(lhs) > rhs);
+}
+
+// Returns (bool) lhs < rhs
+bool operator<(const MyString &lhs, const MyString &rhs)
+{
+    return !(lhs == rhs) && !(lhs > rhs);
+}
+
+// Returns (bool) lhs < rhs
+bool operator<(const MyString &lhs, char rhs)
+{
+    return !(lhs == rhs) && !(lhs > rhs);
+}
+
+// Returns (bool) lhs < rhs
+bool operator<(const MyString &lhs, const char *rhs)
+{
+    return !(lhs == rhs) && !(lhs > rhs);
+}
+
+// Returns (bool) lhs < rhs
+bool operator<(char lhs, const MyString &rhs)
+{
+    return !(lhs == rhs) && !(lhs > rhs);
+}
+
+// Returns (bool) lhs < rhs
+bool operator<(const char *lhs, const MyString &rhs)
+{
+    return !(lhs == rhs) && !(lhs > rhs);
+}
+
+// Returns (bool) lhs >= rhs
+bool operator>=(const MyString &lhs, const MyString &rhs)
+{
+    return (lhs == rhs) || (lhs > rhs);
+}
+
+// Returns (bool) lhs >= rhs
+bool operator>=(const MyString &lhs, char rhs)
+{
+    return (lhs == rhs) || (lhs > rhs);
+}
+
+// Returns (bool) lhs >= rhs
+bool operator>=(const MyString &lhs, const char *rhs)
+{
+    return (lhs == rhs) || (lhs > rhs);
+}
+
+// Returns (bool) lhs >= rhs
+bool operator>=(char lhs, const MyString &rhs)
+{
+    return (lhs == rhs) || (lhs > rhs);
+}
+
+// Returns (bool) lhs >= rhs
+bool operator>=(const char *lhs, const MyString &rhs)
+{
+    return (lhs == rhs) || (lhs > rhs);
+}
+
+// Returns (bool) lhs <= rhs
+bool operator<=(const MyString &lhs, const MyString &rhs)
+{
+    return !(lhs > rhs);
+}
+
+// Returns (bool) lhs <= rhs
+bool operator<=(const MyString &lhs, char rhs)
+{
+    return !(lhs > rhs);
+}
+
+// Returns (bool) lhs <= rhs
+bool operator<=(const MyString &lhs, const char *rhs)
+{
+    return !(lhs > rhs);
+}
+
+// Returns (bool) lhs <= rhs
+bool operator<=(char lhs, const MyString &rhs)
+{
+    return !(lhs > rhs);
+}
+
+// Returns (bool) lhs <= rhs
+bool operator<=(const char *lhs, const MyString &rhs)
+{
+    return !(lhs > rhs);
 }

@@ -109,7 +109,7 @@ void startGame(WINDOW *myWin)
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
     door bs;
-    MyString str = MyString();
+    MyString str;
     int doorSide = 0;
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER
@@ -134,39 +134,39 @@ void startGame(WINDOW *myWin)
             {
                 MyString str = MyString();
                 // just debug information
-                str.append("La stanza rooms->door0 non esiste");
+                str+="La stanza rooms->door0 non esiste");
                 mvaddstr(6, 0, str.get());
             }*/
             bs = myMap.rooms->currentRoom.getDoor(0);
-            str.append("Bottom side: ");
-            str.append("y: ");
-            str.append(itoa(bs.y));
-            str.append(", x: ");
-            str.append(itoa(bs.x));
+            str += "Bottom side: ";
+            str += "y: ";
+            str += itoa(bs.y);
+            str += ", x: ";
+            str += itoa(bs.x);
             mvaddstr(0, 15, str.get());
             str.reset();
             bs = myMap.rooms->currentRoom.getDoor(1);
-            str.append("Left side: ");
-            str.append("y: ");
-            str.append(itoa(bs.y));
-            str.append(", x: ");
-            str.append(itoa(bs.x));
+            str += "Left side: ";
+            str += "y: ";
+            str += itoa(bs.y);
+            str += ", x: ";
+            str += itoa(bs.x);
             mvaddstr(1, 15, str.get());
             str.reset();
             bs = myMap.rooms->currentRoom.getDoor(2);
-            str.append("Top side: ");
-            str.append("y: ");
-            str.append(itoa(bs.y));
-            str.append(", x: ");
-            str.append(itoa(bs.x));
+            str += "Top side: ";
+            str += "y: ";
+            str += itoa(bs.y);
+            str += ", x: ";
+            str += itoa(bs.x);
             mvaddstr(2, 15, str.get());
             str.reset();
             bs = myMap.rooms->currentRoom.getDoor(3);
-            str.append("Right side: ");
-            str.append("y: ");
-            str.append(itoa(bs.y));
-            str.append(", x: ");
-            str.append(itoa(bs.x));
+            str += "Right side: ";
+            str += "y: ";
+            str += itoa(bs.y);
+            str += ", x: ";
+            str += itoa(bs.x);
             mvaddstr(3, 15, str.get());
 
             // myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey());

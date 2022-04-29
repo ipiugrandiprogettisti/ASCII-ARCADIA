@@ -122,19 +122,16 @@ void Room::draw(int maxCols, int maxLines)
     WINDOW *room;
 
     // this prints in the main window
-    MyString str = MyString();
+    MyString str;
     // just debug information
-    str.append("Room key: ");
-    str.append(itoa(this->key));
+    str += "Room key: ";
+    str += itoa(this->key);
     mvaddstr(0, 0, str.get());
-    // str.reset();
-    str = MyString('A');
-    str.append("Colonne: ");
-    str.append(itoa(maxCols));
+    str = "Colonne: ";
+    str += itoa(maxCols);
     mvaddstr(1, 0, str.get());
-    str.reset();
-    str.append("Righe: ");
-    str.append(itoa(maxLines));
+    str = "Righe: ";
+    str += itoa(maxLines);
     mvaddstr(2, 0, str.get());
 
     // this will prints in the room window, which is a smaller window in the terminal
@@ -228,18 +225,16 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
     WINDOW *room;
 
     // this prints in the main window
-    MyString str = MyString();
+    MyString str;
     // just debug information
-    str.append("Room key: ");
-    str.append(itoa(this->key));
+    str += "Room key: ";
+    str += itoa(this->key);
     mvaddstr(0, 0, str.get());
-    str.reset();
-    str.append("Colonne: ");
-    str.append(itoa(maxCols));
+    str = "Colonne: ";
+    str += itoa(maxCols);
     mvaddstr(1, 0, str.get());
-    str.reset();
-    str.append("Righe: ");
-    str.append(itoa(maxLines));
+    str = "Righe: ";
+    str += itoa(maxLines);
     mvaddstr(2, 0, str.get());
 
     // this will prints in the room window, which is a smaller window in the terminal
