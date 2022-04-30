@@ -1,6 +1,7 @@
 // Room class file
-
 #include <ncurses.h>
+
+const int MAXDOORS = 4;
 
 // if any of the values is -1 then it is not been defined yet; meaning that door does not exist on map/room
 struct door
@@ -53,7 +54,7 @@ class Room
 protected:
     int key; // unique
     WINDOW *win;
-    struct door door0Info, door1Info, door2Info, door3Info; // these are the door information
+    struct door doorInfo[MAXDOORS]; // these are the door information
     objContainer objects;
     bool drawn = false; // specifies whether room has already been drawn or not
     // this is what the room looks like; default is only bordered
@@ -79,9 +80,6 @@ protected:
                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
 public:
-    // FIXME const? da errore???
-    int MAXDOORS = 4;
-
     // Constructort
     Room();
 
@@ -97,7 +95,7 @@ public:
     // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
     struct door getDoor(int side);
 
-    //set the given door information
+    // set the given door information
     void setDoor(int side, struct door doorInfo);
 
     // funzione bozza per disegnare una stanza; prima stanza

@@ -30,26 +30,26 @@ void placeDoor(WINDOW *win, door doorInfo)
 Room ::Room()
 {
     int key = -1;  // a room is always created with a given key. if no set it to -1 (error)
-    win = nullptr; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    win = NULL; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
     objects.enemies = NULL;   // set the amount of artifacts in the room to 0
 
-    // doorInfo are already set when defined check Room.hpp for more info
+    // doorInfo are already set when defined, check Room.hpp for more info
 }
 
 // Constructor
 Room::Room(int key)
 {
     this->key = key;     // unique
-    this->win = nullptr; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    this->win = NULL; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
     objects.enemies = NULL;   // set the amount of artifacts in the room to 0
 
-    // doorInfo are already set when defined check Room.hpp for more info
+    // doorInfo are already set when defined, check Room.hpp for more info
 }
 
 // returns the key of the room
@@ -69,19 +69,20 @@ struct door Room::getDoor(int side)
 {
     struct door myDoor;
     // FIXME: cerca tra le stanze
+  
     switch (side)
     {
     case 0:
-        myDoor = door0Info;
+        myDoor = doorInfo[0];
         break;
     case 1:
-        myDoor = door1Info;
+        myDoor = doorInfo[1];
         break;
     case 2:
-        myDoor = door2Info;
+        myDoor = doorInfo[2];
         break;
     case 3:
-        myDoor = door3Info;
+        myDoor = doorInfo[3];
         break;
     default:
         break;
@@ -90,21 +91,21 @@ struct door Room::getDoor(int side)
 }
 
 // set the given door information
-void Room::setDoor(int side, struct door doorInfo)
+void Room::setDoor(int side, struct door myDoor)
 {
     switch (side)
     {
     case 0:
-        door0Info = doorInfo;
+        doorInfo[0] = myDoor;
         break;
     case 1:
-        door1Info = doorInfo;
+         doorInfo[1] = myDoor;
         break;
     case 2:
-        door2Info = doorInfo;
+         doorInfo[2] = myDoor;
         break;
     case 3:
-        door3Info = doorInfo;
+         doorInfo[3] = myDoor;
         break;
     default:
         break;
@@ -162,33 +163,33 @@ void Room::draw(int maxCols, int maxLines)
 
         if (isOccupied == false) // if side is free place door
         {
-            struct door doorInfo;
-            doorInfo.side = side;
-            switch (doorInfo.side) // match/adjust side to coords
+            struct door myDoorTmp;
+            myDoorTmp.side = side;
+            switch (myDoorTmp.side) // match/adjust side to coords
             {
             case 0: // bottom side
-                doorInfo.y = roomHeigth - 1;
-                doorInfo.x = roomWidth / 2;
-                placeDoor(win, doorInfo);
-                setDoor(0, doorInfo);
+                myDoorTmp.y = roomHeigth - 1;
+                myDoorTmp.x = roomWidth / 2;
+                placeDoor(win, myDoorTmp);
+                setDoor(0, myDoorTmp);
                 break;
             case 1: // left side
-                doorInfo.y = roomHeigth / 2;
-                doorInfo.x = 0;
-                placeDoor(win, doorInfo);
-                setDoor(1, doorInfo);
+                myDoorTmp.y = roomHeigth / 2;
+                myDoorTmp.x = 0;
+                placeDoor(win, myDoorTmp);
+                setDoor(1, myDoorTmp);
                 break;
             case 2: // top side
-                doorInfo.y = 0;
-                doorInfo.x = roomWidth / 2;
-                placeDoor(win, doorInfo);
-                setDoor(2, doorInfo);
+                myDoorTmp.y = 0;
+                myDoorTmp.x = roomWidth / 2;
+                placeDoor(win, myDoorTmp);
+                setDoor(2, myDoorTmp);
                 break;
             case 3: // right side
-                doorInfo.y = roomHeigth / 2;
-                doorInfo.x = roomWidth - 1;
-                placeDoor(win, doorInfo);
-                setDoor(3, doorInfo);
+                myDoorTmp.y = roomHeigth / 2;
+                myDoorTmp.x = roomWidth - 1;
+                placeDoor(win, myDoorTmp);
+                setDoor(3, myDoorTmp);
                 break;
 
             default:
@@ -202,7 +203,7 @@ void Room::draw(int maxCols, int maxLines)
 }
 
 // funzione bozza per disegnare una stanza; seconda + stanza
-void Room::draw(int maxCols, int maxLines, struct door doorInfo)
+void Room::draw(int maxCols, int maxLines, struct door myDoor)
 {
     // if room was already drew there is no need to redraw, so function ends
     if (drawn)
@@ -210,7 +211,7 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
 
     WINDOW *room;
 
-      // this will prints in the room window, which is a smaller window in the terminal
+    // this will prints in the room window, which is a smaller window in the terminal
     int roomWidth = maxCols / 1.5 + 1, roomHeigth = maxLines / 2 + 1; // room dimensions
     int halfY = maxCols / 2, halfX = maxLines / 2;
     int adjWidth = halfX - roomWidth / 2;            // adjusted width
@@ -231,23 +232,23 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
 
     // PLACING DOORS
     // placing previous door; it has to be placed on the opposite side where it was in the previous room
-    switch (doorInfo.side)
+    switch (myDoor.side)
     {
     case 0: // bottom side
-        doorInfo.y = 0;
-        placeDoor(win, doorInfo);
+        myDoor.y = 0;
+        placeDoor(win, myDoor);
         break;
     case 1: // left side
-        doorInfo.x = 0;
-        placeDoor(win, doorInfo);
+        myDoor.x = 0;
+        placeDoor(win, myDoor);
         break;
     case 2: // top side
-        doorInfo.y = roomHeigth - 1;
-        placeDoor(win, doorInfo);
+        myDoor.y = roomHeigth - 1;
+        placeDoor(win, myDoor);
         break;
     case 3: // right side
-        doorInfo.x = roomWidth - 1;
-        placeDoor(win, doorInfo);
+        myDoor.x = roomWidth - 1;
+        placeDoor(win, myDoor);
         break;
 
     default:
@@ -271,39 +272,39 @@ void Room::draw(int maxCols, int maxLines, struct door doorInfo)
         bool isOccupied = false;
         for (int k = 0; k < nDoors; k++)
         {
-            if (placedDoors[k] == side || doorInfo.side == side) // check if side is already occupied by other doors
+            if (placedDoors[k] == side || myDoor.side == side) // check if side is already occupied by other doors
                 isOccupied = true;
         }
 
         if (isOccupied == false) // if side is free place door
         {
-            struct door doorInfo;
-            doorInfo.side = side;
-            switch (doorInfo.side) // match/adjust side to coords
+            struct door myDoorTmp;
+            myDoorTmp.side = side;
+            switch (myDoorTmp.side) // match/adjust side to coords
             {
             case 0: // bottom side
-                doorInfo.y = roomHeigth - 1;
-                doorInfo.x = roomWidth / 2;
-                placeDoor(win, doorInfo);
-                setDoor(0, doorInfo);
+                myDoorTmp.y = roomHeigth - 1;
+                myDoorTmp.x = roomWidth / 2;
+                placeDoor(win, myDoorTmp);
+                setDoor(0, myDoorTmp);
                 break;
             case 1: // left side
-                doorInfo.y = roomHeigth / 2;
-                doorInfo.x = 0;
-                placeDoor(win, doorInfo);
-                setDoor(1, doorInfo);
+                myDoorTmp.y = roomHeigth / 2;
+                myDoorTmp.x = 0;
+                placeDoor(win, myDoorTmp);
+                setDoor(1, myDoorTmp);
                 break;
             case 2: // top side
-                doorInfo.y = 0;
-                doorInfo.x = roomWidth / 2;
-                placeDoor(win, doorInfo);
-                setDoor(2, doorInfo);
+                myDoorTmp.y = 0;
+                myDoorTmp.x = roomWidth / 2;
+                placeDoor(win, myDoorTmp);
+                setDoor(2, myDoorTmp);
                 break;
             case 3: // right side
-                doorInfo.y = roomHeigth / 2;
-                doorInfo.x = roomWidth - 1;
-                placeDoor(win, doorInfo);
-                setDoor(3, doorInfo);
+                myDoorTmp.y = roomHeigth / 2;
+                myDoorTmp.x = roomWidth - 1;
+                placeDoor(win, myDoorTmp);
+                setDoor(3, myDoorTmp);
                 break;
 
             default:

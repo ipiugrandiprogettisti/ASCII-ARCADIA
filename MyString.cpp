@@ -81,7 +81,7 @@ void MyString::reverse()
     }
 }
 
-// Resets string to "\0"
+// Resets string
 void MyString::reset()
 {
     length = 0;

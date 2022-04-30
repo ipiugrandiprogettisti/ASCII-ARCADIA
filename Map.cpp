@@ -16,12 +16,9 @@ Map::Map(WINDOW *win)
     rooms = new listRooms;
     rooms->currentRoom = Room(newKey());
 
-    // sets all next rooms to nullptr; a pointer will be assigned to its room when one is created
-    // FIXME: nella funzione tailInsert di listRooms ho usato NULL per le stanze vuote non nullptr
-    rooms->door0 = NULL;
-    rooms->door1 = NULL;
-    rooms->door2 = NULL;
-    rooms->door3 = NULL;
+    // sets all next rooms to NULL; a pointer will be assigned to its room when one is created
+    for (int i = 0; i < MAXDOORS; i++)
+        rooms->door[i] = NULL;
 }
 
 // returns and create a new unique key
@@ -54,19 +51,19 @@ pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomI
     case 0:
         list->currentRoom = roomInfo;
         list->currentRoom.setDoor(2, previousDoorInfo); // if player enters room from bottom side; previous room is located top side
-        list->door2 = rooms;                            // if player enters room from bottom side; previous room is located top side
+        list->door[2] = rooms;                            // if player enters room from bottom side; previous room is located top side
         break;
     case 1:
         // copia list->currentRoom=room ecc
-        list->door1 = rooms;
+        //list->door1 = rooms;
         break;
     case 2:
         // copia list->currentRoom=room ecc
-        list->door2 = rooms;
+        // list->door2 = rooms;
         break;
     case 3:
         // copia list->currentRoom=room ecc
-        list->door3 = rooms;
+        // list->door3 = rooms;
         break;
 
     default:
@@ -82,26 +79,26 @@ pListRooms getRoom(pListRooms rooms, int key)
 {
     if (rooms == NULL)
         return rooms;
-    else if (rooms->door0->currentRoom.getKey() == key)
+    else if (rooms->door[0]->currentRoom.getKey() == key)
     {
-        return rooms->door0;
+        return rooms->door[0];
     }
     else
     {
         pListRooms tmp = rooms;
-        pListRooms tmpAfter = rooms->door0;
+        pListRooms tmpAfter = rooms->door[0];
         bool found = false;
         while (!found && tmpAfter != NULL)
         {
             if (tmpAfter->currentRoom.getKey() == key)
             {
-                tmp->door0 = tmpAfter->door0;
+                tmp->door[0] = tmpAfter->door[0];
                 found = true;
             }
             else
             {
                 tmp = tmpAfter;
-                tmpAfter = tmpAfter->door0;
+                tmpAfter = tmpAfter->door[0];
             }
         }
     }
@@ -116,22 +113,18 @@ pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey)
     {
         rooms = new listRooms;
         rooms->currentRoom = Room(newRoomKey);
-        rooms->door0 = NULL;
-        rooms->door1 = NULL;
-        rooms->door2 = NULL;
-        rooms->door3 = NULL;
+        for (int i = 0; i < MAXDOORS; i++)
+            rooms->door[i] = NULL;
     }
     else
     {
-        for (list = rooms; list->door0 != NULL; list = list->door0)
+        for (list = rooms; list->door[0] != NULL; list = list->door[0])
         {
         }
         list = new listRooms;
         list->currentRoom = Room(newRoomKey);
-        list->door0 = NULL;
-        list->door1 = NULL;
-        list->door2 = NULL;
-        list->door3 = NULL;
+        for (int i = 0; i < MAXDOORS; i++)
+            rooms->door[i] = NULL;
     }
     return rooms;
 }

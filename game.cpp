@@ -4,6 +4,58 @@
 #include "header/utils.hpp"
 #include "header/Map.hpp"
 
+// debug info at top screen printing the room key, cols and lines
+void debugRoom(Map myMap)
+{
+    MyString string;
+    string += "Room key: ";
+    string += itoa(myMap.rooms->currentRoom.getKey());
+    mvaddstr(0, 0, string.get());
+    string = "Colonne: ";
+    string += itoa(COLS);
+    mvaddstr(1, 0, string.get());
+    string = "Righe: ";
+    string += itoa(LINES);
+    mvaddstr(2, 0, string.get());
+}
+// debug info at top screen printing the coords of the doors
+void debugDoors(Map myMap)
+{
+    MyString str;
+    door bs = myMap.rooms->currentRoom.getDoor(0);
+    str += "Bottom side: ";
+    str += "y: ";
+    str += itoa(bs.y);
+    str += ", x: ";
+    str += itoa(bs.x);
+    mvaddstr(0, 15, str.get());
+    str.reset();
+    bs = myMap.rooms->currentRoom.getDoor(1);
+    str += "Left side: ";
+    str += "y: ";
+    str += itoa(bs.y);
+    str += ", x: ";
+    str += itoa(bs.x);
+    mvaddstr(1, 15, str.get());
+    str.reset();
+    bs = myMap.rooms->currentRoom.getDoor(2);
+    str += "Top side: ";
+    str += "y: ";
+    str += itoa(bs.y);
+    str += ", x: ";
+    str += itoa(bs.x);
+    mvaddstr(2, 15, str.get());
+    str.reset();
+    bs = myMap.rooms->currentRoom.getDoor(3);
+    str += "Right side: ";
+    str += "y: ";
+    str += itoa(bs.y);
+    str += ", x: ";
+    str += itoa(bs.x);
+    mvaddstr(3, 15, str.get());
+    str.reset();
+}
+
 // print main menu, sel is selected item to highlight
 void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
 {
@@ -96,6 +148,25 @@ int getMenu(WINDOW *myWin)
     return selectedItem;
 }
 
+// Create the rooms for the n doors that are on the screen
+void createRooms(Map myMap)
+{
+    endwin();
+    std::cout << "Debugging\n";
+    for (int i = 0; i < MAXDOORS; i++)
+    {
+        door myDoors = myMap.rooms->currentRoom.getDoor(i);
+        if (myDoors.x >= 0 && myDoors.y >= 0) // if door exists creates room
+        {
+
+            myMap.rooms->door[i] = new listRooms;
+            myMap.rooms->door[i]->currentRoom = Room(myMap.newKey());
+            for (int i = 0; i < MAXDOORS; i++) // sets to NULL the doors of the new room
+                myMap.rooms->door[i] = NULL;
+        }
+    }
+}
+
 // starts the game
 void startGame(WINDOW *myWin)
 {
@@ -108,22 +179,11 @@ void startGame(WINDOW *myWin)
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
-    door bs;
-    MyString str;
-    MyString string;
     // DEBUG INFO
-    // this prints in the main window
-    // just debug information
-    string += "Room key: ";
-    string += itoa(myMap.rooms->currentRoom.getKey());
-    mvaddstr(0, 0, string.get());
-    string = "Colonne: ";
-    string += itoa(COLS);
-    mvaddstr(1, 0, string.get());
-    string = "Righe: ";
-    string += itoa(LINES);
-    mvaddstr(2, 0, string.get());
+    debugRoom(myMap);
+
     int doorSide = 0;
+    MyString str;
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
@@ -151,41 +211,15 @@ void startGame(WINDOW *myWin)
                 mvaddstr(6, 0, str.get());
             }*/
 
-            // DEBUGGING INFO
-            bs = myMap.rooms->currentRoom.getDoor(0);
-            str += "Bottom side: ";
-            str += "y: ";
-            str += itoa(bs.y);
-            str += ", x: ";
-            str += itoa(bs.x);
-            mvaddstr(0, 15, str.get());
-            str.reset();
-            bs = myMap.rooms->currentRoom.getDoor(1);
-            str += "Left side: ";
-            str += "y: ";
-            str += itoa(bs.y);
-            str += ", x: ";
-            str += itoa(bs.x);
-            mvaddstr(1, 15, str.get());
-            str.reset();
-            bs = myMap.rooms->currentRoom.getDoor(2);
-            str += "Top side: ";
-            str += "y: ";
-            str += itoa(bs.y);
-            str += ", x: ";
-            str += itoa(bs.x);
-            mvaddstr(2, 15, str.get());
-            str.reset();
-            bs = myMap.rooms->currentRoom.getDoor(3);
-            str += "Right side: ";
-            str += "y: ";
-            str += itoa(bs.y);
-            str += ", x: ";
-            str += itoa(bs.x);
-            mvaddstr(3, 15, str.get());
-
             // myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey());
-
+            createRooms(myMap);
+            str = "Door 0 room key: ";
+            // str += itoa(myMap.rooms->door[0]->currentRoom.getKey());
+            mvaddstr(3, 15, str.get());
+            break;
+        case 'd':
+            // DEBUGGING INFO
+            debugDoors(myMap);
             break;
         default:
             break;
