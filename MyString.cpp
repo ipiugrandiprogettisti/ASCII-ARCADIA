@@ -74,7 +74,7 @@ void MyString::reverse()
 {
     MyString tmp = data;
     int c = 0;
-    for (int i = length-1; i>=0; i--)
+    for (int i = length - 1; i >= 0; i--)
     {
         data[c] = tmp[i];
         c++;
@@ -84,7 +84,8 @@ void MyString::reverse()
 // Resets string to "\0"
 void MyString::reset()
 {
-    // TODO: reset string (maybe call constructor?)
+    length = 0;
+    data = new char[0];
 }
 
 // Sets uppercase letters from string[first] to string[last]
