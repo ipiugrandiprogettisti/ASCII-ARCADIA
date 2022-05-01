@@ -92,6 +92,9 @@ public:
     // returns the WINDOW of the room
     WINDOW *getWindow();
 
+    // returns the object list of the room
+    objContainer getObjectList();
+
     // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
     struct door getDoor(int side);
 
@@ -99,8 +102,8 @@ public:
     void setDoor(int side, struct door doorInfo);
 
     // funzione bozza per disegnare una stanza; prima stanza
-    void draw(int maxCols, int maxLines);
+    bool draw(int maxCols, int maxLines);
 
     // funzione bozza per disegnare una stanza; seconda + stanza
-    void draw(int maxCols, int maxLines, struct door doorInfo);
+    bool draw(int maxCols, int maxLines, struct door doorInfo);
 };

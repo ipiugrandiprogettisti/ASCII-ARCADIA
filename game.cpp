@@ -148,25 +148,6 @@ int getMenu(WINDOW *myWin)
     return selectedItem;
 }
 
-// Create the rooms for the n doors that are on the screen
-void createRooms(Map myMap)
-{
-    endwin();
-    std::cout << "Debugging\n";
-    for (int i = 0; i < MAXDOORS; i++)
-    {
-        door myDoors = myMap.rooms->currentRoom.getDoor(i);
-        if (myDoors.x >= 0 && myDoors.y >= 0) // if door exists creates room
-        {
-
-            myMap.rooms->door[i] = new listRooms;
-            myMap.rooms->door[i]->currentRoom = Room(myMap.newKey());
-            for (int i = 0; i < MAXDOORS; i++) // sets to NULL the doors of the new room
-                myMap.rooms->door[i] = NULL;
-        }
-    }
-}
-
 // starts the game
 void startGame(WINDOW *myWin)
 {
@@ -181,9 +162,11 @@ void startGame(WINDOW *myWin)
 
     // DEBUG INFO
     debugRoom(myMap);
+    myMap.createRooms();
 
     int doorSide = 0;
     MyString str;
+    door tmp;
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
@@ -193,9 +176,13 @@ void startGame(WINDOW *myWin)
         case KEY_RIGHT:
             // mvaddstr(4, 0, "Freccia destra"); //just debug info
             // myMap.rooms.
-            myMap.rooms->currentRoom.draw(COLS, LINES);
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
+            if (myMap.rooms->currentRoom.draw(COLS, LINES))
+            {
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }
+            else
+                mvaddstr(0, 56, "Stanza già disegnata");
             break;
         case KEY_LEFT:
             // if(personaggio è dentro la porta) then...
@@ -212,14 +199,28 @@ void startGame(WINDOW *myWin)
             }*/
 
             // myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey());
-            createRooms(myMap);
             str = "Door 0 room key: ";
             // str += itoa(myMap.rooms->door[0]->currentRoom.getKey());
-            mvaddstr(3, 15, str.get());
+            // tmp = myMap.rooms->door[0]->currentRoom.getDoor(0);
+            str += itoa(myMap.getKeyByDoor(1));
+            mvaddstr(4, 0, str.get());
             break;
         case 'd':
             // DEBUGGING INFO
             debugDoors(myMap);
+            break;
+        case '1':
+            myMap.enterRoom(0);
+            myMap.createRooms();
+            break;
+        case '2':
+            myMap.enterRoom(1);
+            break;
+        case '3':
+            myMap.enterRoom(2);
+            break;
+        case '4':
+            myMap.enterRoom(3);
             break;
         default:
             break;

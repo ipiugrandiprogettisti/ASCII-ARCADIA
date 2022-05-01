@@ -29,8 +29,8 @@ void placeDoor(WINDOW *win, door doorInfo)
 // Constructor
 Room ::Room()
 {
-    int key = -1;  // a room is always created with a given key. if no set it to -1 (error)
-    win = NULL; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    int key = -1; // a room is always created with a given key. if no set it to -1 (error)
+    win = NULL;   // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
@@ -42,7 +42,7 @@ Room ::Room()
 // Constructor
 Room::Room(int key)
 {
-    this->key = key;     // unique
+    this->key = key;  // unique
     this->win = NULL; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
@@ -64,12 +64,18 @@ WINDOW *Room::getWindow()
     return win;
 }
 
+// returns the object list of the room
+struct objContainer Room::getObjectList()
+{
+    return objects;
+}
+
 // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
 struct door Room::getDoor(int side)
 {
     struct door myDoor;
     // FIXME: cerca tra le stanze
-  
+
     switch (side)
     {
     case 0:
@@ -99,13 +105,13 @@ void Room::setDoor(int side, struct door myDoor)
         doorInfo[0] = myDoor;
         break;
     case 1:
-         doorInfo[1] = myDoor;
+        doorInfo[1] = myDoor;
         break;
     case 2:
-         doorInfo[2] = myDoor;
+        doorInfo[2] = myDoor;
         break;
     case 3:
-         doorInfo[3] = myDoor;
+        doorInfo[3] = myDoor;
         break;
     default:
         break;
@@ -113,11 +119,11 @@ void Room::setDoor(int side, struct door myDoor)
 }
 
 // funzione bozza per disegnare una stanza; prima stanza
-void Room::draw(int maxCols, int maxLines)
+bool Room::draw(int maxCols, int maxLines)
 {
     // if room was already drew there is no need to redraw, so function ends
     if (drawn)
-        return;
+        return false;
 
     WINDOW *room;
 
@@ -200,14 +206,15 @@ void Room::draw(int maxCols, int maxLines)
     }
 
     drawn = true; // we drew the room; so we set it as so
+    return true;
 }
 
 // funzione bozza per disegnare una stanza; seconda + stanza
-void Room::draw(int maxCols, int maxLines, struct door myDoor)
+bool Room::draw(int maxCols, int maxLines, struct door myDoor)
 {
     // if room was already drew there is no need to redraw, so function ends
     if (drawn)
-        return;
+        return false;
 
     WINDOW *room;
 
@@ -315,4 +322,5 @@ void Room::draw(int maxCols, int maxLines, struct door myDoor)
     }
 
     drawn = true;
+    return true;
 }

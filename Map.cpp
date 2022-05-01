@@ -51,11 +51,11 @@ pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomI
     case 0:
         list->currentRoom = roomInfo;
         list->currentRoom.setDoor(2, previousDoorInfo); // if player enters room from bottom side; previous room is located top side
-        list->door[2] = rooms;                            // if player enters room from bottom side; previous room is located top side
+        list->door[2] = rooms;                          // if player enters room from bottom side; previous room is located top side
         break;
     case 1:
         // copia list->currentRoom=room ecc
-        //list->door1 = rooms;
+        // list->door1 = rooms;
         break;
     case 2:
         // copia list->currentRoom=room ecc
@@ -75,7 +75,7 @@ pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomI
 }
 
 // search and return specific room. returns NULL if not found
-pListRooms getRoom(pListRooms rooms, int key)
+pListRooms getRooms(pListRooms rooms, int key)
 {
     if (rooms == NULL)
         return rooms;
@@ -156,7 +156,38 @@ void Map::createRoom(struct door doorInfo)
 
 // enter new room: make it currentRoom
 // FIXME non è piu cosi
-void Map::enterRoom(int key)
+void Map::enterRoom(int side)
 {
-    rooms = getRoom(rooms, key);
+    // rooms = getRooms(rooms, key);
+    rooms = rooms->door[side];
+}
+
+// Create the rooms for the n doors that are on the screen
+void Map::createRooms()
+{
+    MyString debug = "Ho creato la stanza: ";
+    for (int i = 0; i < MAXDOORS; i++)
+    {
+        rooms->door[i] = new listRooms;
+        door myDoors = rooms->currentRoom.getDoor(i);
+        if (myDoors.x >= 0 && myDoors.y >= 0) // if door exists creates room
+        {
+
+            rooms->door[i]->currentRoom = Room(newKey());
+            debug += "door[";
+            debug += itoa(i);
+            debug += "]";
+            debug += " -> ";
+            debug += itoa(rooms->door[i]->currentRoom.getKey());
+            debug += ", ";
+            for (int i = 0; i < MAXDOORS; i++) // sets to NULL the doors of the new room
+                rooms->door[i] = NULL;
+        }
+        mvaddstr(3, 0, debug.get());
+    }
+}
+
+int Map::getKeyByDoor(int side)
+{
+    return 1;
 }

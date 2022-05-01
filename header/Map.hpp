@@ -49,4 +49,9 @@ public:
 
     // enters new room: makes it currentRoom
     void enterRoom(int key);
+
+    // Create the rooms for the n doors that are on the screen
+    void createRooms();
+
+    int getKeyByDoor(int side);
 };
