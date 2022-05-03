@@ -47,8 +47,8 @@ public:
     // creates new room
     void createRoom(struct door doorInfo);
 
-    // enters new room: makes it currentRoom
-    void enterRoom(int key);
+    // enters new room: makes it currentRoom. return true if succeed
+    bool enterRoom(int key);
 
     // Create the rooms for the n doors that are on the screen
     void createRooms();

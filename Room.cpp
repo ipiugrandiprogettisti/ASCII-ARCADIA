@@ -128,13 +128,13 @@ bool Room::draw(int maxCols, int maxLines)
     WINDOW *room;
 
     // this will prints in the room window, which is a smaller window in the terminal
-    int roomWidth = maxCols / 1.5 + 1, roomHeigth = maxLines / 2 + 1; // room dimensions
+    int winWidth = maxCols / 1.5 + 1, winHeigth = maxLines / 2 + 1; // room dimensions
     int halfY = maxCols / 2, halfX = maxLines / 2;
-    int adjWidth = halfX - roomWidth / 2;            // adjusted width
-    int adjHeigth = halfY - roomHeigth / 2;          // adjusted heigth
-    int offY = roomHeigth / 2, offX = roomWidth / 4; // offset; useful to center box
+    int adjWidth = halfX - winWidth / 2;                              // adjusted width
+    int adjHeigth = halfY - winHeigth / 2;                            // adjusted heigth
+    int offY = (maxLines - WIDTH) / 2, offX = (maxCols - HEIGTH) / 2; // offset; useful to center box
 
-    win = newwin(roomHeigth, roomWidth, offY, offX); // create a CENTERED box
+    win = newwin(WIDTH, HEIGTH, offY, offX); // create a CENTERED box
 
     //  create the ROOM (box)
     /*
@@ -167,33 +167,33 @@ bool Room::draw(int maxCols, int maxLines)
                 isOccupied = true;
         }
 
-        if (isOccupied == false) // if side is free place door
+        if (isOccupied == false) // if side is free then place door
         {
             struct door myDoorTmp;
             myDoorTmp.side = side;
             switch (myDoorTmp.side) // match/adjust side to coords
             {
             case 0: // bottom side
-                myDoorTmp.y = roomHeigth - 1;
-                myDoorTmp.x = roomWidth / 2;
+                myDoorTmp.y = winHeigth - 1;
+                myDoorTmp.x = winWidth / 2;
                 placeDoor(win, myDoorTmp);
                 setDoor(0, myDoorTmp);
                 break;
             case 1: // left side
-                myDoorTmp.y = roomHeigth / 2;
+                myDoorTmp.y = winHeigth / 2;
                 myDoorTmp.x = 0;
                 placeDoor(win, myDoorTmp);
                 setDoor(1, myDoorTmp);
                 break;
             case 2: // top side
                 myDoorTmp.y = 0;
-                myDoorTmp.x = roomWidth / 2;
+                myDoorTmp.x = winWidth / 2;
                 placeDoor(win, myDoorTmp);
                 setDoor(2, myDoorTmp);
                 break;
             case 3: // right side
-                myDoorTmp.y = roomHeigth / 2;
-                myDoorTmp.x = roomWidth - 1;
+                myDoorTmp.y = winHeigth / 2;
+                myDoorTmp.x = winWidth - 1;
                 placeDoor(win, myDoorTmp);
                 setDoor(3, myDoorTmp);
                 break;

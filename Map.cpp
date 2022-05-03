@@ -154,18 +154,23 @@ void Map::createRoom(struct door doorInfo)
     }
 }
 
-// enter new room: make it currentRoom
-// FIXME non è piu cosi
-void Map::enterRoom(int side)
+// enters new room: makes it currentRoom. return true if succeed
+bool Map::enterRoom(int side)
 {
     // rooms = getRooms(rooms, key);
-    rooms = rooms->door[side];
+    bool entered = false;
+    if (rooms->door[side] != NULL)
+    {
+        rooms = rooms->door[side];
+        entered = true;
+    }
+    return entered;
 }
 
 // Create the rooms for the n doors that are on the screen
 void Map::createRooms()
 {
-    MyString debug = "Ho creato la stanza: ";
+    // MyString debug = "Ho creato la stanza: ";
     for (int i = 0; i < MAXDOORS; i++)
     {
         rooms->door[i] = new listRooms;
@@ -173,16 +178,18 @@ void Map::createRooms()
         if (myDoor.x >= 0 && myDoor.y >= 0) // if door exists creates room
         {
             rooms->door[i]->currentRoom = Room(newKey());
-            debug += "door[";
+            /*debug += "door[";
             debug += itoa(i);
             debug += "]";
             debug += " -> ";
             debug += itoa(rooms->door[i]->currentRoom.getKey());
-            debug += ", ";
+            debug += ", ";*/
             for (int j = 0; j < MAXDOORS; j++) // sets to NULL the doors of the new room
                 rooms->door[i]->door[j] = NULL;
         }
-        mvaddstr(3, 0, debug.get());
+        else
+            rooms->door[i] = NULL;
+        // mvaddstr(3, 0, debug.get());
     }
 }
 

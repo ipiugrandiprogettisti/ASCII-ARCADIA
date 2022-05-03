@@ -19,41 +19,41 @@ void debugRoom(Map myMap)
     mvaddstr(2, 0, string.get());
 }
 // debug info at top screen printing the coords of the doors
-void debugDoors(Map myMap)
+void debugDoors(Map myMap, int y, int x)
 {
-    MyString str;
+    MyString debug;
     door bs = myMap.rooms->currentRoom.getDoor(0);
-    str += "Bottom side: ";
-    str += "y: ";
-    str += itoa(bs.y);
-    str += ", x: ";
-    str += itoa(bs.x);
-    mvaddstr(0, 15, str.get());
-    str.reset();
+    debug += "Bottom side: ";
+    debug += "y: ";
+    debug += itoa(bs.y);
+    debug += ", x: ";
+    debug += itoa(bs.x);
+    mvaddstr(y, x, debug.get());
+    debug.reset();
     bs = myMap.rooms->currentRoom.getDoor(1);
-    str += "Left side: ";
-    str += "y: ";
-    str += itoa(bs.y);
-    str += ", x: ";
-    str += itoa(bs.x);
-    mvaddstr(1, 15, str.get());
-    str.reset();
+    debug += "Left side: ";
+    debug += "y: ";
+    debug += itoa(bs.y);
+    debug += ", x: ";
+    debug += itoa(bs.x);
+    mvaddstr(y + 1, x, debug.get());
+    debug.reset();
     bs = myMap.rooms->currentRoom.getDoor(2);
-    str += "Top side: ";
-    str += "y: ";
-    str += itoa(bs.y);
-    str += ", x: ";
-    str += itoa(bs.x);
-    mvaddstr(2, 15, str.get());
-    str.reset();
+    debug += "Top side: ";
+    debug += "y: ";
+    debug += itoa(bs.y);
+    debug += ", x: ";
+    debug += itoa(bs.x);
+    mvaddstr(y + 2, x, debug.get());
+    debug.reset();
     bs = myMap.rooms->currentRoom.getDoor(3);
-    str += "Right side: ";
-    str += "y: ";
-    str += itoa(bs.y);
-    str += ", x: ";
-    str += itoa(bs.x);
-    mvaddstr(3, 15, str.get());
-    str.reset();
+    debug += "Right side: ";
+    debug += "y: ";
+    debug += itoa(bs.y);
+    debug += ", x: ";
+    debug += itoa(bs.x);
+    mvaddstr(y + 3, x, debug.get());
+    debug.reset();
 }
 
 // print main menu, sel is selected item to highlight
@@ -148,6 +148,30 @@ int getMenu(WINDOW *myWin)
     return selectedItem;
 }
 
+// when character enter doors, room is changed
+void changeRoom(Map myMap, int side)
+{
+    MyString str;
+
+    if (myMap.enterRoom(side))
+    {
+        if (myMap.rooms->currentRoom.draw(COLS, LINES))
+        {
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+        }
+        else
+            mvaddstr(0, 56, "Stanza già disegnata");
+        myMap.createRooms();
+        debugRoom(myMap);
+    }
+    else
+    {
+        str = "Stanza non esistente";
+        mvaddstr(20, 0, str.get());
+    }
+}
+
 // starts the game
 void startGame(WINDOW *myWin)
 {
@@ -161,9 +185,9 @@ void startGame(WINDOW *myWin)
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
     // DEBUG INFO
-    debugRoom(myMap);
     myMap.createRooms();
-
+    debugRoom(myMap);
+    // debugDoors(myMap, 0, 40);
     int doorSide = 0;
     MyString str;
     door tmp;
@@ -184,6 +208,7 @@ void startGame(WINDOW *myWin)
             else
                 mvaddstr(0, 56, "Stanza già disegnata");
             break;
+
         case KEY_LEFT:
             // if(personaggio è dentro la porta) then...
             // getDoorSide() //per printare poi la porta dal lato giusto nella nuova stanza come previous door
@@ -205,22 +230,29 @@ void startGame(WINDOW *myWin)
             str += itoa(myMap.getKeyByDoor(1));
             mvaddstr(4, 0, str.get());
             break;
+
         case 'd':
             // DEBUGGING INFO
-            debugDoors(myMap);
+            debugRoom(myMap);
+            debugDoors(myMap, 0, 40);
             break;
+
         case '1':
-            myMap.enterRoom(0);
-            myMap.createRooms();
+            changeRoom(myMap, 0);
             break;
+
         case '2':
-            myMap.enterRoom(1);
+            changeRoom(myMap, 1);
             break;
+
         case '3':
-            myMap.enterRoom(2);
+            changeRoom(myMap, 2);
             break;
+
         case '4':
-            myMap.enterRoom(3);
+            changeRoom(myMap, 3);
+            break;
+        case 'c':
             break;
         default:
             break;
