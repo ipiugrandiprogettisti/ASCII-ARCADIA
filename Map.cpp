@@ -169,10 +169,9 @@ void Map::createRooms()
     for (int i = 0; i < MAXDOORS; i++)
     {
         rooms->door[i] = new listRooms;
-        door myDoors = rooms->currentRoom.getDoor(i);
-        if (myDoors.x >= 0 && myDoors.y >= 0) // if door exists creates room
+        door myDoor = rooms->currentRoom.getDoor(i);
+        if (myDoor.x >= 0 && myDoor.y >= 0) // if door exists creates room
         {
-
             rooms->door[i]->currentRoom = Room(newKey());
             debug += "door[";
             debug += itoa(i);
@@ -180,14 +179,18 @@ void Map::createRooms()
             debug += " -> ";
             debug += itoa(rooms->door[i]->currentRoom.getKey());
             debug += ", ";
-            for (int i = 0; i < MAXDOORS; i++) // sets to NULL the doors of the new room
-                rooms->door[i] = NULL;
+            for (int j = 0; j < MAXDOORS; j++) // sets to NULL the doors of the new room
+                rooms->door[i]->door[j] = NULL;
         }
         mvaddstr(3, 0, debug.get());
     }
 }
 
+// returns the given door room's key. -1 if not found
 int Map::getKeyByDoor(int side)
 {
-    return 1;
+    int key = -1;
+    if (this->rooms->door[side] != NULL)
+        key = this->rooms->door[side]->currentRoom.getKey();
+    return key;
 }
