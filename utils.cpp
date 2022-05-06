@@ -32,6 +32,17 @@ MyString itoa(int num)
     return str;
 }
 
+// check if screen size is correct to play the game; 110x40
+void checkScreen(int screenCols, int screenLines)
+{
+    if (screenCols < MIN_COLS && screenLines < MIN_LINES)
+    {
+        endwin();
+        std::cout << "Your screen is too small to play the game.\nTerminal minumum size is 110x40.\n";
+        exit(1);
+    }
+}
+
 // check if color is supported by user's terminal
 void checkColors()
 {

@@ -2,7 +2,7 @@
 #include <ncurses.h>
 
 const int MAXDOORS = 4;
-const int WIDTH = 40, HEIGTH = 100;
+const int WIDTH = 30, HEIGTH = 100;
 
 // if any of the values is -1 then it is not been defined yet; meaning that door does not exist on map/room
 struct door

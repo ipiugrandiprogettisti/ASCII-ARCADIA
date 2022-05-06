@@ -18,7 +18,8 @@ int main(int argc, char *argv[])
     noecho();
     curs_set(0);
 
-    checkColors();
+    checkScreen(COLS, LINES); // check if screen size is correct to play the game; 110x40
+    checkColors();            // check if screen supports color
 
     int maxY, maxX, offY = 0, offX = 0;
     getmaxyx(stdscr, maxY, maxX);
@@ -26,7 +27,7 @@ int main(int argc, char *argv[])
     WINDOW *myWin = newwin(maxY, maxX, offY, offX);
     int choice = getMenu(myWin); // draw main menu and get user choice: 0: Play, 1: Credits, 2: Exit
     MyString choiceString = itoa(choice);
-    mvaddstr(0, 0, choiceString.get());//FIXME stampa??????
+    mvaddstr(0, 0, choiceString.get()); // FIXME stampa??????
     wclear(myWin);
     wrefresh(myWin);
 
