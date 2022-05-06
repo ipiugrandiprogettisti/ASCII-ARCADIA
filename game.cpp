@@ -227,7 +227,7 @@ void startGame(WINDOW *myWin)
             str = "Door 0 room key: ";
             // str += itoa(myMap.rooms->door[0]->currentRoom.getKey());
             // tmp = myMap.rooms->door[0]->currentRoom.getDoor(0);
-            str += itoa(myMap.getKeyByDoor(1));
+            str += itoa(myMap.getKeyByDoor(0));
             mvaddstr(4, 0, str.get());
             break;
 

@@ -5,21 +5,21 @@
 #include <ctime>
 
 // place a door. y and x are position, i is the side where the door is located
-void placeDoor(WINDOW *win, door doorInfo)
+void Room::placeDoor(WINDOW *win, door doorInfo)
 {
     switch (doorInfo.side)
     {
     case 0: // bottom side
     case 2: // top side
-        mvwaddch(win, doorInfo.y, doorInfo.x - 1, ACS_RTEE);
-        mvwaddch(win, doorInfo.y, doorInfo.x, ACS_CKBOARD);
-        mvwaddch(win, doorInfo.y, doorInfo.x + 1, ACS_LTEE);
+        this->look[doorInfo.y][doorInfo.x - 1] = ACS_RTEE;
+        this->look[doorInfo.y][doorInfo.x] = ACS_CKBOARD;
+        this->look[doorInfo.y][doorInfo.x + 1] = ACS_LTEE;
         break;
     case 1: // left side
     case 3: // rigth side
-        mvwaddch(win, doorInfo.y - 1, doorInfo.x, ACS_BTEE);
-        mvwaddch(win, doorInfo.y, doorInfo.x, ACS_CKBOARD);
-        mvwaddch(win, doorInfo.y + 1, doorInfo.x, ACS_TTEE);
+        this->look[doorInfo.y - 1][doorInfo.x] = ACS_BTEE;
+        this->look[doorInfo.y][doorInfo.x] = ACS_CKBOARD;
+        this->look[doorInfo.y + 1][doorInfo.x] = ACS_TTEE;
         break;
     default:
         break;
@@ -118,6 +118,18 @@ void Room::setDoor(int side, struct door myDoor)
     }
 }
 
+// aux function to draw the look of the room
+void Room::drawLook()
+{
+    for (int i = 0; i < WIDTH; i++)
+    {
+        for (int k = 0; k < HEIGTH; k++)
+        {
+            mvwaddch(this->win, i, k, look[i][k]);
+        }
+    }
+}
+
 // funzione bozza per disegnare una stanza; prima stanza
 bool Room::draw(int maxCols, int maxLines)
 {
@@ -128,7 +140,7 @@ bool Room::draw(int maxCols, int maxLines)
     WINDOW *room;
 
     // this will prints in the room window, which is a smaller window in the terminal
-    int winWidth = maxCols / 1.5 + 1, winHeigth = maxLines / 2 + 1; // room dimensions
+    int winWidth = HEIGTH / 1.5 + 1, winHeigth = WIDTH / 2 + 1; // room dimensions
     int halfY = maxCols / 2, halfX = maxLines / 2;
     int adjWidth = halfX - winWidth / 2;                              // adjusted width
     int adjHeigth = halfY - winHeigth / 2;                            // adjusted heigth
@@ -144,7 +156,7 @@ bool Room::draw(int maxCols, int maxLines)
     and br - bottom right-hand corner.
     If arguments is 0, then is showed default ACS
     */
-    wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
+    // wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
 
     // PLACING DOORS
     // now we have to draw 1-4 doors
@@ -174,26 +186,26 @@ bool Room::draw(int maxCols, int maxLines)
             switch (myDoorTmp.side) // match/adjust side to coords
             {
             case 0: // bottom side
-                myDoorTmp.y = winHeigth - 1;
-                myDoorTmp.x = winWidth / 2;
+                myDoorTmp.y = WIDTH - 1;
+                myDoorTmp.x = HEIGTH / 2;
                 placeDoor(win, myDoorTmp);
                 setDoor(0, myDoorTmp);
                 break;
             case 1: // left side
-                myDoorTmp.y = winHeigth / 2;
+                myDoorTmp.y = WIDTH / 2;
                 myDoorTmp.x = 0;
                 placeDoor(win, myDoorTmp);
                 setDoor(1, myDoorTmp);
                 break;
             case 2: // top side
                 myDoorTmp.y = 0;
-                myDoorTmp.x = winWidth / 2;
+                myDoorTmp.x = HEIGTH / 2;
                 placeDoor(win, myDoorTmp);
                 setDoor(2, myDoorTmp);
                 break;
             case 3: // right side
-                myDoorTmp.y = winHeigth / 2;
-                myDoorTmp.x = winWidth - 1;
+                myDoorTmp.y = WIDTH / 2;
+                myDoorTmp.x = HEIGTH - 1;
                 placeDoor(win, myDoorTmp);
                 setDoor(3, myDoorTmp);
                 break;
@@ -204,6 +216,7 @@ bool Room::draw(int maxCols, int maxLines)
         }
         i++;
     }
+    drawLook(); // draw self look
 
     drawn = true; // we drew the room; so we set it as so
     return true;
