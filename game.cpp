@@ -152,18 +152,27 @@ int getMenu(WINDOW *myWin)
 void changeRoom(Map myMap, int side)
 {
     MyString str;
+    door previousDoor = myMap.rooms->currentRoom.getDoor(side);
 
     if (myMap.enterRoom(side))
     {
-        if (myMap.rooms->currentRoom.draw(COLS, LINES))
+        if (myMap.rooms->currentRoom.setUp(COLS, LINES, previousDoor) == true)
         {
+            myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
+            myMap.createRooms();
+            debugRoom(myMap);
         }
         else
-            mvaddstr(0, 56, "Stanza già disegnata");
-        myMap.createRooms();
-        debugRoom(myMap);
+        {
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+            // myMap.createRooms();
+            debugRoom(myMap);
+        }
+        debugDoors(myMap, 0, 40);
     }
     else
     {
@@ -180,12 +189,14 @@ void startGame(WINDOW *myWin)
     Map myMap = Map(myWin); // Map initialize
 
     // Now game draws first room, where the player spawns safely
-    myMap.rooms->currentRoom.draw(COLS, LINES);
+    myMap.rooms->currentRoom.setUp(COLS, LINES);
+    myMap.rooms->currentRoom.drawLook();
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
     // DEBUG INFO
     myMap.createRooms();
+    debugDoors(myMap, 0, 40);
     debugRoom(myMap);
     // debugDoors(myMap, 0, 40);
     int doorSide = 0;
@@ -200,8 +211,9 @@ void startGame(WINDOW *myWin)
         case KEY_RIGHT:
             // mvaddstr(4, 0, "Freccia destra"); //just debug info
             // myMap.rooms.
-            if (myMap.rooms->currentRoom.draw(COLS, LINES))
+            if (myMap.rooms->currentRoom.setUp(COLS, LINES))
             {
+                myMap.rooms->currentRoom.drawLook();
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
@@ -238,6 +250,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case '1':
+        //TODO FIXME: prima stanza viene ricreata quando si fa changeRoom
             changeRoom(myMap, 0);
             break;
 

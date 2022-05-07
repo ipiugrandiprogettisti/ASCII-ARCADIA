@@ -161,7 +161,26 @@ bool Map::enterRoom(int side)
     bool entered = false;
     if (rooms->door[side] != NULL)
     {
+        pListRooms tmp = rooms;
         rooms = rooms->door[side];
+        switch (side)
+        {
+        case 0: // bottom side
+            rooms->door[2] = tmp;
+            break;
+        case 1: // left side
+            rooms->door[3] = tmp;
+            break;
+        case 2: // top side
+            rooms->door[0] = tmp;
+            break;
+        case 3: // right side
+            rooms->door[1] = tmp;
+            break;
+        default:
+            break;
+        }
+
         entered = true;
     }
     return entered;
