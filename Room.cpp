@@ -35,12 +35,12 @@ void Room::placeObject(pos position, chtype tag)
 // aux function to place walls
 void Room::createWall(int width, int heigth, int posY, int posX)
 {
-    for (int i = posY; i < heigth; i++)
+    for (int i = 0; i < heigth; i++)
     {
-        for (int k = posX; k < width; k++)
+        for (int k = 0; k < width; k++)
         {
             pos position;
-            position.y = i + (posY - heigth), position.x = k + (posX - width);
+            position.y = i + posY, position.x = k + posX;
             placeObject(position, ACS_CKBOARD);
         }
     }
@@ -217,7 +217,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    srand(time(0));                                         // FIXME: seed casuale
+    srand(seed);                                            // FIXME: seed casuale
     int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
 
     int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
@@ -278,12 +278,13 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     // PLACING OBJECTS
     // place wall
     const int MAXWALLS = 5;
-    for (int i = 0; i < 5; i++) // number of walls
+    for (int i = 0; i < MAXWALLS; i++) // number of walls
     {
-        int posY = (rand() % WIDTH - 1) + 1;      // y offset
-        int posX = (rand() % HEIGTH - 1) + 1;     // x offset
-        int h = (rand() % WIDTH / 4 - 1) + posY;  // random number of walls from 0 to WIDTH-1
-        int w = (rand() % HEIGTH / 8 - 1) + posX; // random number of walls from 0 to HEIGTH-1
+        int posY = (rand() % (WIDTH - 5));   // y offset max=WIDTH-5
+        int posX = (rand() % (HEIGTH - 5));  // x offset max=HEIGTH-5
+        int h = (rand() % (WIDTH - 25));   // random number of walls from 1 to 5
+        int w = (rand() % (HEIGTH - 70)); // random number of walls from 1 to 50
+        // int posY = 20, posX = 10, h = 5, w = 50;
         createWall(w, h, posY, posX);
     }
 
