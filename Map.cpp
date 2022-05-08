@@ -159,23 +159,24 @@ bool Map::enterRoom(int side)
 {
     // rooms = getRooms(rooms, key);
     bool entered = false;
+
     if (rooms->door[side] != NULL)
     {
-        pListRooms tmp = rooms;
-        rooms = rooms->door[side];
+        pListRooms previousRoom = rooms;
+        rooms = rooms->door[side]; // enter next room
         switch (side)
         {
         case 0: // bottom side
-            rooms->door[2] = tmp;
+            rooms->door[2] = previousRoom;
             break;
         case 1: // left side
-            rooms->door[3] = tmp;
+            rooms->door[3] = previousRoom;
             break;
         case 2: // top side
-            rooms->door[0] = tmp;
+            rooms->door[0] = previousRoom;
             break;
         case 3: // right side
-            rooms->door[1] = tmp;
+            rooms->door[1] = previousRoom;
             break;
         default:
             break;
@@ -187,29 +188,59 @@ bool Map::enterRoom(int side)
 }
 
 // Create the rooms for the n doors that are on the screen
-void Map::createRooms()
+void Map::createRooms(int side, pListRooms previousRoom)
 {
-    // MyString debug = "Ho creato la stanza: ";
+    int previousDoorSide = -1;
+    switch (side)
+    {
+    case 0: // bottom side
+        previousDoorSide = 2;
+        break;
+    case 1: // left side
+        previousDoorSide = 3;
+        break;
+    case 2: // top side
+        previousDoorSide = 0;
+        break;
+    case 3: // right side
+        previousDoorSide = 1;
+        break;
+    default:
+        previousDoorSide = -1;
+        break;
+    }
+
+    MyString debug;
     for (int i = 0; i < MAXDOORS; i++)
     {
-        rooms->door[i] = new listRooms;
-        door myDoor = rooms->currentRoom.getDoor(i);
-        if (myDoor.x >= 0 && myDoor.y >= 0) // if door exists creates room
+        if (i == previousDoorSide)
         {
-            rooms->door[i]->currentRoom = Room(newKey());
-            /*debug += "door[";
-            debug += itoa(i);
-            debug += "]";
-            debug += " -> ";
-            debug += itoa(rooms->door[i]->currentRoom.getKey());
-            debug += ", ";*/
-            for (int j = 0; j < MAXDOORS; j++) // sets to NULL the doors of the new room
-                rooms->door[i]->door[j] = NULL;
+            // std::cout << "Stanza precedente" << std::endl;
+            rooms->door[i] = previousRoom;
         }
         else
-            rooms->door[i] = NULL;
-        // mvaddstr(3, 0, debug.get());
+        {
+            rooms->door[i] = new listRooms;
+            door myDoor = rooms->currentRoom.getDoor(i);
+            if (myDoor.x >= 0 && myDoor.y >= 0) // if door exists creates room
+            {
+                rooms->door[i]->currentRoom = Room(newKey());
+                debug += "door[";
+                debug += itoa(i);
+                debug += "]";
+                debug += " -> ";
+                debug += itoa(rooms->door[i]->currentRoom.getKey());
+                debug += ", ";
+                for (int j = 0; j < MAXDOORS; j++) // sets to NULL the doors of the new room
+                {
+                    rooms->door[i]->door[j] = NULL;
+                }
+            }
+            else
+                rooms->door[i] = NULL;
+        }
     }
+    mvaddstr(3, 70, debug.get());
 }
 
 // returns the given door room's key. -1 if not found

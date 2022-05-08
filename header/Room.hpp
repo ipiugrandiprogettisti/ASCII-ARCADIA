@@ -1,5 +1,6 @@
 // Room class file
 #include <ncurses.h>
+#include "Entity.hpp"
 
 const int MAXDOORS = 4;
 const int WIDTH = 30, HEIGTH = 100;
@@ -53,8 +54,8 @@ void placeDoor(WINDOW *win, door doorInfo);
 class Room
 {
 protected:
-    int seed = 0;//FIXME TOGLIERE
-    int key; // unique
+    int seed = 2; // FIXME TOGLIERE
+    int key;      // unique
     WINDOW *win;
     struct door doorInfo[MAXDOORS]; // these are the door information
     objContainer objects;
@@ -93,8 +94,14 @@ protected:
 
 private:
     // place a door. y and x are position, i is the side where the door is located
-    void placeDoor(WINDOW *win, door doorInfo);
+    void placeDoor(door doorInfo);
 
+    // place object in room
+    void placeObject(pos position, chtype tag);
+
+    // aux function to place walls
+   void createWall(int width, int heigth, int posY,int posX);
+   
 public:
     // Constructort
     Room();
@@ -117,10 +124,7 @@ public:
     // set the given door information
     void setDoor(int side, struct door doorInfo);
 
-    // sets up the room (used for first room)
-    bool setUp(int maxCols, int maxLines);
-
-    // sets up the room (used for second+ rooms)
+    // sets up the room if myDoor doesnt exist (-1), then it is the first room being set up
     bool setUp(int maxCols, int maxLines, struct door doorInfo);
 
     // draws the room

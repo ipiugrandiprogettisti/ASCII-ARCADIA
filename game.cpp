@@ -152,27 +152,23 @@ int getMenu(WINDOW *myWin)
 void changeRoom(Map myMap, int side)
 {
     MyString str;
+    pListRooms previousRoom = myMap.rooms;
     door previousDoor = myMap.rooms->currentRoom.getDoor(side);
 
-    if (myMap.enterRoom(side))
+    if (myMap.enterRoom(side)) // returns true if players has entered the room (it isnt null)
     {
-        if (myMap.rooms->currentRoom.setUp(COLS, LINES, previousDoor) == true)
+        bool firsTimeInitRoom = myMap.rooms->currentRoom.setUp(COLS, LINES, previousDoor);
+        if (firsTimeInitRoom) // if room is created for the first time, then initialize its Room
         {
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
-            myMap.createRooms();
-            debugRoom(myMap);
+            myMap.createRooms(side, previousRoom);
         }
-        else
-        {
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
-            // myMap.createRooms();
-            debugRoom(myMap);
-        }
-        debugDoors(myMap, 0, 40);
+
+        myMap.rooms->currentRoom.drawLook();
+
+        debugRoom(myMap);
+        // debugDoors(myMap, 0, 40);
+        refresh();
+        wrefresh(myMap.rooms->currentRoom.getWindow());
     }
     else
     {
@@ -187,16 +183,16 @@ void startGame(WINDOW *myWin)
     clear();
 
     Map myMap = Map(myWin); // Map initialize
-
+    door emptyDoor;         // empty door
     // Now game draws first room, where the player spawns safely
-    myMap.rooms->currentRoom.setUp(COLS, LINES);
+    myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
     myMap.rooms->currentRoom.drawLook();
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
     // DEBUG INFO
-    myMap.createRooms();
-    debugDoors(myMap, 0, 40);
+    myMap.createRooms(-1, NULL); // first room
+    // debugDoors(myMap, 0, 40);
     debugRoom(myMap);
     // debugDoors(myMap, 0, 40);
     int doorSide = 0;
@@ -211,7 +207,7 @@ void startGame(WINDOW *myWin)
         case KEY_RIGHT:
             // mvaddstr(4, 0, "Freccia destra"); //just debug info
             // myMap.rooms.
-            if (myMap.rooms->currentRoom.setUp(COLS, LINES))
+            if (myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor))
             {
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
@@ -250,7 +246,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case '1':
-        //TODO FIXME: prima stanza viene ricreata quando si fa changeRoom
+            // TODO FIXME: prima stanza viene ricreata quando si fa changeRoom
             changeRoom(myMap, 0);
             break;
 

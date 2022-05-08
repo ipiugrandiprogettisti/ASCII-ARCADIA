@@ -51,7 +51,7 @@ public:
     bool enterRoom(int key);
 
     // Create the rooms for the n doors that are on the screen
-    void createRooms();
+    void createRooms(int side, pListRooms previousRoom);
 
     int getKeyByDoor(int side);
 };

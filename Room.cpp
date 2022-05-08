@@ -5,7 +5,7 @@
 #include <ctime>
 
 // place a door. y and x are position, i is the side where the door is located
-void Room::placeDoor(WINDOW *win, door doorInfo)
+void Room::placeDoor(door doorInfo)
 {
     switch (doorInfo.side)
     {
@@ -23,6 +23,26 @@ void Room::placeDoor(WINDOW *win, door doorInfo)
         break;
     default:
         break;
+    }
+}
+
+// place object in room
+void Room::placeObject(pos position, chtype tag)
+{
+    this->look[position.y][position.x] = tag;
+}
+
+// aux function to place walls
+void Room::createWall(int width, int heigth, int posY, int posX)
+{
+    for (int i = posY; i < heigth; i++)
+    {
+        for (int k = posX; k < width; k++)
+        {
+            pos position;
+            position.y = i + (posY - heigth), position.x = k + (posX - width);
+            placeObject(position, ACS_CKBOARD);
+        }
     }
 }
 
@@ -130,104 +150,19 @@ void Room::drawLook()
     }
 }
 
-// sets up the room (used for first room)
-bool Room::setUp(int maxCols, int maxLines)
-{
-    // if room was already drew there is no need to redraw, so function ends
-    if (drawn)
-        return false;
-
-    WINDOW *room;
-
-    // this will prints in the room window, which is a smaller window in the terminal
-    int winWidth = HEIGTH / 1.5 + 1, winHeigth = WIDTH / 2 + 1; // room dimensions
-    int halfY = maxCols / 2, halfX = maxLines / 2;
-    int adjWidth = halfX - winWidth / 2;                              // adjusted width
-    int adjHeigth = halfY - winHeigth / 2;                            // adjusted heigth
-    int offY = (maxLines - WIDTH) / 2, offX = (maxCols - HEIGTH) / 2; // offset; useful to center box
-
-    win = newwin(WIDTH, HEIGTH, offY, offX); // create a CENTERED box
-
-    //  create the ROOM (box)
-    /*
-    int wborder(WINDOW *win, chtype ls, chtype rs, chtype ts, chtype bs, chtype tl, chtype tr, chtype bl, chtype br);
-    The argument ls is a character and attributes used for the left side of the border, rs right side, ts - top side,
-    bs - bottom side, tl - top left-hand corner, tr - top right-hand corner, bl - bottom left-hand corner,
-    and br - bottom right-hand corner.
-    If arguments is 0, then is showed default ACS
-    */
-    // wborder(win, 0, 0, 0, 0, 0, 0, 0, 0);
-
-    // PLACING DOORS
-    // now we have to draw 1-4 doors
-    // srand(time(0));                       // seed is 0
-    srand(seed);                          // FIXME: seed casuale
-    int nDoors = (rand() % MAXDOORS) + 1; // random number of door from 1 to 4 for first room
-    int placedDoors[nDoors];              // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
-    for (int i = 0; i < nDoors; i++)      // init array to not placed
-    {
-        placedDoors[i] = -1;
-    }
-
-    int i = 0;
-    while (i < nDoors)
-    {
-        int side = rand() % 4; // picking a casual side to place the door
-        bool isOccupied = false;
-        for (int k = 0; k < nDoors; k++)
-        {
-            if (placedDoors[k] == side) // check if side is already occupied by other doors
-                isOccupied = true;
-        }
-
-        if (isOccupied == false) // if side is free then place door
-        {
-            struct door myDoorTmp;
-            myDoorTmp.side = side;
-            switch (myDoorTmp.side) // match/adjust side to coords
-            {
-            case 0: // bottom side
-                myDoorTmp.y = WIDTH - 1;
-                myDoorTmp.x = HEIGTH / 2;
-                placeDoor(win, myDoorTmp);
-                setDoor(0, myDoorTmp);
-                break;
-            case 1: // left side
-                myDoorTmp.y = WIDTH / 2;
-                myDoorTmp.x = 0;
-                placeDoor(win, myDoorTmp);
-                setDoor(1, myDoorTmp);
-                break;
-            case 2: // top side
-                myDoorTmp.y = 0;
-                myDoorTmp.x = HEIGTH / 2;
-                placeDoor(win, myDoorTmp);
-                setDoor(2, myDoorTmp);
-                break;
-            case 3: // right side
-                myDoorTmp.y = WIDTH / 2;
-                myDoorTmp.x = HEIGTH - 1;
-                placeDoor(win, myDoorTmp);
-                setDoor(3, myDoorTmp);
-                break;
-
-            default:
-                break;
-            }
-        }
-        i++;
-    }
-
-    drawn = true; // we drew the room; so we set it as so
-    return true;
-}
-
-// sets up the room (used for second+ rooms)
+// sets up the room if myDoor doesnt exist (-1), then it is the first room being set up
 bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 {
     // if room was already drew there is no need to redraw, so function ends
     if (drawn)
         return false;
+
+    // if myDoor is a real door, then it isnt the first room that is being set up
+    bool previousRoomExists = false;
+    if (myDoor.x >= 0 || myDoor.y >= 0)
+    {
+        previousRoomExists = true;
+    }
 
     WINDOW *room;
 
@@ -240,35 +175,50 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 
     win = newwin(WIDTH, HEIGTH, offY, offX); // create a CENTERED box
     this->look[2][2] = (char)key + 48;
-    // PLACING DOORS
-    // placing previous door; it has to be placed on the opposite side where it was in the previous room
-    switch (myDoor.side)
-    {
-    case 0: // bottom side
-        myDoor.y = 0;
-        placeDoor(win, myDoor);
-        break;
-    case 1: // left side
-        myDoor.x = HEIGTH - 1;
-        placeDoor(win, myDoor);
-        break;
-    case 2: // top side
-        myDoor.y = WIDTH - 1;
-        placeDoor(win, myDoor);
-        break;
-    case 3: // right side
-        myDoor.x = 0;
-        placeDoor(win, myDoor);
-        break;
 
-    default:
-        break;
+    // PLACING DOORS
+    int previousDoorSide = -1;
+    if (previousRoomExists)
+    {
+        // placing previous door; it has to be placed on the opposite side where it was in the previous room
+        switch (myDoor.side)
+        {
+        case 0: // bottom side
+            myDoor.y = 0;
+            placeDoor(myDoor);
+            previousDoorSide = 2;
+            break;
+        case 1: // left side
+            myDoor.x = HEIGTH - 1;
+            placeDoor(myDoor);
+            previousDoorSide = 3;
+            break;
+        case 2: // top side
+            myDoor.y = WIDTH - 1;
+            placeDoor(myDoor);
+            previousDoorSide = 0;
+            break;
+        case 3: // right side
+            myDoor.x = 0;
+            placeDoor(myDoor);
+            previousDoorSide = 1;
+            break;
+
+        default:
+            break;
+        }
+
+        doorInfo[previousDoorSide] = myDoor;
     }
 
     // now we have to draw 1 to (4-1) doors (previous one is already placed)
     // srand(time(0));                           // seed is 0
-    srand(seed);                              // FIXME: seed casuale
-    int nDoors = (rand() % MAXDOORS - 1) + 1; // random number of door from 1 to 4-1 because we already have the previous one
+    int prevDoorsNumber = 0;
+    if (previousRoomExists)
+        prevDoorsNumber = 1;
+
+    srand(time(0));                                         // FIXME: seed casuale
+    int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
 
     int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
     for (int i = 0; i < nDoors; i++) // init array to not placed
@@ -287,7 +237,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
                 isOccupied = true;
         }
 
-        if (isOccupied == false) // if side is free place door
+        if (isOccupied == false) // if side is free, then place door
         {
             struct door myDoorTmp;
             myDoorTmp.side = side;
@@ -296,25 +246,25 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
             case 0: // bottom side
                 myDoorTmp.y = WIDTH - 1;
                 myDoorTmp.x = HEIGTH / 2;
-                placeDoor(win, myDoorTmp);
+                placeDoor(myDoorTmp);
                 setDoor(0, myDoorTmp);
                 break;
             case 1: // left side
                 myDoorTmp.y = WIDTH / 2;
                 myDoorTmp.x = 0;
-                placeDoor(win, myDoorTmp);
+                placeDoor(myDoorTmp);
                 setDoor(1, myDoorTmp);
                 break;
             case 2: // top side
                 myDoorTmp.y = 0;
                 myDoorTmp.x = HEIGTH / 2;
-                placeDoor(win, myDoorTmp);
+                placeDoor(myDoorTmp);
                 setDoor(2, myDoorTmp);
                 break;
             case 3: // right side
                 myDoorTmp.y = WIDTH / 2;
                 myDoorTmp.x = HEIGTH - 1;
-                placeDoor(win, myDoorTmp);
+                placeDoor(myDoorTmp);
                 setDoor(3, myDoorTmp);
                 break;
 
@@ -324,6 +274,23 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         }
         i++;
     }
+
+    // PLACING OBJECTS
+    // place wall
+    const int MAXWALLS = 5;
+    for (int i = 0; i < 5; i++) // number of walls
+    {
+        int posY = (rand() % WIDTH - 1) + 1;      // y offset
+        int posX = (rand() % HEIGTH - 1) + 1;     // x offset
+        int h = (rand() % WIDTH / 4 - 1) + posY;  // random number of walls from 0 to WIDTH-1
+        int w = (rand() % HEIGTH / 8 - 1) + posX; // random number of walls from 0 to HEIGTH-1
+        createWall(w, h, posY, posX);
+    }
+
+    // place player
+
+    // place enemies
+    // place etc
 
     drawn = true;
     return true;
