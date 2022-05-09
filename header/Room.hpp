@@ -54,7 +54,7 @@ void placeDoor(WINDOW *win, door doorInfo);
 class Room
 {
 protected:
-    int seed = 2; // FIXME TOGLIERE
+    int seed = 0; // FIXME TOGLIERE; FIXATO!->1652101842 da stanza bloccata (tile bloccato) con 15 walls
     int key;      // unique
     WINDOW *win;
     struct door doorInfo[MAXDOORS]; // these are the door information
@@ -99,9 +99,15 @@ private:
     // place object in room
     void placeObject(pos position, chtype tag);
 
+    // aux function to prevent non-free wall
+    bool tileIsFree(pos position);
+
+    // aux function to free row and col
+    void freeRowCol(pos position);
+
     // aux function to place walls
-   void createWall(int width, int heigth, int posY,int posX);
-   
+    void createWall(int width, int heigth, int posY, int posX);
+
 public:
     // Constructort
     Room();

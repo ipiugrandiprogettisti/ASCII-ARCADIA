@@ -32,6 +32,40 @@ void Room::placeObject(pos position, chtype tag)
     this->look[position.y][position.x] = tag;
 }
 
+// aux function to prevent non-free wall
+bool Room::tileIsFree(pos position)
+{
+    bool free = false;
+    int sidesNotFree = 0;
+
+    if (this->look[position.y + 1][position.x] != ' ')
+        sidesNotFree += 1;
+    if (this->look[position.y - 1][position.x] != ' ')
+        sidesNotFree += 1;
+    if (this->look[position.y][position.x + 1] != ' ')
+        sidesNotFree += 1;
+    if (this->look[position.y][position.x - 1] != ' ')
+        sidesNotFree += 1;
+
+    if (sidesNotFree < 4)
+        free = true;
+
+    return free;
+}
+
+// aux function to free row and col
+void Room::freeRowCol(pos position)
+{
+    bool row = true;
+    pos tmp = position;
+    while (this->look[tmp.y][tmp.x] != ' ')
+    {
+
+        this->look[tmp.y+1][tmp.x] = ' ';
+        tmp.y += 1;
+    }
+}
+
 // aux function to place walls
 void Room::createWall(int width, int heigth, int posY, int posX)
 {
@@ -41,7 +75,20 @@ void Room::createWall(int width, int heigth, int posY, int posX)
         {
             pos position;
             position.y = i + posY, position.x = k + posX;
-            placeObject(position, ACS_CKBOARD);
+
+            if (tileIsFree(position))
+            {
+                placeObject(position, ACS_CKBOARD);
+            }
+            /*else FIXME finire freeRowCol
+            {
+                freeRowCol(position);
+            }*/
+
+            /*if ((i == 0 || k == 0 || i == heigth - 1 || k == width - 1) || tileIsFree(position))
+            {
+                placeObject(position, ACS_CKBOARD);
+            }*/
         }
     }
 }
@@ -217,7 +264,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    srand(seed);                                            // FIXME: seed casuale
+    srand(time(0));                                         // FIXME: seed casuale
     int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
 
     int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
@@ -276,15 +323,19 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     }
 
     // PLACING OBJECTS
+
     // place wall
-    const int MAXWALLS = 5;
+    const int MAXWALLS = 15;
     for (int i = 0; i < MAXWALLS; i++) // number of walls
     {
-        int posY = (rand() % (WIDTH - 5));   // y offset max=WIDTH-5
-        int posX = (rand() % (HEIGTH - 5));  // x offset max=HEIGTH-5
-        int h = (rand() % (WIDTH - 25));   // random number of walls from 1 to 5
-        int w = (rand() % (HEIGTH - 70)); // random number of walls from 1 to 50
-        // int posY = 20, posX = 10, h = 5, w = 50;
+        const int offsetSXDX = 6, offsetUPLOW = 6;
+        int posY = (rand() % (WIDTH - (offsetUPLOW * 2))) + offsetUPLOW; // 6-23
+        int posX = (rand() % (HEIGTH - (offsetSXDX * 2))) + offsetSXDX;  // 6-93
+        const int MAXWALLHEIGTH = (((WIDTH - (offsetUPLOW)) - posY) / 1.5) + 1;
+        const int MAXWALLWIDTH = (((HEIGTH - (offsetSXDX)) - posX) / 1.5) + 1;
+        int h = (rand() % (MAXWALLHEIGTH)) + 1; // random number of walls
+        int w = (rand() % (MAXWALLWIDTH)) + 1;  // random number of walls
+
         createWall(w, h, posY, posX);
     }
 
