@@ -34,7 +34,7 @@ void Character::increaseLife(int healing)
     int curr_life = getLife();
     if (curr_life + healing <= this->max_life)
     {
-        this->current_life = (curr_life + healing);
+        this->current_life = (curr_life + healing); // su questa riga usate la mia funzione pls (Artifact -> gainlife)
     }
     else
     {

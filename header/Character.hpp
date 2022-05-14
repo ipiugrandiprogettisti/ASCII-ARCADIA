@@ -5,7 +5,7 @@
 #define L 30
 class Character : public Entity
 {
-protected:
+public:
     char name[L];
     int current_life;
     int max_life;
@@ -24,7 +24,6 @@ public:
     // prende in input il danno ricevuto e aggiorna la vita sottraendoglielo
     void takeDamage(int);
 
-    //aumenta la vita in base agli artefatti
+    // aumenta la vita in base agli artefatti
     void increaseLife(int);
-
 };
