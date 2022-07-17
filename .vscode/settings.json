@@ -1,8 +1,0 @@
-{
-  "files.associations": {
-    "bitset": "cpp",
-    "locale": "cpp",
-    "string": "cpp",
-    "__node_handle": "cpp"
-  }
-}
