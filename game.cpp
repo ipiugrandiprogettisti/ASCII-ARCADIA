@@ -189,7 +189,7 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.drawLook();
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
-
+   
     // DEBUG INFO
     //myMap.createRooms(-1, NULL); // first room
     // debugDoors(myMap, 0, 40);
