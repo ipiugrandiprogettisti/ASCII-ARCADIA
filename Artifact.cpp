@@ -1,9 +1,9 @@
 #include "header/Artifact.hpp"
 
 char name[NMAX];
-int lifepoints; // quanti punti vita dà
-int rarity;
 
+int rarity;
+int lifepoints; // quanti punti vita dà
 Artifact ::Artifact()
 {
     rarity = 0;
@@ -13,14 +13,14 @@ Artifact ::Artifact()
     position.x = 0;
 }
 
-Artifact ::Artifact(char name[NMAX], int rarity, int posy, int posx, chtype tagg) : Entity(position.y, position.x, tag)
+Artifact ::Artifact(char name[NMAX], int rarity, int lifepoints, int posy, int posx, chtype tagg) : Entity(position.y, position.x, tag)
 {
     strcpy(this->name, name);
     this->rarity = rarity;
+    this->lifepoints = 0;
     this->position.y = posy;
     this->position.x = posx;
     this->tag = tagg;
-    this->lifepoints = 0;
 }
 
 int Artifact ::getlifep(Artifact p)
@@ -43,15 +43,9 @@ void Artifact ::set_lifep(Artifact p)
     case 2:
         p.lifepoints = 3;
     case 3:
-        p.lifepoints = 5;
-    case 4:
         p.lifepoints = 7;
-    case 5:
+    case 4:
         p.lifepoints = 10;
-    case 6:
-        p.lifepoints = 15;
-    case 7:
-        p.lifepoints = 20;
     }
 }
 
@@ -65,15 +59,9 @@ void Artifact ::set_symbol(Artifact p)
     case '2':
         p.tag = 174;
     case '3':
-        p.tag = 248;
-    case '4':
-        p.tag = 216;
-    case '5':
-        p.tag = 163;
-    case '6':
-        p.tag = 165;
-    case '7':
         p.tag = 167;
+    case '4':
+        p.tag = 163;
     }
 }
 
