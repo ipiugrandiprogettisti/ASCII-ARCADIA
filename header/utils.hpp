@@ -9,3 +9,4 @@ void checkScreen(int screenCols, int screenLines);
 
 // check if color is supported by user's terminal
 void checkColors();
+a
