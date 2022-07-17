@@ -7,7 +7,8 @@
 struct listRooms
 {
     Room currentRoom;
-    listRooms *door[MAXDOORS]; // door pointer. e.g.: door[0] is the bottom side door
+    listRooms *nextRoom;     // next room pointer
+    listRooms *previousRoom; // previous room pointer
 };
 
 // pointer to list of the rooms

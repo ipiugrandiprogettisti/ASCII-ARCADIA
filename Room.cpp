@@ -61,7 +61,7 @@ void Room::freeRowCol(pos position)
     while (this->look[tmp.y][tmp.x] != ' ')
     {
 
-        this->look[tmp.y+1][tmp.x] = ' ';
+        this->look[tmp.y + 1][tmp.x] = ' ';
         tmp.y += 1;
     }
 }
@@ -137,36 +137,22 @@ struct objContainer Room::getObjectList()
     return objects;
 }
 
-// returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
-struct door Room::getDoor(int side)
+// returns the given room's door information; if door doesn't exist returns a "-1" door (check struct door)
+struct door Room::getDoor(int isNextRoom)
 {
     struct door myDoor;
     // FIXME: cerca tra le stanze
 
-    switch (side)
-    {
-    case 0:
-        myDoor = doorInfo[0];
-        break;
-    case 1:
-        myDoor = doorInfo[1];
-        break;
-    case 2:
-        myDoor = doorInfo[2];
-        break;
-    case 3:
-        myDoor = doorInfo[3];
-        break;
-    default:
-        break;
-    }
+    if (doorInfo[isNextRoom].x > -1 || doorInfo[isNextRoom].y > -1)
+        myDoor = doorInfo[isNextRoom];
+
     return myDoor;
 }
 
 // set the given door information
-void Room::setDoor(int side, struct door myDoor)
+void Room::setDoor(int isNextRoom, struct door myDoor)
 {
-    switch (side)
+    /*switch (side)
     {
     case 0:
         doorInfo[0] = myDoor;
@@ -182,7 +168,9 @@ void Room::setDoor(int side, struct door myDoor)
         break;
     default:
         break;
-    }
+    }*/
+
+    doorInfo[isNextRoom] = myDoor;
 }
 
 // draws the room
@@ -294,25 +282,25 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
                 myDoorTmp.y = WIDTH - 1;
                 myDoorTmp.x = HEIGTH / 2;
                 placeDoor(myDoorTmp);
-                setDoor(0, myDoorTmp);
+                //setDoor(0, myDoorTmp);
                 break;
             case 1: // left side
                 myDoorTmp.y = WIDTH / 2;
                 myDoorTmp.x = 0;
                 placeDoor(myDoorTmp);
-                setDoor(1, myDoorTmp);
+                //setDoor(1, myDoorTmp);
                 break;
             case 2: // top side
                 myDoorTmp.y = 0;
                 myDoorTmp.x = HEIGTH / 2;
                 placeDoor(myDoorTmp);
-                setDoor(2, myDoorTmp);
+                //setDoor(2, myDoorTmp);
                 break;
             case 3: // right side
                 myDoorTmp.y = WIDTH / 2;
                 myDoorTmp.x = HEIGTH - 1;
                 placeDoor(myDoorTmp);
-                setDoor(3, myDoorTmp);
+                //setDoor(3, myDoorTmp);
                 break;
 
             default:

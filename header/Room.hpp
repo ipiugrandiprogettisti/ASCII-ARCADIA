@@ -2,18 +2,19 @@
 #include <ncurses.h>
 #include "Entity.hpp"
 
-const int MAXDOORS = 4;
+const int MAXDOORS = 2;
 const int WIDTH = 30, HEIGTH = 100;
 
 // if any of the values is -1 then it is not been defined yet; meaning that door does not exist on map/room
 struct door
 {
-    int y = -1, x = -1;  // position
-    int side = -1;       /*- 0: bottom side
-                        - 1: left side
-                        - 2: top side
-                        - 3: right side*/
-    bool isOpen = false; // if door is closed; player can't cross it
+    int y = -1, x = -1;      // position
+    int side = -1;           /*- 0: bottom side
+                            - 1: left side
+                            - 2: top side
+                            - 3: right side*/
+    bool isOpen = false;     // if door is closed; player can't cross it
+    int isNextRoom = 1; // 0 = is previous room; 1 = is next room
 };
 
 // enemies list

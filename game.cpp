@@ -149,7 +149,7 @@ int getMenu(WINDOW *myWin)
 }
 
 // when character enter doors, room is changed
-void changeRoom(Map myMap, int side)
+/*void changeRoom(Map myMap, int side)
 {
     MyString str;
     pListRooms previousRoom = myMap.rooms;
@@ -175,7 +175,7 @@ void changeRoom(Map myMap, int side)
         str = "Stanza non esistente";
         mvaddstr(20, 0, str.get());
     }
-}
+}*/
 
 // starts the game
 void startGame(WINDOW *myWin)
@@ -191,7 +191,7 @@ void startGame(WINDOW *myWin)
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
     // DEBUG INFO
-    myMap.createRooms(-1, NULL); // first room
+    //myMap.createRooms(-1, NULL); // first room
     // debugDoors(myMap, 0, 40);
     debugRoom(myMap);
     // debugDoors(myMap, 0, 40);
@@ -247,21 +247,7 @@ void startGame(WINDOW *myWin)
 
         case '1':
             // TODO FIXME: prima stanza viene ricreata quando si fa changeRoom
-            changeRoom(myMap, 0);
-            break;
-
-        case '2':
-            changeRoom(myMap, 1);
-            break;
-
-        case '3':
-            changeRoom(myMap, 2);
-            break;
-
-        case '4':
-            changeRoom(myMap, 3);
-            break;
-        case 'c':
+            //changeRoom(myMap, 0);
             break;
         default:
             break;

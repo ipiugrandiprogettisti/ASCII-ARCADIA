@@ -10,15 +10,16 @@ Map::Map()
 Map::Map(WINDOW *win)
 {
     mainWin = win;
-    totalRooms = 1; // game starts with only 1 room. next rooms are one at a time
+    // totalRooms = 1; // game starts with only 1 room
     this->freeKey = 0;
 
     rooms = new listRooms;
     rooms->currentRoom = Room(newKey());
 
-    // sets all next rooms to NULL; a pointer will be assigned to its room when one is created
-    for (int i = 0; i < MAXDOORS; i++)
-        rooms->door[i] = NULL;
+    // sets next room to NULL (it has to be created)
+    rooms->nextRoom = NULL;
+    // sets previous room to NULL
+    rooms->previousRoom = NULL;
 }
 
 // returns and create a new unique key
@@ -42,6 +43,7 @@ WINDOW *Map::getRoomWindow(int key)
     return rooms->currentRoom.getWindow();
 }
 
+/*
 // head insert
 pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomInfo)
 {
@@ -74,8 +76,9 @@ pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomI
     return list;
 }
 
+
 // search and return specific room. returns NULL if not found
-pListRooms getRooms(pListRooms rooms, int key)
+pListRooms getRoomByKey(pListRooms rooms, int key)
 {
     if (rooms == NULL)
         return rooms;
@@ -129,6 +132,7 @@ pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey)
     return rooms;
 }
 
+
 // creates new room
 void Map::createRoom(struct door doorInfo)
 {
@@ -136,11 +140,11 @@ void Map::createRoom(struct door doorInfo)
     switch (doorInfo.side)
     {
     case 0: // bottom side
-        /*
-        rooms->door0->currentRoom = Room(key);
-        rooms->door0->door2Info = doorInfo; // if player enters room from bottom side; previous room is located top side
-        rooms->door0->door2 = rooms;
-        */
+
+       // rooms->door0->currentRoom = Room(key);
+        //rooms->door0->door2Info = doorInfo; // if player enters room from bottom side; previous room is located top side
+        //rooms->door0->door2 = rooms;
+
         rooms = insertHead(rooms, doorInfo, Room(key));
         break;
     case 1: // left side
@@ -153,41 +157,28 @@ void Map::createRoom(struct door doorInfo)
         break;
     }
 }
+*/
 
-// enters new room: makes it currentRoom. return true if succeed
+// enters new room. return true if succeeds
 bool Map::enterRoom(int side)
 {
-    // rooms = getRooms(rooms, key);
+    // rooms = getRoomByKey(rooms, key);
+
     bool entered = false;
 
-    if (rooms->door[side] != NULL)
+    if (rooms->nextRoom != NULL) // check if next room exists
     {
-        pListRooms previousRoom = rooms;
-        rooms = rooms->door[side]; // enter next room
-        switch (side)
-        {
-        case 0: // bottom side
-            rooms->door[2] = previousRoom;
-            break;
-        case 1: // left side
-            rooms->door[3] = previousRoom;
-            break;
-        case 2: // top side
-            rooms->door[0] = previousRoom;
-            break;
-        case 3: // right side
-            rooms->door[1] = previousRoom;
-            break;
-        default:
-            break;
-        }
-
+        pListRooms previousRoomList = rooms;
+        rooms = rooms->nextRoom;                // enter next room
+        rooms->previousRoom = previousRoomList; // set previous room as the one the player entered
         entered = true;
     }
+
     return entered;
 }
 
-// Create the rooms for the n doors that are on the screen
+/*
+// Create the rooms for the  doors that are on the screen
 void Map::createRooms(int side, pListRooms previousRoom)
 {
     int previousDoorSide = -1;
@@ -211,7 +202,7 @@ void Map::createRooms(int side, pListRooms previousRoom)
     }
 
     MyString debug;
-    for (int i = 0; i < MAXDOORS; i++)
+    for (int i = 0; i < 4; i++)
     {
         if (i == previousDoorSide)
         {
@@ -240,14 +231,30 @@ void Map::createRooms(int side, pListRooms previousRoom)
                 rooms->door[i] = NULL;
         }
     }
+
+
     mvaddstr(3, 70, debug.get());
 }
+*/
 
-// returns the given door room's key. -1 if not found
-int Map::getKeyByDoor(int side)
+
+// returns the given door room's key. -1 if not found. parameter room: 0 = previous room; 1 = next room 
+int Map::getKeyByDoor(int room)
 {
     int key = -1;
-    if (this->rooms->door[side] != NULL)
-        key = this->rooms->door[side]->currentRoom.getKey();
+    switch (room)
+    {
+    case 0: // previous room
+        if (this->rooms->previousRoom != NULL)
+            key = this->rooms->previousRoom->currentRoom.getKey();
+        break;
+    case 1: // previous room
+        if (this->rooms->nextRoom != NULL)
+            key = this->rooms->nextRoom->currentRoom.getKey();
+        break;
+    default:
+        break;
+    }
+
     return key;
 }
