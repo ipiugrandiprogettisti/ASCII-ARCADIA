@@ -185,7 +185,7 @@ void Room::drawLook()
     }
 }
 
-// sets up the room if myDoor doesnt exist (-1), then it is the first room being set up
+// sets up the room if myDoor doesnt exist (-1), then it is the first room being set up. myDoor is previous door of the new room, empty if first room
 bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 {
     // if room was already drew there is no need to redraw, so function ends

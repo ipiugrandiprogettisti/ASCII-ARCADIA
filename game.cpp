@@ -30,35 +30,40 @@ void debugRoom(Map myMap)
 void debugDoors(Map myMap, int y, int x)
 {
     MyString string1, string2, string3, string4;
-    door bs = myMap.rooms->currentRoom.getDoor(0);
-    string1 += "Bottom side: ";
-    string1 += "y: ";
-    string1 += itoa(bs.y);
-    string1 += ", x: ";
-    string1 += itoa(bs.x);
+    door myDoor = myMap.rooms->currentRoom.getDoor(1);
+    string1 += "Next door: ";
+    string1 += "y= ";
+    string1 += itoa(myDoor.y);
+    string1 += ", x= ";
+    string1 += itoa(myDoor.x);
+    string1 += ", side= ";
+    string1 += itoa(myDoor.side);
     mvaddstr(y, x, string1.get());
-    bs = myMap.rooms->currentRoom.getDoor(1);
-    string2 += "Left side: ";
-    string2 += "y: ";
-    string2 += itoa(bs.y);
-    string2 += ", x: ";
-    string2 += itoa(bs.x);
+    myDoor = myMap.rooms->currentRoom.getDoor(0);
+    string2 += "Previous door: ";
+    string2 += "y= ";
+    string2 += itoa(myDoor.y);
+    string2 += ", x= ";
+    string2 += itoa(myDoor.x);
+    string2 += ", side= ";
+    string2 += itoa(myDoor.side);
     mvaddstr(y + 1, x, string2.get());
-    bs = myMap.rooms->currentRoom.getDoor(2);
+
+    /*myDoor = myMap.rooms->currentRoom.getDoor(2);
     string3 += "Top side: ";
     string3 += "y: ";
-    string3 += itoa(bs.y);
+    string3 += itoa(myDoor.y);
     string3 += ", x: ";
-    string3 += itoa(bs.x);
+    string3 += itoa(myDoor.x);
     mvaddstr(y + 2, x, string3.get());
-    bs = myMap.rooms->currentRoom.getDoor(3);
+    myDoor = myMap.rooms->currentRoom.getDoor(3);
     string4 += "Right side: ";
     string4 += "y: ";
-    string4 += itoa(bs.y);
+    string4 += itoa(myDoor.y);
     string4 += ", x: ";
-    string4 += itoa(bs.x);
+    string4 += itoa(myDoor.x);
     mvaddstr(y + 3, x, string4.get());
-
+*/
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
@@ -216,27 +221,33 @@ void startGame(WINDOW *myWin)
     {
         switch (ch)
         {
-        case KEY_RIGHT:
-            // simula entrata player porta destra
-            //  mvaddstr(4, 0, "Freccia destra"); //just debug info
-            //  myMap.rooms.
-            if (myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor))
+        case KEY_LEFT:
+        
+            // simula entrata player porta sinistra
+            if (myMap.rooms->currentRoom.getDoor(1).side == 1) // check if next door is located on left side. FIXME: check if PLAYERS is located on left side
             {
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
+                if (myMap.rooms->currentRoom.setUp(COLS, LINES, myMap.rooms->currentRoom.getDoor(1)))
+                {
+                    myMap.rooms->currentRoom.drawLook();
+                    refresh();
+                    wrefresh(myMap.rooms->currentRoom.getWindow());
+                }
+                else
+                {
+                    str += "Stanza già disegnata";
+                    mvaddstr(0, 56, str.get());
+                    clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                                }
             }
             else
-                mvaddstr(0, 56, "Stanza già disegnata");
-            break;
-
-        case KEY_LEFT:
-            // simula entrata player porta sinistra
-
-            myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
+            {
+                str += "Non esite nessuna stanza in LEFT SIDE";
+                mvaddstr(0, 56, str.get());
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                str.reset();
+            }
 
             // if (myMap.rooms->currentRoom.getDoorSide(1)){}
             // str = "Next door side: ";
@@ -262,6 +273,38 @@ void startGame(WINDOW *myWin)
 
             break;
 
+        case KEY_RIGHT:
+            // simula entrata player porta destra
+            //  mvaddstr(4, 0, "Freccia destra"); //just debug info
+            //  myMap.rooms.
+            if (myMap.rooms->currentRoom.getDoor(1).side == 3) // check if next door is located on left side. FIXME: check if PLAYERS is located on left side
+            {
+                if (myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor))
+                {
+                    myMap.rooms->currentRoom.drawLook();
+                    refresh();
+                    wrefresh(myMap.rooms->currentRoom.getWindow());
+                }
+                else
+                {
+                    str += "Stanza già disegnata";
+                    mvaddstr(0, 56, str.get());
+                    refresh();
+                    wrefresh(myMap.rooms->currentRoom.getWindow());
+                    clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                }
+            }
+            else
+            {
+                str += "Non esite nessuna stanza in RIGHT SIDE";
+                mvaddstr(0, 56, str.get());
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                str.reset();
+            }
+            break;
+
         case KEY_UP:
             // simula entrata player porta superiore
 
@@ -277,8 +320,7 @@ void startGame(WINDOW *myWin)
             clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
             clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
             clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-            clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-            
+
             debugRoom(myMap);
             debugDoors(myMap, 0, 40);
             break;
@@ -296,15 +338,19 @@ void startGame(WINDOW *myWin)
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
             clearScreen(4, 0, str.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
+            str.reset();
             break;
 
         case '1':
             str = "Door 1 room key: ";
             str += itoa(myMap.getKeyByDoor(1));
             mvaddstr(4, 0, str.get());
+            str.reset();
             break;
         default:
             break;
         }
+
+        str.reset();
     }
 }
