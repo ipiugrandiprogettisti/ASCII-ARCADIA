@@ -267,7 +267,7 @@ void startGame(WINDOW *myWin)
             mvaddstr(4, 0, str.get());
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
-            clearScreen(4, 0, str.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
+            clearScreen(4, 0, str.getLength(), myMap.rooms->currentRoom.getWindow(), 2); 
 
             break;
 

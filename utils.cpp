@@ -72,4 +72,4 @@ void clearScreen(int y, int x, int length, WINDOW *win, int delay)
     }
     refresh();
     wrefresh(win);
-}
+} 

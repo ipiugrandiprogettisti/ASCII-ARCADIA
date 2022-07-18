@@ -11,4 +11,4 @@ void checkScreen(int screenCols, int screenLines);
 void checkColors();
 
 //clear the screen with " "
-void clearScreen(int y, int x, int length, WINDOW * win, int delay);
+void clearScreen(int y, int x, int length, WINDOW * win, int delay); 
