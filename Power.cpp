@@ -13,6 +13,16 @@ Power ::Power(int type, int y, int x, chtype tag) : Entity(position.y, position.
     this->tag = tag;
 };
 
+void Power::setPower(Power p)
+{
+    switch (p.type)
+    {
+    case 1:
+        p.tag = 230;
+    case 2:
+        p.tag = 187;
+    }
+}
 int Power::getType(Power p)
 {
     return p.type;
