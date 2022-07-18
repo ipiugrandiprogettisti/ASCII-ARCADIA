@@ -1,5 +1,6 @@
 #include <ncurses.h>
 #include <stdlib.h>
+#include <ctime>
 #include "header/game.hpp"
 #include "header/utils.hpp"
 #include "header/Map.hpp"
@@ -264,6 +265,10 @@ void startGame(WINDOW *myWin)
             str = "Door 0 room key: ";
             str += itoa(myMap.getKeyByDoor(0));
             mvaddstr(4, 0, str.get());
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+            clearScreen(4, 0, str.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
+
             break;
 
         case '1':

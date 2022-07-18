@@ -1,4 +1,5 @@
 #include "header/utils.hpp"
+#include <ctime>
 
 // custom itoa, converts int to const char *
 // FIXME problema append, a volte viene stampato garbage... problemi con \0 finale DA TESTARE ANCHE QUI SE C'È PROBLEMA
@@ -56,3 +57,19 @@ void checkColors()
 
 // listRooms functions
 // head insert
+
+// clear the screen with " "
+void clearScreen(int y, int x, int length, WINDOW *win, int delay)
+{
+    delay *= CLOCKS_PER_SEC;
+    clock_t now = clock();
+    while (clock() - now < delay)
+    {
+        for (int i = length; i != 0; i--)
+        {
+            mvaddstr(y, x + i - 1, " ");
+        }
+    }
+    refresh();
+    wrefresh(win);
+}
