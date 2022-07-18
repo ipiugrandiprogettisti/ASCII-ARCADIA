@@ -61,9 +61,19 @@ void checkColors()
 // clear the screen with " "
 void clearScreen(int y, int x, int length, WINDOW *win, int delay)
 {
-    delay *= CLOCKS_PER_SEC;
-    clock_t now = clock();
-    while (clock() - now < delay)
+    if (delay > 0)
+    {
+        delay *= CLOCKS_PER_SEC;
+        clock_t now = clock();
+        while (clock() - now < delay)
+        {
+            for (int i = length; i != 0; i--)
+            {
+                mvaddstr(y, x + i - 1, " ");
+            }
+        }
+    }
+    else
     {
         for (int i = length; i != 0; i--)
         {
@@ -72,4 +82,4 @@ void clearScreen(int y, int x, int length, WINDOW *win, int delay)
     }
     refresh();
     wrefresh(win);
-} 
+}

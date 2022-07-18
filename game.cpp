@@ -8,53 +8,64 @@
 // debug info at top screen printing the room key, cols and lines
 void debugRoom(Map myMap)
 {
-    MyString string;
-    string += "Room key: ";
-    string += itoa(myMap.rooms->currentRoom.getKey());
-    mvaddstr(0, 0, string.get());
-    string = "Colonne: ";
-    string += itoa(COLS);
-    mvaddstr(1, 0, string.get());
-    string = "Righe: ";
-    string += itoa(LINES);
-    mvaddstr(2, 0, string.get());
+    MyString string1, string2, string3;
+    string1 += "Room key: ";
+    string1 += itoa(myMap.rooms->currentRoom.getKey());
+    mvaddstr(0, 0, string1.get());
+    string2 = "Colonne: ";
+    string2 += itoa(COLS);
+    mvaddstr(1, 0, string2.get());
+    string3 = "Righe: ";
+    string3 += itoa(LINES);
+    mvaddstr(2, 0, string3.get());
+
+    refresh();
+    wrefresh(myMap.rooms->currentRoom.getWindow());
+
+    /*clearScreen(0, 0, string1.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
+    clearScreen(1, 0, string2.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
+    clearScreen(2, 0, string3.getLength(), myMap.rooms->currentRoom.getWindow(), 2);*/
 }
 // debug info at top screen printing the coords of the doors
 void debugDoors(Map myMap, int y, int x)
 {
-    MyString debug;
+    MyString string1, string2, string3, string4;
     door bs = myMap.rooms->currentRoom.getDoor(0);
-    debug += "Bottom side: ";
-    debug += "y: ";
-    debug += itoa(bs.y);
-    debug += ", x: ";
-    debug += itoa(bs.x);
-    mvaddstr(y, x, debug.get());
-    debug.reset();
+    string1 += "Bottom side: ";
+    string1 += "y: ";
+    string1 += itoa(bs.y);
+    string1 += ", x: ";
+    string1 += itoa(bs.x);
+    mvaddstr(y, x, string1.get());
     bs = myMap.rooms->currentRoom.getDoor(1);
-    debug += "Left side: ";
-    debug += "y: ";
-    debug += itoa(bs.y);
-    debug += ", x: ";
-    debug += itoa(bs.x);
-    mvaddstr(y + 1, x, debug.get());
-    debug.reset();
+    string2 += "Left side: ";
+    string2 += "y: ";
+    string2 += itoa(bs.y);
+    string2 += ", x: ";
+    string2 += itoa(bs.x);
+    mvaddstr(y + 1, x, string2.get());
     bs = myMap.rooms->currentRoom.getDoor(2);
-    debug += "Top side: ";
-    debug += "y: ";
-    debug += itoa(bs.y);
-    debug += ", x: ";
-    debug += itoa(bs.x);
-    mvaddstr(y + 2, x, debug.get());
-    debug.reset();
+    string3 += "Top side: ";
+    string3 += "y: ";
+    string3 += itoa(bs.y);
+    string3 += ", x: ";
+    string3 += itoa(bs.x);
+    mvaddstr(y + 2, x, string3.get());
     bs = myMap.rooms->currentRoom.getDoor(3);
-    debug += "Right side: ";
-    debug += "y: ";
-    debug += itoa(bs.y);
-    debug += ", x: ";
-    debug += itoa(bs.x);
-    mvaddstr(y + 3, x, debug.get());
-    debug.reset();
+    string4 += "Right side: ";
+    string4 += "y: ";
+    string4 += itoa(bs.y);
+    string4 += ", x: ";
+    string4 += itoa(bs.x);
+    mvaddstr(y + 3, x, string4.get());
+
+    refresh();
+    wrefresh(myMap.rooms->currentRoom.getWindow());
+
+    /*clearScreen(y, x, string1.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
+    clearScreen(y + 1, x, string2.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
+    clearScreen(y + 2, x, string3.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
+    clearScreen(y + 3, x, string4.getLength(), myMap.rooms->currentRoom.getWindow(), 2);*/
 }
 
 // print main menu, sel is selected item to highlight
@@ -221,6 +232,12 @@ void startGame(WINDOW *myWin)
 
         case KEY_LEFT:
             // simula entrata player porta sinistra
+
+            myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+
             // if (myMap.rooms->currentRoom.getDoorSide(1)){}
             // str = "Next door side: ";
             // str += itoa(myMap.rooms->currentRoom.getDoor(1).side);
@@ -257,8 +274,19 @@ void startGame(WINDOW *myWin)
 
         case 'd':
             // DEBUGGING INFO
+            clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            
             debugRoom(myMap);
             debugDoors(myMap, 0, 40);
+            break;
+        case 'c':
+            clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
             break;
 
         case '0':
@@ -267,8 +295,7 @@ void startGame(WINDOW *myWin)
             mvaddstr(4, 0, str.get());
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
-            clearScreen(4, 0, str.getLength(), myMap.rooms->currentRoom.getWindow(), 2); 
-
+            clearScreen(4, 0, str.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
             break;
 
         case '1':
