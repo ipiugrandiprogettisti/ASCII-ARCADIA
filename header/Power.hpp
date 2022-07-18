@@ -12,4 +12,8 @@ public:
     Power();
 
     Power(int type, int y, int x, chtype tag);
+
+    int getType(Power p);
+
+    void printPower(Power p, WINDOW *w);
 };

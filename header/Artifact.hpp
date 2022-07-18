@@ -16,21 +16,20 @@ protected:
     int rarity;
 
 public:
+    // constructor
     Artifact();
-
-    Artifact(char name[NMAX], int rarity, int lifepoints, int y, int x, chtype tag);
+    // constructor
+    Artifact(char name[NMAX], int rarity, int y, int x, chtype tag);
 
     // returns artifact life points
-    int getlifep(Artifact p);
+    int getLifepoints(Artifact p);
     // returns artifact rarity
-    int getrarity(Artifact p);
-    // sets artifact lifepoints based on rarity
-    void set_lifep(Artifact p);
-    // sets artifact symbol based on rarity
-    void set_symbol(Artifact p);
+    int getRarity(Artifact p);
+    // sets artifact lifepoints and tag based on rarity
+    void setArtifact(Artifact p);
 
     // resets character life based on artifact healing
-    void gainlife(Character a, Artifact p);
+    void gainLife(Character a, Artifact p);
     // print artifact on certain position
     void printArtifact(Artifact p, WINDOW *w);
 };

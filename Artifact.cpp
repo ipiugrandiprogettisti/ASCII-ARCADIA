@@ -13,59 +13,46 @@ Artifact ::Artifact()
     position.x = 0;
 }
 
-Artifact ::Artifact(char name[NMAX], int rarity, int lifepoints, int posy, int posx, chtype tagg) : Entity(position.y, position.x, tag)
+Artifact ::Artifact(char name[NMAX], int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
 {
     strcpy(this->name, name);
     this->rarity = rarity;
-    this->lifepoints = 0;
     this->position.y = posy;
     this->position.x = posx;
-    this->tag = tagg;
+    this->tag = 111;
 }
 
-int Artifact ::getlifep(Artifact p)
+int Artifact ::getLifepoints(Artifact p)
 {
     return p.lifepoints;
 }
 
-int Artifact ::getrarity(Artifact p)
+int Artifact ::getRarity(Artifact p)
 {
     return p.rarity;
 }
 
-void Artifact ::set_lifep(Artifact p)
-{
-    int prarity = p.rarity;
-    switch (prarity)
-    {
-    case 1:
-        p.lifepoints = 1;
-    case 2:
-        p.lifepoints = 3;
-    case 3:
-        p.lifepoints = 7;
-    case 4:
-        p.lifepoints = 10;
-    }
-}
-
-void Artifact ::set_symbol(Artifact p)
+void Artifact ::setArtifact(Artifact p)
 {
     int prarity = p.rarity;
     switch (prarity)
     {
     case '1':
+        p.lifepoints = 1;
         p.tag = 169;
     case '2':
+        p.lifepoints = 3;
         p.tag = 174;
     case '3':
+        p.lifepoints = 7;
         p.tag = 167;
     case '4':
+        p.lifepoints = 10;
         p.tag = 163;
     }
 }
 
-void Artifact ::gainlife(Character a, Artifact p)
+void Artifact ::gainLife(Character a, Artifact p)
 {
     int actual = a.current_life;
     int heal = p.lifepoints;
