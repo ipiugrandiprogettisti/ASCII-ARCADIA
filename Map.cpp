@@ -237,8 +237,7 @@ void Map::createRooms(int side, pListRooms previousRoom)
 }
 */
 
-
-// returns the given door room's key. -1 if not found. parameter room: 0 = previous room; 1 = next room 
+// returns the given door room's key. -1 if not found. parameter room: 0 = previous room; 1 = next room
 int Map::getKeyByDoor(int room)
 {
     int key = -1;

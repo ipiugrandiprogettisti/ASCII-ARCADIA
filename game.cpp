@@ -189,9 +189,9 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.drawLook();
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
-   
+
     // DEBUG INFO
-    //myMap.createRooms(-1, NULL); // first room
+    // myMap.createRooms(-1, NULL); // first room
     // debugDoors(myMap, 0, 40);
     debugRoom(myMap);
     // debugDoors(myMap, 0, 40);
@@ -205,8 +205,9 @@ void startGame(WINDOW *myWin)
         switch (ch)
         {
         case KEY_RIGHT:
-            // mvaddstr(4, 0, "Freccia destra"); //just debug info
-            // myMap.rooms.
+            // simula entrata player porta destra
+            //  mvaddstr(4, 0, "Freccia destra"); //just debug info
+            //  myMap.rooms.
             if (myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor))
             {
                 myMap.rooms->currentRoom.drawLook();
@@ -218,6 +219,11 @@ void startGame(WINDOW *myWin)
             break;
 
         case KEY_LEFT:
+            // simula entrata player porta sinistra
+            // if (myMap.rooms->currentRoom.getDoorSide(1)){}
+            // str = "Next door side: ";
+            // str += itoa(myMap.rooms->currentRoom.getDoor(1).side);
+            // mvaddstr(6, 0, str.get());
             // if(personaggio è dentro la porta) then...
             // getDoorSide() //per printare poi la porta dal lato giusto nella nuova stanza come previous door
             // creates door0 room
@@ -232,11 +238,20 @@ void startGame(WINDOW *myWin)
             }*/
 
             // myMap.enterRoom(myMap.rooms->door0->currentRoom.getKey());
-            str = "Door 0 room key: ";
+
             // str += itoa(myMap.rooms->door[0]->currentRoom.getKey());
             // tmp = myMap.rooms->door[0]->currentRoom.getDoor(0);
-            str += itoa(myMap.getKeyByDoor(0));
-            mvaddstr(4, 0, str.get());
+
+            break;
+
+        case KEY_UP:
+            // simula entrata player porta superiore
+
+            break;
+
+        case KEY_DOWN:
+            // simula entrata player porta inferiore
+
             break;
 
         case 'd':
@@ -245,9 +260,16 @@ void startGame(WINDOW *myWin)
             debugDoors(myMap, 0, 40);
             break;
 
+        case '0':
+            str = "Door 0 room key: ";
+            str += itoa(myMap.getKeyByDoor(0));
+            mvaddstr(4, 0, str.get());
+            break;
+
         case '1':
-            // TODO FIXME: prima stanza viene ricreata quando si fa changeRoom
-            //changeRoom(myMap, 0);
+            str = "Door 1 room key: ";
+            str += itoa(myMap.getKeyByDoor(1));
+            mvaddstr(4, 0, str.get());
             break;
         default:
             break;

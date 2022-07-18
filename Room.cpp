@@ -141,10 +141,10 @@ struct objContainer Room::getObjectList()
 struct door Room::getDoor(int isNextRoom)
 {
     struct door myDoor;
-    // FIXME: cerca tra le stanze
+    myDoor = doorInfo[isNextRoom];
 
-    if (doorInfo[isNextRoom].x > -1 || doorInfo[isNextRoom].y > -1)
-        myDoor = doorInfo[isNextRoom];
+    /*if (doorInfo[isNextRoom].x > -1 || doorInfo[isNextRoom].y > -1)
+        myDoor = doorInfo[isNextRoom];*/
 
     return myDoor;
 }
@@ -213,7 +213,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 
     // PLACING DOORS
     int previousDoorSide = -1;
-    if (previousRoomExists)
+    if (previousRoomExists) // checking where the previous door was in order to place it on the opposite side after
     {
         // placing previous door; it has to be placed on the opposite side where it was in the previous room
         switch (myDoor.side)
@@ -243,7 +243,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
             break;
         }
 
-        doorInfo[previousDoorSide] = myDoor;
+        doorInfo[0] = myDoor;
     }
 
     // now we have to draw 1 to (4-1) doors (previous one is already placed)
@@ -252,9 +252,9 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    srand(time(0));                                         // FIXME: seed casuale
-    int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
-
+    srand(time(NULL)); // FIXME: seed casuale
+    // int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
+    int nDoors = 1;
     int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
     for (int i = 0; i < nDoors; i++) // init array to not placed
     {
@@ -262,52 +262,53 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     }
 
     int i = 0;
-    while (i < nDoors)
+    // while (i < nDoors)  //placing new door
+    //{
+    int side = rand() % 4; // picking a casual side to place the door
+    bool isOccupied = false;
+    for (int k = 0; k < nDoors; k++)
     {
-        int side = rand() % 4; // picking a casual side to place the door
-        bool isOccupied = false;
-        for (int k = 0; k < nDoors; k++)
-        {
-            if (placedDoors[k] == side || myDoor.side == side) // check if side is already occupied by other doors
-                isOccupied = true;
-        }
+        if (placedDoors[k] == side || myDoor.side == side) // check if side is already occupied by other doors
+            isOccupied = true;
+    }
 
-        if (isOccupied == false) // if side is free, then place door
+    if (isOccupied == false) // if side is free, then place door
+    {
+        struct door myDoorTmp;
+        myDoorTmp.side = side;
+        switch (myDoorTmp.side) // match/adjust side to coords
         {
-            struct door myDoorTmp;
-            myDoorTmp.side = side;
-            switch (myDoorTmp.side) // match/adjust side to coords
-            {
-            case 0: // bottom side
-                myDoorTmp.y = WIDTH - 1;
-                myDoorTmp.x = HEIGTH / 2;
-                placeDoor(myDoorTmp);
-                //setDoor(0, myDoorTmp);
-                break;
-            case 1: // left side
-                myDoorTmp.y = WIDTH / 2;
-                myDoorTmp.x = 0;
-                placeDoor(myDoorTmp);
-                //setDoor(1, myDoorTmp);
-                break;
-            case 2: // top side
-                myDoorTmp.y = 0;
-                myDoorTmp.x = HEIGTH / 2;
-                placeDoor(myDoorTmp);
-                //setDoor(2, myDoorTmp);
-                break;
-            case 3: // right side
-                myDoorTmp.y = WIDTH / 2;
-                myDoorTmp.x = HEIGTH - 1;
-                placeDoor(myDoorTmp);
-                //setDoor(3, myDoorTmp);
-                break;
+        case 0: // bottom side
+            myDoorTmp.y = WIDTH - 1;
+            myDoorTmp.x = HEIGTH / 2;
+            placeDoor(myDoorTmp);
+            // setDoor(0, myDoorTmp);
+            break;
+        case 1: // left side
+            myDoorTmp.y = WIDTH / 2;
+            myDoorTmp.x = 0;
+            placeDoor(myDoorTmp);
+            // setDoor(1, myDoorTmp);
+            break;
+        case 2: // top side
+            myDoorTmp.y = 0;
+            myDoorTmp.x = HEIGTH / 2;
+            placeDoor(myDoorTmp);
+            // setDoor(2, myDoorTmp);
+            break;
+        case 3: // right side
+            myDoorTmp.y = WIDTH / 2;
+            myDoorTmp.x = HEIGTH - 1;
+            placeDoor(myDoorTmp);
+            // setDoor(3, myDoorTmp);
+            break;
 
-            default:
-                break;
-            }
+        default:
+            break;
         }
-        i++;
+        //}
+        // i++;
+        doorInfo[1] = myDoorTmp;
     }
 
     // PLACING OBJECTS
