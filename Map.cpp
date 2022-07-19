@@ -43,11 +43,10 @@ WINDOW *Map::getRoomWindow(int key)
     return rooms->currentRoom.getWindow();
 }
 
-/*
 // head insert
-pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomInfo)
+pListRooms insertHead(pListRooms myListRoom, Room roomInfo)
 {
-    pListRooms list = new listRooms;
+    /*pListRooms list = new listRooms;
     switch (previousDoorInfo.side)
     {
     case 0:
@@ -73,10 +72,116 @@ pListRooms insertHead(pListRooms rooms, struct door previousDoorInfo, Room roomI
         break;
     }
 
-    return list;
+    return list;*/
+
+    pListRooms newListRooms = new listRooms;
+    newListRooms->currentRoom = roomInfo;
+    newListRooms->nextRoom = myListRoom;
+
+    return newListRooms;
 }
 
+// tail insert
+pListRooms insertTail(pListRooms myListRoom, Room roomInfo)
+{
+    /*pListRooms list;
+    if (rooms == NULL)
+    {
+        rooms = new listRooms;
+        rooms->currentRoom = Room(newRoomKey);
+        for (int i = 0; i < MAXDOORS; i++)
+            rooms->door[i] = NULL;
+    }
+    else
+    {
+        for (list = rooms; list->door[0] != NULL; list = list->door[0])
+        {
+        }
+        list = new listRooms;
+        list->currentRoom = Room(newRoomKey);
+        for (int i = 0; i < MAXDOORS; i++)
+            rooms->door[i] = NULL;
+    }
+    return rooms;*/
 
+    pListRooms newListRooms;
+
+    if (myListRoom == NULL)
+    {
+        myListRoom = new listRooms;
+        myListRoom->currentRoom = roomInfo;
+        myListRoom->nextRoom = NULL;
+    }
+    else
+    {
+        for (newListRooms = myListRoom; newListRooms->nextRoom != NULL; newListRooms = newListRooms->nextRoom)
+        {
+        }
+        newListRooms->nextRoom = new listRooms;
+        newListRooms->nextRoom->currentRoom = roomInfo;
+        newListRooms->nextRoom->nextRoom = NULL;
+    }
+
+    return myListRoom;
+}
+
+// changes room, 1 = next room, 0 = previous room
+bool Map::changeRoom(int isNextRoom)
+{
+    bool success = false;
+
+    switch (isNextRoom)
+    {
+    case 0: // PREVIOUS ROOM
+        rooms = goPreviousRoom(rooms->previousRoom, rooms);
+        break;
+    case 1: // NEXT ROOM
+        rooms = goNextRoom(rooms);
+        break;
+
+    default:
+        break;
+    }
+
+    return success;
+}
+
+// funzione che va avanti di un nodo
+pListRooms goNextRoom(pListRooms myListRooms)
+{
+    if (myListRooms->nextRoom != NULL)
+    {
+        myListRooms = myListRooms->nextRoom;
+    }
+    else
+    {
+        // cout << "Sei arrivato alla fine della lista";
+        myListRooms = NULL;
+    }
+    return myListRooms;
+}
+
+// funzione che va indietro di un nodo
+pListRooms goPreviousRoom(pListRooms previousListRooms, pListRooms myListRooms)
+{
+    pListRooms tmpList;
+
+    if (previousListRooms != myListRooms)
+    {
+        for (tmpList = previousListRooms; tmpList->nextRoom != myListRooms; tmpList = tmpList->nextRoom)
+        {
+        }
+    }
+    else
+    {
+        // cout << "Non esiste precedente alla testa";
+        tmpList = NULL;
+    }
+
+    return tmpList;
+}
+
+/*
 // search and return specific room. returns NULL if not found
 pListRooms getRoomByKey(pListRooms rooms, int key)
 {
@@ -108,29 +213,6 @@ pListRooms getRoomByKey(pListRooms rooms, int key)
     return rooms;
 }
 
-// tail insert
-pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey)
-{
-    pListRooms list;
-    if (rooms == NULL)
-    {
-        rooms = new listRooms;
-        rooms->currentRoom = Room(newRoomKey);
-        for (int i = 0; i < MAXDOORS; i++)
-            rooms->door[i] = NULL;
-    }
-    else
-    {
-        for (list = rooms; list->door[0] != NULL; list = list->door[0])
-        {
-        }
-        list = new listRooms;
-        list->currentRoom = Room(newRoomKey);
-        for (int i = 0; i < MAXDOORS; i++)
-            rooms->door[i] = NULL;
-    }
-    return rooms;
-}
 
 
 // creates new room
@@ -159,19 +241,36 @@ void Map::createRoom(struct door doorInfo)
 }
 */
 
-// enters new room. return true if succeeds
-bool Map::enterRoom(int side)
+// enters new room. return true if succeeds. isNextRoom = 0 previous room, = 1 next room
+bool Map::enterRoom(int isNextRoom)
 {
     // rooms = getRoomByKey(rooms, key);
 
     bool entered = false;
-
-    if (rooms->nextRoom != NULL) // check if next room exists
+    switch (isNextRoom)
     {
-        pListRooms previousRoomList = rooms;
-        rooms = rooms->nextRoom;                // enter next room
-        rooms->previousRoom = previousRoomList; // set previous room as the one the player entered
-        entered = true;
+    case 0:                              // PREVIOUS ROOM
+        if (rooms->previousRoom != NULL) // check if previous room exists
+        {
+            pListRooms previousRoomList = rooms;
+            rooms = rooms->previousRoom;        // enter next room
+            rooms->nextRoom = previousRoomList; // set previous room as the one the player entered
+            entered = true;
+        }
+        break;
+    case 1:                          // NEXT ROOM
+        if (rooms->nextRoom != NULL) // check if next room exists
+        {
+            pListRooms previousRoomList = rooms;
+            rooms = rooms->nextRoom;                // enter next room
+            rooms->previousRoom = previousRoomList; // set previous room as the one the player entered
+            rooms->currentRoom.setUp(COLS, LINES, previousRoomList->currentRoom.getDoor(1));
+            entered = true;
+        }
+        break;
+
+    default:
+        break;
     }
 
     return entered;

@@ -48,12 +48,15 @@ public:
     // creates new room
     void createRoom(struct door doorInfo);
 
-    // enters new room: makes it currentRoom. return true if succeed
-    bool enterRoom(int key);
+    // enters new room. return true if succeeds. isNextRoom = 0 previous room, = 1 next room
+    bool enterRoom(int isNextRoom);
 
     // Create the rooms for the n doors that are on the screen
     void createRooms(int side, pListRooms previousRoom);
 
     // returns the given door room's key. -1 if not found. parameter room: 0 = previous room; 1 = next room
     int getKeyByDoor(int side);
+
+    // changes room, 1 = next room, 0 = previous room
+    bool changeRoom(int isNextRoom);
 };

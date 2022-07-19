@@ -222,22 +222,23 @@ void startGame(WINDOW *myWin)
         switch (ch)
         {
         case KEY_LEFT:
-        
+
             // simula entrata player porta sinistra
             if (myMap.rooms->currentRoom.getDoor(1).side == 1) // check if next door is located on left side. FIXME: check if PLAYERS is located on left side
             {
-                if (myMap.rooms->currentRoom.setUp(COLS, LINES, myMap.rooms->currentRoom.getDoor(1)))
+                if (myMap.enterRoom(1))
                 {
+                    
                     myMap.rooms->currentRoom.drawLook();
                     refresh();
                     wrefresh(myMap.rooms->currentRoom.getWindow());
                 }
                 else
                 {
-                    str += "Stanza già disegnata";
+                    str += "Impossibile entrare";
                     mvaddstr(0, 56, str.get());
                     clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
-                                }
+                }
             }
             else
             {
