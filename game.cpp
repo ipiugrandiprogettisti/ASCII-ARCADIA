@@ -224,20 +224,42 @@ void startGame(WINDOW *myWin)
         case KEY_LEFT:
 
             // simula entrata player porta sinistra
-            if (myMap.rooms->currentRoom.getDoor(1).side == 1) // check if next door is located on left side. FIXME: check if PLAYERS is located on left side
-            {
-                if (myMap.enterRoom(1))
+            if (myMap.rooms->currentRoom.getDoor(1).side == 1)
+            { // check if next door is located on left side. FIXME: check if PLAYERS is located on left side
+                if (myMap.createRoom(myMap.rooms->currentRoom.getDoor(1)))
                 {
-                    
-                    myMap.rooms->currentRoom.drawLook();
+                    str += "Stanza successiva creata, key: ";
+                    str += itoa(myMap.rooms->nextRoom->currentRoom.getKey());
+                    mvaddstr(0, 58, str.get());
                     refresh();
                     wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                    if (myMap.changeRoom(1))
+                    {
+                        str += "Entrato nella stanza: ";
+                        str += itoa(myMap.rooms->currentRoom.getKey());
+                        mvaddstr(0, 56, str.get());
+                        refresh();
+                        wrefresh(myMap.rooms->currentRoom.getWindow());
+                        // clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+
+                        /*myMap.rooms->currentRoom.drawLook();
+                        refresh();
+                        wrefresh(myMap.rooms->currentRoom.getWindow());*/
+                    }
+                    else
+                    {
+                        str += "Impossibile entrare";
+                        mvaddstr(0, 56, str.get());
+                        // clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                    }
                 }
                 else
                 {
-                    str += "Impossibile entrare";
-                    mvaddstr(0, 56, str.get());
-                    clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                    str += "Stanza successiva già esistente";
+                    mvaddstr(0, 58, str.get());
+                    refresh();
+                    wrefresh(myMap.rooms->currentRoom.getWindow());
                 }
             }
             else
@@ -280,7 +302,7 @@ void startGame(WINDOW *myWin)
             //  myMap.rooms.
             if (myMap.rooms->currentRoom.getDoor(1).side == 3) // check if next door is located on left side. FIXME: check if PLAYERS is located on left side
             {
-                if (myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor))
+                if (myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor)) // FIXME dovrebbe essere nextroom
                 {
                     myMap.rooms->currentRoom.drawLook();
                     refresh();

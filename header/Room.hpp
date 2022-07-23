@@ -8,13 +8,13 @@ const int WIDTH = 30, HEIGTH = 100;
 // if any of the values is -1 then it is not been defined yet; meaning that door does not exist on map/room
 struct door
 {
-    int y = -1, x = -1;      // position
-    int side = -1;           /*- 0: bottom side
-                            - 1: left side
-                            - 2: top side
-                            - 3: right side*/
-    bool isOpen = false;     // if door is closed; player can't cross it
-    int isNextRoom = 1; // 0 = is previous room; 1 = is next room
+    int y = -1, x = -1;  // position
+    int side = -1;       /*- 0: bottom side
+                        - 1: left side
+                        - 2: top side
+                        - 3: right side*/
+    bool isOpen = false; // if door is closed; player can't cross it
+    int isNextRoom = 1;  // 0 = is previous room; 1 = is next room
 };
 
 // enemies list
@@ -109,6 +109,9 @@ private:
     // aux function to place walls
     void createWall(int width, int heigth, int posY, int posX);
 
+    // set the given door information
+    void setDoor(int isNextRoom, struct door doorInfo);
+
 public:
     // Constructort
     Room();
@@ -127,9 +130,6 @@ public:
 
     // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
     struct door getDoor(int isNextRoom);
-
-    // set the given door information
-    void setDoor(int isNextRoom, struct door doorInfo);
 
     // sets up the room if myDoor doesnt exist (-1), then it is the first room being set up
     bool setUp(int maxCols, int maxLines, struct door doorInfo);

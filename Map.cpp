@@ -105,6 +105,7 @@ pListRooms insertTail(pListRooms myListRoom, Room roomInfo)
     return rooms;*/
 
     pListRooms newListRooms;
+    pListRooms tmpOriginalList = myListRoom;
 
     if (myListRoom == NULL)
     {
@@ -114,15 +115,82 @@ pListRooms insertTail(pListRooms myListRoom, Room roomInfo)
     }
     else
     {
-        for (newListRooms = myListRoom; newListRooms->nextRoom != NULL; newListRooms = newListRooms->nextRoom)
+        for (myListRoom = newListRooms; myListRoom->nextRoom != NULL; myListRoom = myListRoom->nextRoom)
         {
         }
-        newListRooms->nextRoom = new listRooms;
-        newListRooms->nextRoom->currentRoom = roomInfo;
-        newListRooms->nextRoom->nextRoom = NULL;
+        myListRoom->nextRoom = new listRooms;
+        myListRoom->nextRoom->currentRoom = roomInfo;
+        myListRoom->nextRoom->nextRoom = NULL;
+        myListRoom->previousRoom = tmpOriginalList;
     }
 
     return myListRoom;
+}
+
+// funzione che va avanti di un nodo
+pListRooms goNextRoom(pListRooms myListRooms, WINDOW *win)
+{
+    if (myListRooms->nextRoom != NULL)
+    {
+        myListRooms = myListRooms->nextRoom;
+    }
+    /*else
+    {
+        // cout << "Sei arrivato alla fine della lista";
+        //???myListRooms = NULL;????
+    }*/
+
+    return myListRooms;
+}
+
+// funzione che va indietro di un nodo
+pListRooms goPreviousRoom(pListRooms myListRooms)
+{
+    /* pListRooms tmpList;
+
+     if (previousListRooms != myListRooms)
+     {
+         for (tmpList = previousListRooms; tmpList->nextRoom != myListRooms; tmpList = tmpList->nextRoom)
+         {
+         }
+     }
+     else
+     {
+         // cout << "Non esiste precedente alla testa";
+         tmpList = NULL;
+     }
+
+     return tmpList;*/
+
+    /*bool found = false;
+    int i = 0;
+
+    pListRooms tmpList = originalList;
+
+    while (myListRooms != NULL && !found)
+    {
+        if (myListRooms->nextRoom == originalList->nextRoom)
+            found = true;
+        else
+            tmpList = tmpList->nextRoom;
+        i++;
+    }
+
+    if (found)
+        return tmpList;
+    else
+        return myListRooms;*/
+
+    if (myListRooms->previousRoom != NULL)
+    {
+        myListRooms = myListRooms->previousRoom;
+    }
+    /*else
+    {
+        // cout << "Sei in cima alla lista";
+    }*/
+
+    return myListRooms;
 }
 
 // changes room, 1 = next room, 0 = previous room
@@ -133,10 +201,15 @@ bool Map::changeRoom(int isNextRoom)
     switch (isNextRoom)
     {
     case 0: // PREVIOUS ROOM
-        rooms = goPreviousRoom(rooms->previousRoom, rooms);
+        rooms = goPreviousRoom(rooms);
+        success = true;
         break;
     case 1: // NEXT ROOM
-        rooms = goNextRoom(rooms);
+        mvaddstr(0, 57, "aasdasdasdasda");
+        refresh();
+        wrefresh(rooms->currentRoom.getWindow());
+        rooms = goNextRoom(rooms, rooms->currentRoom.getWindow());
+        success = true;
         break;
 
     default:
@@ -144,41 +217,6 @@ bool Map::changeRoom(int isNextRoom)
     }
 
     return success;
-}
-
-// funzione che va avanti di un nodo
-pListRooms goNextRoom(pListRooms myListRooms)
-{
-    if (myListRooms->nextRoom != NULL)
-    {
-        myListRooms = myListRooms->nextRoom;
-    }
-    else
-    {
-        // cout << "Sei arrivato alla fine della lista";
-        myListRooms = NULL;
-    }
-    return myListRooms;
-}
-
-// funzione che va indietro di un nodo
-pListRooms goPreviousRoom(pListRooms previousListRooms, pListRooms myListRooms)
-{
-    pListRooms tmpList;
-
-    if (previousListRooms != myListRooms)
-    {
-        for (tmpList = previousListRooms; tmpList->nextRoom != myListRooms; tmpList = tmpList->nextRoom)
-        {
-        }
-    }
-    else
-    {
-        // cout << "Non esiste precedente alla testa";
-        tmpList = NULL;
-    }
-
-    return tmpList;
 }
 
 /*
@@ -212,34 +250,29 @@ pListRooms getRoomByKey(pListRooms rooms, int key)
     }
     return rooms;
 }
-
-
-
-// creates new room
-void Map::createRoom(struct door doorInfo)
-{
-    int key = newKey();
-    switch (doorInfo.side)
-    {
-    case 0: // bottom side
-
-       // rooms->door0->currentRoom = Room(key);
-        //rooms->door0->door2Info = doorInfo; // if player enters room from bottom side; previous room is located top side
-        //rooms->door0->door2 = rooms;
-
-        rooms = insertHead(rooms, doorInfo, Room(key));
-        break;
-    case 1: // left side
-        break;
-    case 2: // top side
-        break;
-    case 3: // right side
-        break;
-    default:
-        break;
-    }
-}
 */
+
+// Create next room. If already exists next room returns false
+bool Map::createRoom(door previousDoor)
+{
+    bool success = false;
+
+    if (rooms->nextRoom != NULL)
+    {
+        int key = newKey();
+
+        // rooms->door0->currentRoom = Room(key);
+        // rooms->door0->door2Info = doorInfo; // if player enters room from bottom side; previous room is located top side
+        // rooms->door0->door2 = rooms;
+
+        rooms = insertTail(rooms, Room(key));
+        rooms->nextRoom->currentRoom.setUp(COLS, LINES, previousDoor);
+
+        success = true;
+    }
+
+    return success;
+}
 
 // enters new room. return true if succeeds. isNextRoom = 0 previous room, = 1 next room
 bool Map::enterRoom(int isNextRoom)
@@ -263,8 +296,15 @@ bool Map::enterRoom(int isNextRoom)
         {
             pListRooms previousRoomList = rooms;
             rooms = rooms->nextRoom;                // enter next room
+                                                    // rooms = goNextRoom(rooms);
             rooms->previousRoom = previousRoomList; // set previous room as the one the player entered
             rooms->currentRoom.setUp(COLS, LINES, previousRoomList->currentRoom.getDoor(1));
+            if (rooms->currentRoom.setUp(COLS, LINES, previousRoomList->currentRoom.getDoor(1)))
+            {
+                mvaddstr(0, 56, "stanza non setuppata2");
+                refresh();
+                wrefresh(rooms->currentRoom.getWindow());
+            }
             entered = true;
         }
         break;

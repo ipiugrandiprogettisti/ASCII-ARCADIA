@@ -189,7 +189,7 @@ void Room::drawLook()
 bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 {
     // if room was already drew there is no need to redraw, so function ends
-    if (drawn)
+    if (drawn == true)
         return false;
 
     // if myDoor is a real door, then it isnt the first room that is being set up
@@ -247,12 +247,13 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     }
 
     // now we have to draw 1 to (4-1) doors (previous one is already placed)
-    // srand(time(0));                           // seed is 0
+
     int prevDoorsNumber = 0;
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    srand(time(NULL)); // FIXME: seed casuale
+    srand(4); // FIXME: seed casuale
+    // srand(time(0));                           // seed is 0
     // int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
     int nDoors = 1;
     int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
@@ -334,5 +335,6 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     // place etc
 
     drawn = true;
-    return true;
+
+    return drawn;
 }
