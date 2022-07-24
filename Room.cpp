@@ -35,6 +35,7 @@ void Room::placeObject(pos position, chtype tag)
     this->look[position.y][position.x] = tag;
 }
 
+
 // aux function to prevent non-free wall
 bool Room::tileIsFree(pos position)
 {
@@ -56,16 +57,69 @@ bool Room::tileIsFree(pos position)
     return free;
 }
 
-// aux function to free row and col
-void Room::freeRowCol(pos position)
+// check if tiles around wall are free
+bool Room::checkTilesAround(pos position, pos previousPosition)
 {
-    bool row = true;
-    pos tmp = position;
-    while (this->look[tmp.y][tmp.x] != ' ')
+    bool free = true;
+    int i = 0;
+    int j = 0;
+    for (i = position.y; i < position.y + 2; i++)
     {
+        for (j = position.x; j < position.x + 2; j++)
+        {
+            if (this->look[i][j] != ' '&& i != previousPosition.y && j != previousPosition.x)
+            {
+                free = false;
+                break;
+            }
+        }
+    }
+    return free;
+}
 
-        this->look[tmp.y + 1][tmp.x] = ' ';
-        tmp.y += 1;
+// random path generator
+void Room::randomPathWall(pos position, int h, int w)
+{
+    w -= 2;
+    h -= 2;
+
+    int random = 0;
+    bool free = true;
+    pos tmp = position;
+    pos previousPosition;
+    while (this->tileIsFree(tmp) && (h > 0 && w > 0))
+    {
+        random = rand() % 4;
+        switch (random)
+        {
+        case 0:
+            h -= 1;
+            tmp.y += 1;
+            free = checkTilesAround(position, previousPosition);
+            break;
+        case 1:
+            h -= 1;
+            tmp.y += 1;
+            free = checkTilesAround(position, previousPosition);
+            break;
+        case 2:
+            w -= 1;
+            tmp.x += 1;
+            free = checkTilesAround(position, previousPosition);
+            break;
+        case 3:
+            h -= 1;
+            tmp.x += 1;
+            free = checkTilesAround(position, previousPosition);
+            break;
+        default:
+            break;
+        }
+        if (free)
+        {
+            this->look[tmp.y][tmp.x] = ACS_CKBOARD;
+            previousPosition = tmp;
+        }
     }
 }
 
@@ -79,10 +133,11 @@ void Room::createWall(int width, int heigth, int posY, int posX)
             pos position;
             position.y = i + posY, position.x = k + posX;
 
-            if (tileIsFree(position))
-            {
-                placeObject(position, ACS_CKBOARD);
-            }
+            // if (tileIsFree(position))
+            //{
+            placeObject(position, ACS_CKBOARD);
+            freeRowCol(position);
+            //}
             /*else FIXME finire freeRowCol
             {
                 freeRowCol(position);
@@ -155,24 +210,6 @@ struct door Room::getDoor(int isNextRoom)
 // set the given door information
 void Room::setDoor(int isNextRoom, struct door myDoor)
 {
-    /*switch (side)
-    {
-    case 0:
-        doorInfo[0] = myDoor;
-        break;
-    case 1:
-        doorInfo[1] = myDoor;
-        break;
-    case 2:
-        doorInfo[2] = myDoor;
-        break;
-    case 3:
-        doorInfo[3] = myDoor;
-        break;
-    default:
-        break;
-    }*/
-
     doorInfo[isNextRoom] = myDoor;
 }
 
@@ -255,8 +292,8 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    // srand(4); // FIXME: seed casuale
-    srand(time(0)); // seed is 0
+    //srand(4); // FIXME: seed casuale
+     srand(time(0)); // seed is 0
 
     int i = 0;
 
@@ -310,23 +347,31 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     // PLACING OBJECTS
 
     // place wall
-    const int MAXWALLS = 15;
+    const int MAXWALLS = 150; // max number of walls in a room
     for (int i = 0; i < MAXWALLS; i++) // number of walls
     {
-        const int offsetSXDX = 6, offsetUPLOW = 6;
-        int posY = (rand() % (WIDTH - (offsetUPLOW * 2))) + offsetUPLOW; // 6-23
-        int posX = (rand() % (HEIGTH - (offsetSXDX * 2))) + offsetSXDX;  // 6-93
-        const int MAXWALLHEIGTH = (((WIDTH - (offsetUPLOW)) - posY) / 1.5) + 1;
+        const int offsetSXDX = 6, offsetTOPBOTTOM = 3;
+        int posY = (rand() % (WIDTH - (offsetTOPBOTTOM * 2))) + offsetTOPBOTTOM; // 3-27
+        int posX = (rand() % (HEIGTH - (offsetSXDX * 2))) + offsetSXDX;          // 6-93
+        const int MAXWALLHEIGTH = (((WIDTH - (offsetTOPBOTTOM)) - posY) / 1.5) + 1;
         const int MAXWALLWIDTH = (((HEIGTH - (offsetSXDX)) - posX) / 1.5) + 1;
         int h = (rand() % (MAXWALLHEIGTH)) + 1; // random number of walls
         int w = (rand() % (MAXWALLWIDTH)) + 1;  // random number of walls
 
-        createWall(w, h, posY, posX);
+        /*createWall(1, 1, offsetTOPBOTTOM, offsetSXDX);
+        createWall(1, 1, 26, offsetSXDX);
+        createWall(1, 1, offsetTOPBOTTOM, 93);
+        createWall(1, 1, 26, 93);*/
+        pos pos1;
+        pos1.x = posX;
+        pos1.y = posY;
+
+        randomPathWall(pos1, h, w);
+        // createWall(w, h, posY, posX);
     }
 
     // TODO: place player
     // TODO: place enemies
-
     // TODO:  place etc
 
     drawn = true;

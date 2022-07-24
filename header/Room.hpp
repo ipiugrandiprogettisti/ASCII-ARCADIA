@@ -121,6 +121,12 @@ private:
     // set the given door information
     void setDoor(int isNextRoom, struct door doorInfo);
 
+    // random path generator
+    void randomPathWall(pos position, int h, int w);
+
+    // check if tiles around wall are free
+    bool checkTilesAround(pos position, pos previousPosition);
+
 public:
     // Constructort
     Room();

@@ -141,7 +141,7 @@ int getMenu(WINDOW *myWin)
     return selectedItem;
 }
 
-// void crossRoom(int isNextRoom, int enteringSide, Map myMap)
+//FIXME: a volte la stessa stanza è ripetuta 2 volte di fila
 Map crossRoom(int enteringSide, Map myMap)
 {
     MyString str;
@@ -210,7 +210,7 @@ void startGame(WINDOW *myWin)
     // debugDoors(myMap, 0, 40);
     //debugRoom(myMap);
     // debugDoors(myMap, 0, 40);
-    
+
     MyString str;
     int ch; // pressed key
 
