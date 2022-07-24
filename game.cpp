@@ -212,10 +212,10 @@ void startGame(WINDOW *myWin)
     // debugDoors(myMap, 0, 40);
     debugRoom(myMap);
     // debugDoors(myMap, 0, 40);
-    int doorSide = 0;
     MyString str;
     door tmp;
     int ch; // pressed key
+
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
     {
@@ -225,22 +225,27 @@ void startGame(WINDOW *myWin)
 
             // simula entrata player porta sinistra
             if (myMap.rooms->currentRoom.getDoor(1).side == 1)
-            { // check if next door is located on left side. FIXME: check if PLAYERS is located on left side
+            { // check if next door is located on left side. FIXME: check if PLAYERS is located on left side && porta deve essere aperta!!!
                 if (myMap.createRoom(myMap.rooms->currentRoom.getDoor(1)))
                 {
                     str += "Stanza successiva creata, key: ";
                     str += itoa(myMap.rooms->nextRoom->currentRoom.getKey());
-                    mvaddstr(0, 58, str.get());
+                    mvaddstr(0, 56, str.get());
                     refresh();
                     wrefresh(myMap.rooms->currentRoom.getWindow());
-
+                    str.reset();
                     if (myMap.changeRoom(1))
                     {
+                        wclear(myMap.rooms->previousRoom->currentRoom.getWindow());
+                        wclear(myMap.rooms->currentRoom.getWindow());
                         str += "Entrato nella stanza: ";
                         str += itoa(myMap.rooms->currentRoom.getKey());
-                        mvaddstr(0, 56, str.get());
+                        mvaddstr(1, 56, str.get());
+                        myMap.rooms->currentRoom.drawLook();
                         refresh();
                         wrefresh(myMap.rooms->currentRoom.getWindow());
+                        str.reset();
+
                         // clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
 
                         /*myMap.rooms->currentRoom.drawLook();

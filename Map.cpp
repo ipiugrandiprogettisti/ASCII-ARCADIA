@@ -112,16 +112,21 @@ pListRooms insertTail(pListRooms myListRoom, Room roomInfo)
         myListRoom = new listRooms;
         myListRoom->currentRoom = roomInfo;
         myListRoom->nextRoom = NULL;
+
     }
     else
     {
-        for (myListRoom = newListRooms; myListRoom->nextRoom != NULL; myListRoom = myListRoom->nextRoom)
+        
+        for (newListRooms = myListRoom; newListRooms->nextRoom != NULL; newListRooms = newListRooms->nextRoom)
         {
         }
-        myListRoom->nextRoom = new listRooms;
-        myListRoom->nextRoom->currentRoom = roomInfo;
-        myListRoom->nextRoom->nextRoom = NULL;
-        myListRoom->previousRoom = tmpOriginalList;
+        
+        newListRooms->nextRoom = new listRooms;
+        newListRooms->nextRoom->currentRoom = roomInfo;
+        newListRooms->nextRoom->nextRoom = NULL;
+        newListRooms->nextRoom->previousRoom = tmpOriginalList;
+
+        myListRoom=newListRooms;
     }
 
     return myListRoom;
@@ -205,9 +210,9 @@ bool Map::changeRoom(int isNextRoom)
         success = true;
         break;
     case 1: // NEXT ROOM
-        mvaddstr(0, 57, "aasdasdasdasda");
+        /*mvaddstr(0, 57, "testo di prova");
         refresh();
-        wrefresh(rooms->currentRoom.getWindow());
+        wrefresh(rooms->currentRoom.getWindow());*/
         rooms = goNextRoom(rooms, rooms->currentRoom.getWindow());
         success = true;
         break;
@@ -257,7 +262,7 @@ bool Map::createRoom(door previousDoor)
 {
     bool success = false;
 
-    if (rooms->nextRoom != NULL)
+    if (rooms->nextRoom == NULL)
     {
         int key = newKey();
 

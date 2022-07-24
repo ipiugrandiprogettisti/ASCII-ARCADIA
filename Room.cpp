@@ -212,38 +212,38 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     this->look[2][2] = (char)key + 48;
 
     // PLACING DOORS
-    int previousDoorSide = -1;
     if (previousRoomExists) // checking where the previous door was in order to place it on the opposite side after
     {
+        door tmpDoor = myDoor;
         // placing previous door; it has to be placed on the opposite side where it was in the previous room
-        switch (myDoor.side)
+        switch (tmpDoor.side)
         {
         case 0: // bottom side
-            myDoor.y = 0;
-            placeDoor(myDoor);
-            previousDoorSide = 2;
+            tmpDoor.y = 0;
+            tmpDoor.side = 2;
+            placeDoor(tmpDoor);
             break;
         case 1: // left side
-            myDoor.x = HEIGTH - 1;
-            placeDoor(myDoor);
-            previousDoorSide = 3;
+            tmpDoor.x = HEIGTH - 1;
+            tmpDoor.side = 3;
+            placeDoor(tmpDoor);
             break;
         case 2: // top side
-            myDoor.y = WIDTH - 1;
-            placeDoor(myDoor);
-            previousDoorSide = 0;
+            tmpDoor.y = WIDTH - 1;
+            tmpDoor.side = 0;
+            placeDoor(tmpDoor);
             break;
         case 3: // right side
-            myDoor.x = 0;
-            placeDoor(myDoor);
-            previousDoorSide = 1;
+            tmpDoor.x = 0;
+            tmpDoor.side = 1;
+            placeDoor(tmpDoor);
             break;
 
         default:
             break;
         }
-
-        doorInfo[0] = myDoor;
+        tmpDoor.isNextRoom = 0;
+        doorInfo[0] = tmpDoor;
     }
 
     // now we have to draw 1 to (4-1) doors (previous one is already placed)
@@ -255,28 +255,47 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     srand(4); // FIXME: seed casuale
     // srand(time(0));                           // seed is 0
     // int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
-    int nDoors = 1;
+    /*int nDoors = 1;
     int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
     for (int i = 0; i < nDoors; i++) // init array to not placed
     {
         placedDoors[i] = -1;
-    }
+    }*/
 
     int i = 0;
     // while (i < nDoors)  //placing new door
     //{
-    int side = rand() % 4; // picking a casual side to place the door
+
+    /*int side = rand() % 4; // picking a casual side to place the door
     bool isOccupied = false;
     for (int k = 0; k < nDoors; k++)
     {
         if (placedDoors[k] == side || myDoor.side == side) // check if side is already occupied by other doors
             isOccupied = true;
+    }*/
+
+    int side;
+    bool isOccupied = true;
+
+    while (isOccupied == true)
+    {
+        side = rand() % 4; // picking a casual side to place the door
+        /*for (int k = 0; k < nDoors; k++)
+        {
+            if (placedDoors[k] == side || myDoor.side == side) // check if side is already occupied by other doors
+                isOccupied = false;
+        }*/
+        if (doorInfo[0].side == side)
+            isOccupied = true;
+        else
+            isOccupied = false;
     }
 
     if (isOccupied == false) // if side is free, then place door
     {
         struct door myDoorTmp;
         myDoorTmp.side = side;
+        myDoorTmp.isNextRoom = 1;
         switch (myDoorTmp.side) // match/adjust side to coords
         {
         case 0: // bottom side
@@ -309,6 +328,13 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         }
         //}
         // i++;
+        MyString str1;
+        str1 += "next room side: ";
+        str1 += itoa(myDoorTmp.side);
+        mvaddstr(3, 56, str1.get());
+        refresh();
+        clearScreen(3, 56, str1.getLength(), win, 1);
+        str1.reset();
         doorInfo[1] = myDoorTmp;
     }
 
