@@ -82,7 +82,7 @@ pListRooms insertHead(pListRooms myListRoom, Room roomInfo)
 }
 
 // tail insert
-pListRooms insertTail(pListRooms myListRoom, Room roomInfo)
+pListRooms insertTail(pListRooms myListRoom, Room roomInfo, door previousDoor)
 {
     /*pListRooms list;
     if (rooms == NULL)
@@ -112,21 +112,23 @@ pListRooms insertTail(pListRooms myListRoom, Room roomInfo)
         myListRoom = new listRooms;
         myListRoom->currentRoom = roomInfo;
         myListRoom->nextRoom = NULL;
-
+        myListRoom->previousRoom = tmpOriginalList;
+        myListRoom->currentRoom.setUp(COLS, LINES, previousDoor);
     }
     else
     {
-        
+
         for (newListRooms = myListRoom; newListRooms->nextRoom != NULL; newListRooms = newListRooms->nextRoom)
         {
         }
-        
+
         newListRooms->nextRoom = new listRooms;
         newListRooms->nextRoom->currentRoom = roomInfo;
         newListRooms->nextRoom->nextRoom = NULL;
         newListRooms->nextRoom->previousRoom = tmpOriginalList;
+        newListRooms->nextRoom->currentRoom.setUp(COLS, LINES, previousDoor);
 
-        myListRoom=newListRooms;
+        myListRoom = newListRooms;
     }
 
     return myListRoom;
@@ -186,14 +188,17 @@ pListRooms goPreviousRoom(pListRooms myListRooms)
     else
         return myListRooms;*/
 
+    pListRooms tmpList = myListRooms;
+
     if (myListRooms->previousRoom != NULL)
     {
-        myListRooms = myListRooms->previousRoom;
+        tmpList = tmpList->previousRoom;
     }
     /*else
     {
         // cout << "Sei in cima alla lista";
     }*/
+    myListRooms = tmpList;
 
     return myListRooms;
 }
@@ -270,8 +275,8 @@ bool Map::createRoom(door previousDoor)
         // rooms->door0->door2Info = doorInfo; // if player enters room from bottom side; previous room is located top side
         // rooms->door0->door2 = rooms;
 
-        rooms = insertTail(rooms, Room(key));
-        rooms->nextRoom->currentRoom.setUp(COLS, LINES, previousDoor);
+        rooms = insertTail(rooms, Room(key), previousDoor);
+        // rooms->nextRoom->currentRoom.setUp(COLS, LINES, previousDoor);
 
         success = true;
     }

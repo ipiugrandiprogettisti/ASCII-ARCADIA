@@ -110,7 +110,7 @@ Room ::Room()
 Room::Room(int key)
 {
     this->key = key;  // unique
-    this->win = NULL; // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
+    this->win = NULL; // at the time of creating a new room its window will be null. the first time that it will be drawed it also will be assigned
     objects.artifacts = new listArtifacts;
     objects.enemies = new listEnemies;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
@@ -252,8 +252,8 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    srand(4); // FIXME: seed casuale
-    // srand(time(0));                           // seed is 0
+    //srand(4); // FIXME: seed casuale
+    srand(time(0));                           // seed is 0
     // int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
     /*int nDoors = 1;
     int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
@@ -328,13 +328,13 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         }
         //}
         // i++;
-        MyString str1;
+        /*MyString str1;
         str1 += "next room side: ";
         str1 += itoa(myDoorTmp.side);
         mvaddstr(3, 56, str1.get());
         refresh();
         clearScreen(3, 56, str1.getLength(), win, 1);
-        str1.reset();
+        str1.reset();*/
         doorInfo[1] = myDoorTmp;
     }
 
@@ -351,6 +351,16 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         const int MAXWALLWIDTH = (((HEIGTH - (offsetSXDX)) - posX) / 1.5) + 1;
         int h = (rand() % (MAXWALLHEIGTH)) + 1; // random number of walls
         int w = (rand() % (MAXWALLWIDTH)) + 1;  // random number of walls
+
+        /*MyString str1;
+        str1 += "h: ";
+        str1 += itoa(h);
+        str1 += ", w: ";
+        str1 += itoa(w);
+        mvaddstr(3, 56, str1.get());
+        refresh();
+        clearScreen(3, 56, str1.getLength(), win, 1);
+        str1.reset();*/
 
         createWall(w, h, posY, posX);
     }

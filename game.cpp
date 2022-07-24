@@ -222,9 +222,8 @@ void startGame(WINDOW *myWin)
         switch (ch)
         {
         case KEY_LEFT:
-
             // simula entrata player porta sinistra
-            if (myMap.rooms->currentRoom.getDoor(1).side == 1)
+            /*if (myMap.rooms->currentRoom.getDoor(1).side == 1)
             { // check if next door is located on left side. FIXME: check if PLAYERS is located on left side && porta deve essere aperta!!!
                 if (myMap.createRoom(myMap.rooms->currentRoom.getDoor(1)))
                 {
@@ -238,6 +237,7 @@ void startGame(WINDOW *myWin)
                     {
                         wclear(myMap.rooms->previousRoom->currentRoom.getWindow());
                         wclear(myMap.rooms->currentRoom.getWindow());
+
                         str += "Entrato nella stanza: ";
                         str += itoa(myMap.rooms->currentRoom.getKey());
                         mvaddstr(1, 56, str.get());
@@ -245,12 +245,11 @@ void startGame(WINDOW *myWin)
                         refresh();
                         wrefresh(myMap.rooms->currentRoom.getWindow());
                         str.reset();
+                        clearScreen(1, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
 
-                        // clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
-
-                        /*myMap.rooms->currentRoom.drawLook();
-                        refresh();
-                        wrefresh(myMap.rooms->currentRoom.getWindow());*/
+                        //myMap.rooms->currentRoom.drawLook();
+                        //refresh();
+                       //wrefresh(myMap.rooms->currentRoom.getWindow());
                     }
                     else
                     {
@@ -265,6 +264,68 @@ void startGame(WINDOW *myWin)
                     mvaddstr(0, 58, str.get());
                     refresh();
                     wrefresh(myMap.rooms->currentRoom.getWindow());
+                }
+            }
+            else
+            {
+                str += "Non esite nessuna stanza in LEFT SIDE";
+                mvaddstr(0, 56, str.get());
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                str.reset();
+            }*/
+
+            if (myMap.rooms->currentRoom.getDoor(1).side == 1) // GO TO NEXT ROOM
+            {
+                myMap.createRoom(myMap.rooms->currentRoom.getDoor(1));
+
+                str += "Stanza successiva, key: ";
+                str += itoa(myMap.rooms->nextRoom->currentRoom.getKey());
+                mvaddstr(0, 56, str.get());
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                str.reset();
+                if (myMap.changeRoom(1))
+                {
+                    //wclear(myMap.rooms->previousRoom->currentRoom.getWindow());
+                    //wclear(myMap.rooms->currentRoom.getWindow());
+
+                    str += "Entrato nella stanza: ";
+                    str += itoa(myMap.rooms->currentRoom.getKey());
+                    mvaddstr(1, 56, str.get());
+                    myMap.rooms->currentRoom.drawLook();
+                    refresh();
+                    wrefresh(myMap.rooms->currentRoom.getWindow());
+                    str.reset();
+                    clearScreen(1, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+
+                    /*myMap.rooms->currentRoom.drawLook();
+                    refresh();
+                    wrefresh(myMap.rooms->currentRoom.getWindow());*/
+                }
+                else
+                {
+                    str += "Impossibile entrare";
+                    mvaddstr(0, 56, str.get());
+                    // clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                }
+            }
+            else if (myMap.rooms->currentRoom.getDoor(0).side == 1) // GO TO PREVIOUS ROOM
+            {
+                if (myMap.changeRoom(0))
+                {
+                    //wclear(myMap.rooms->previousRoom->currentRoom.getWindow());
+                    //wclear(myMap.rooms->currentRoom.getWindow());
+
+                    str += "Entrato nella stanza: ";
+                    str += itoa(myMap.rooms->currentRoom.getKey());
+                    mvaddstr(1, 56, str.get());
+                    myMap.rooms->currentRoom.drawLook();
+                    refresh();
+                    wrefresh(myMap.rooms->currentRoom.getWindow());
+                    str.reset();
+                    clearScreen(1, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
                 }
             }
             else
@@ -302,24 +363,58 @@ void startGame(WINDOW *myWin)
             break;
 
         case KEY_RIGHT:
-            // simula entrata player porta destra
-            //  mvaddstr(4, 0, "Freccia destra"); //just debug info
-            //  myMap.rooms.
-            if (myMap.rooms->currentRoom.getDoor(1).side == 3) // check if next door is located on left side. FIXME: check if PLAYERS is located on left side
+            // simula entrata player porta sinistra
+            // check if next door is located on left side. FIXME: check if PLAYERS is located on left side && porta deve essere aperta!!!
+            if (myMap.rooms->currentRoom.getDoor(1).side == 3) // GO TO NEXT ROOM
             {
-                if (myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor)) // FIXME dovrebbe essere nextroom
+                myMap.createRoom(myMap.rooms->currentRoom.getDoor(1));
+
+                str += "Stanza successiva, key: ";
+                str += itoa(myMap.rooms->nextRoom->currentRoom.getKey());
+                mvaddstr(0, 56, str.get());
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                str.reset();
+                if (myMap.changeRoom(1))
                 {
+                    //wclear(myMap.rooms->previousRoom->currentRoom.getWindow());
+                    //wclear(myMap.rooms->currentRoom.getWindow());
+
+                    str += "Entrato nella stanza: ";
+                    str += itoa(myMap.rooms->currentRoom.getKey());
+                    mvaddstr(1, 56, str.get());
                     myMap.rooms->currentRoom.drawLook();
                     refresh();
                     wrefresh(myMap.rooms->currentRoom.getWindow());
+                    str.reset();
+                    clearScreen(1, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+
+                    /*myMap.rooms->currentRoom.drawLook();
+                    refresh();
+                    wrefresh(myMap.rooms->currentRoom.getWindow());*/
                 }
                 else
                 {
-                    str += "Stanza già disegnata";
+                    str += "Impossibile entrare";
                     mvaddstr(0, 56, str.get());
+                    // clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                }
+            }
+            else if (myMap.rooms->currentRoom.getDoor(0).side == 3) // GO TO PREVIOUS ROOM
+            {
+                if (myMap.changeRoom(0))
+                {
+                    //wclear(myMap.rooms->previousRoom->currentRoom.getWindow());
+                    //wclear(myMap.rooms->currentRoom.getWindow());
+
+                    str += "Entrato nella stanza: ";
+                    str += itoa(myMap.rooms->currentRoom.getKey());
+                    mvaddstr(1, 56, str.get());
+                    myMap.rooms->currentRoom.drawLook();
                     refresh();
                     wrefresh(myMap.rooms->currentRoom.getWindow());
-                    clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+                    str.reset();
+                    clearScreen(1, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
                 }
             }
             else
@@ -331,6 +426,7 @@ void startGame(WINDOW *myWin)
                 clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
                 str.reset();
             }
+
             break;
 
         case KEY_UP:
