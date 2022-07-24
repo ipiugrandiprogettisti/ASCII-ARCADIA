@@ -257,25 +257,8 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 
     // srand(4); // FIXME: seed casuale
     srand(time(0)); // seed is 0
-    // int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
-    /*int nDoors = 1;
-    int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
-    for (int i = 0; i < nDoors; i++) // init array to not placed
-    {
-        placedDoors[i] = -1;
-    }*/
 
     int i = 0;
-    // while (i < nDoors)  //placing new door
-    //{
-
-    /*int side = rand() % 4; // picking a casual side to place the door
-    bool isOccupied = false;
-    for (int k = 0; k < nDoors; k++)
-    {
-        if (placedDoors[k] == side || myDoor.side == side) // check if side is already occupied by other doors
-            isOccupied = true;
-    }*/
 
     int side;
     bool isOccupied = true;
@@ -283,11 +266,6 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     while (isOccupied == true)
     {
         side = rand() % 4; // picking a casual side to place the door
-        /*for (int k = 0; k < nDoors; k++)
-        {
-            if (placedDoors[k] == side || myDoor.side == side) // check if side is already occupied by other doors
-                isOccupied = false;
-        }*/
         if (doorInfo[0].side == side)
             isOccupied = true;
         else
@@ -305,39 +283,27 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
             myDoorTmp.y = WIDTH - 1;
             myDoorTmp.x = HEIGTH / 2;
             placeDoor(myDoorTmp);
-            // setDoor(0, myDoorTmp);
             break;
         case 1: // left side
             myDoorTmp.y = WIDTH / 2;
             myDoorTmp.x = 0;
             placeDoor(myDoorTmp);
-            // setDoor(1, myDoorTmp);
             break;
         case 2: // top side
             myDoorTmp.y = 0;
             myDoorTmp.x = HEIGTH / 2;
             placeDoor(myDoorTmp);
-            // setDoor(2, myDoorTmp);
             break;
         case 3: // right side
             myDoorTmp.y = WIDTH / 2;
             myDoorTmp.x = HEIGTH - 1;
             placeDoor(myDoorTmp);
-            // setDoor(3, myDoorTmp);
             break;
 
         default:
             break;
         }
-        //}
-        // i++;
-        /*MyString str1;
-        str1 += "next room side: ";
-        str1 += itoa(myDoorTmp.side);
-        mvaddstr(3, 56, str1.get());
-        refresh();
-        clearScreen(3, 56, str1.getLength(), win, 1);
-        str1.reset();*/
+
         doorInfo[1] = myDoorTmp;
     }
 
@@ -355,35 +321,25 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         int h = (rand() % (MAXWALLHEIGTH)) + 1; // random number of walls
         int w = (rand() % (MAXWALLWIDTH)) + 1;  // random number of walls
 
-        /*MyString str1;
-        str1 += "h: ";
-        str1 += itoa(h);
-        str1 += ", w: ";
-        str1 += itoa(w);
-        mvaddstr(3, 56, str1.get());
-        refresh();
-        clearScreen(3, 56, str1.getLength(), win, 1);
-        str1.reset();*/
-
         createWall(w, h, posY, posX);
     }
 
-    // place player
+    // TODO: place player
+    // TODO: place enemies
 
-    // place enemies
-    // place etc
+    // TODO:  place etc
 
     drawn = true;
 
     return drawn;
 }
 
-//true open doors, false close doors
+// true open doors, false close doors
 void Room::openDoors(bool open)
 {
     doorInfo[0].isOpen = open;
     doorInfo[1].isOpen = open;
-    
+
     placeDoor(doorInfo[0]);
     placeDoor(doorInfo[1]);
 
