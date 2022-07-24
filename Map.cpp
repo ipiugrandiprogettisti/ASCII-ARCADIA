@@ -103,7 +103,8 @@ pListRooms insertTail(pListRooms myListRoom, Room roomInfo, door previousDoor)
             rooms->door[i] = NULL;
     }
     return rooms;*/
-
+    previousDoor.isOpen = false;
+    
     pListRooms newListRooms;
     pListRooms tmpOriginalList = myListRoom;
 

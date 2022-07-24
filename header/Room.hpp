@@ -5,16 +5,25 @@
 const int MAXDOORS = 2;
 const int WIDTH = 30, HEIGTH = 100;
 
+// defines door tile
+struct closeOpenTile
+{
+    chtype close = ACS_CKBOARD;
+    chtype open = ' ';
+};
+
 // if any of the values is -1 then it is not been defined yet; meaning that door does not exist on map/room
 struct door
 {
-    int y = -1, x = -1;  // position
-    int side = -1;       /*- 0: bottom side
-                        - 1: left side
-                        - 2: top side
-                        - 3: right side*/
+    int y = -1, x = -1; // position
+    int side = -1;      /*- 0: bottom side
+                       - 1: left side
+                       - 2: top side
+                       - 3: right side*/
+    int isNextRoom = 1; // 0 = is previous room; 1 = is next room
+
     bool isOpen = false; // if door is closed; player can't cross it
-    int isNextRoom = 1;  // 0 = is previous room; 1 = is next room
+    closeOpenTile tile;
 };
 
 // enemies list
@@ -136,4 +145,7 @@ public:
 
     // draws the room
     void drawLook();
+
+    // open = false -> close doors. and viceversa
+    void openDoors(bool open);
 };

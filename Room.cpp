@@ -12,18 +12,21 @@ void Room::placeDoor(door doorInfo)
     case 0: // bottom side
     case 2: // top side
         this->look[doorInfo.y][doorInfo.x - 1] = ACS_RTEE;
-        this->look[doorInfo.y][doorInfo.x] = ACS_CKBOARD;
         this->look[doorInfo.y][doorInfo.x + 1] = ACS_LTEE;
         break;
     case 1: // left side
     case 3: // rigth side
         this->look[doorInfo.y - 1][doorInfo.x] = ACS_BTEE;
-        this->look[doorInfo.y][doorInfo.x] = ACS_CKBOARD;
         this->look[doorInfo.y + 1][doorInfo.x] = ACS_TTEE;
         break;
     default:
         break;
     }
+
+    if (doorInfo.isOpen == false)
+        this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.close;
+    else
+        this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.open;
 }
 
 // place object in room
@@ -252,8 +255,8 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    //srand(4); // FIXME: seed casuale
-    srand(time(0));                           // seed is 0
+    // srand(4); // FIXME: seed casuale
+    srand(time(0)); // seed is 0
     // int nDoors = (rand() % MAXDOORS - prevDoorsNumber) + 1; // random number of door from 1 to 4-1 because we already have the previous one
     /*int nDoors = 1;
     int placedDoors[nDoors];         // placedDoor[0]=0 means that first door is located at bottom side; placedDoor[1]=2 top side. =-1 not placed
@@ -373,4 +376,18 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     drawn = true;
 
     return drawn;
+}
+
+//true open doors, false close doors
+void Room::openDoors(bool open)
+{
+    doorInfo[0].isOpen = open;
+    doorInfo[1].isOpen = open;
+    
+    placeDoor(doorInfo[0]);
+    placeDoor(doorInfo[1]);
+
+    this->drawLook();
+    refresh();
+    wrefresh(this->getWindow());
 }
