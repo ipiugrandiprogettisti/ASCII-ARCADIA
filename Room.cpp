@@ -124,7 +124,7 @@ void Room::randomPathWall(pos position, int h, int w)
 }
 
 // aux function to place walls
-void Room::createWall(int width, int heigth, int posY, int posX)
+/*void Room::createWall(int width, int heigth, int posY, int posX)
 {
     for (int i = 0; i < heigth; i++)
     {
@@ -138,18 +138,18 @@ void Room::createWall(int width, int heigth, int posY, int posX)
             placeObject(position, ACS_CKBOARD);
             freeRowCol(position);
             //}
-            /*else FIXME finire freeRowCol
-            {
-                freeRowCol(position);
-            }*/
+            //else FIXME finire freeRowCol
+          //  {
+           //     freeRowCol(position);
+           // }
 
-            /*if ((i == 0 || k == 0 || i == heigth - 1 || k == width - 1) || tileIsFree(position))
-            {
-                placeObject(position, ACS_CKBOARD);
-            }*/
+            //if ((i == 0 || k == 0 || i == heigth - 1 || k == width - 1) || tileIsFree(position))
+            //{
+            //    placeObject(position, ACS_CKBOARD);
+            //}
         }
     }
-}
+}*/
 
 // Constructor
 Room ::Room()
