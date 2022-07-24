@@ -273,13 +273,6 @@ void startGame(WINDOW *myWin)
         case 'p': // closes all doors
             myMap.rooms->currentRoom.openDoors(false);
             break;
-
-        case '1':
-            str = "Door 1 room key: ";
-            str += itoa(myMap.getKeyByDoor(1));
-            mvaddstr(4, 0, str.get());
-            str.reset();
-            break;
         default:
             break;
         }
