@@ -256,16 +256,6 @@ void startGame(WINDOW *myWin)
             clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
             break;
 
-        case '0':
-            str = "Door 0 room key: ";
-            str += itoa(myMap.getKeyByDoor(0));
-            mvaddstr(4, 0, str.get());
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
-            clearScreen(4, 0, str.getLength(), myMap.rooms->currentRoom.getWindow(), 2);
-            str.reset();
-            break;
-
         case 'o': // opens all doors
             myMap.rooms->currentRoom.openDoors(true);
             break;
