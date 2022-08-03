@@ -25,5 +25,6 @@ public:
     void takeDamage(int);
 
     // aumenta la vita in base agli artefatti
+    // ho già fatto io la funzione nella classe artefatto, (Artifact -> gainlife) -annalisa
     void increaseLife(int);
 };

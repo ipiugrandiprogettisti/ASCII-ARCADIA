@@ -10,7 +10,7 @@ Power ::Power(int type, int y, int x, chtype tag) : Entity(position.y, position.
     this->type = type;
     this->position.y = y;
     this->position.x = x;
-    this->tag = tag;
+    this->tag = 111;
 };
 
 void Power::setPower(Power p)

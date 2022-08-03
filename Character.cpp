@@ -29,6 +29,8 @@ void Character::takeDamage(int damage_received)
     }
 }
 
+// ho già fatto io la funzione nella classe artefatto, (Artifact -> gainlife) -annalisa
+
 void Character::increaseLife(int healing)
 {
     int curr_life = getLife();

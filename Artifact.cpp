@@ -1,7 +1,5 @@
 #include "header/Artifact.hpp"
 
-char name[NMAX];
-
 int rarity;
 int lifepoints; // quanti punti vita dà
 Artifact ::Artifact()
@@ -13,9 +11,9 @@ Artifact ::Artifact()
     position.x = 0;
 }
 
-Artifact ::Artifact(char name[NMAX], int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
+Artifact ::Artifact(int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
 {
-    strcpy(this->name, name);
+
     this->rarity = rarity;
     this->position.y = posy;
     this->position.x = posx;

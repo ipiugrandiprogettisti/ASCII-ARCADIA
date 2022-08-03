@@ -1,25 +1,24 @@
 #include "Entity.hpp"
 #include "Character.hpp"
 
-#define NMAX 30
-#define COMMON 1  // 1 pt vita, simbolo ascii 169 "©"
-#define RARE 2    // 3 pt vita, simbolo ascii 174 "®"
-#define SPECIAL 3 // 7 pt vita, simbolo ascii 167 "§"
-#define EPIC 4    // 10 pt vita, simbolo ascii 163 "£"
+#define COMMON 1  // 1 life point, simbolo ascii 169 "©"
+#define RARE 2    // 3 life points, simbolo ascii 174 "®"
+#define SPECIAL 3 // 7 life points, simbolo ascii 167 "§"
+#define EPIC 4    // 10 life points, simbolo ascii 163 "£"
 
-//  classe artefatto -> da vita etc
+//  classe artefatto -> da vita
 class Artifact : public Entity
 {
 protected:
-    char name[NMAX];
     int lifepoints; // quanti punti vita dà
     int rarity;
 
 public:
     // constructor
     Artifact();
-    // constructor
-    Artifact(char name[NMAX], int rarity, int y, int x, chtype tag);
+    // artifact constructor with rarity, pos y, posx, tag (set it 111 by default)
+    // after creating an artifact you need to set  his tag and lifepoints with funct setArtifact()
+    Artifact(int rarity, int y, int x, chtype tag);
 
     // returns artifact life points
     int getLifepoints(Artifact p);

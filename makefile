@@ -16,6 +16,12 @@ Room.o: Room.cpp
 	g++ -c Room.cpp header/Room.hpp
 Entity.o: Entity.cpp
 	g++ -c Entity.cpp header/Entity.hpp
+Artifact.o: Artifact.cpp
+	g++ -c Artifact.cpp header/Artifact.hpp
+Power.o: Power.cpp
+	g++ -c Power.cpp header/Power.hpp
+Inventory.o: Inventory.cpp
+	g++ -c Inventory.cpp header/Inventory.hpp
 clean:
 	rm *.o ./header/*.gch main
 run: main
