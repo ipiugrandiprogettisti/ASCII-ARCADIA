@@ -5,7 +5,7 @@ int y;
 int x;
 Inventory ::Inventory()
 {
-    invent_head = 0;
+    invent_head = NULL;
     y = 0;
     x = 0;
 };

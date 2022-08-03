@@ -1,13 +1,15 @@
 #include "Power.hpp"
 
-struct invent
+// costruzione lista per inventario
+struct inventory
 {
     Power p;
-    invent *next;
+    inventory *next;
 };
 
-typedef invent *p_invent;
+typedef inventory *p_invent;
 
+// inventario per i poteri raccolti
 class Inventory
 {
 protected:
@@ -16,7 +18,8 @@ protected:
     int x;
 
 public:
+    // costruttore nullo
     Inventory();
-
+    // costruttore
     Inventory(p_invent invent_head, int y, int x);
 };
