@@ -43,3 +43,4 @@ void Character::increaseLife(int healing)
         this->current_life = this->max_life;
     }
 }
+//commento di prova
