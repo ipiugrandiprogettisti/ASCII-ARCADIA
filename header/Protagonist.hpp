@@ -50,4 +50,6 @@ public:
     void addBullet(Protagonist a, Power p);
     // adds life based on artifact healing
     void gainLife(Protagonist a, Artifact p);
+    // erases an item when protagonist passes on it
+    void eraseItem(Protagonist a, Artifact c, Power p, WINDOW *w);
 };

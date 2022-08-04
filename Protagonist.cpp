@@ -55,3 +55,12 @@ void Protagonist::gainLife(Protagonist a, Artifact p)
     int heal = p.lifepoints;
     a.current_life = actual + heal;
 }
+
+void Protagonist ::eraseItem(Protagonist a, Artifact c, Power p, WINDOW *w)
+{
+    // protagonista e artef/potere nella stessa pos, disegna protagonista sopra
+    if (a.position.y == c.position.y && a.position.x == c.position.x || a.position.y == p.position.y && a.position.x == p.position.x)
+    {
+        mvwaddch(w, a.position.y, a.position.x, a.tag);
+    }
+}

@@ -1,9 +1,11 @@
 #include "header/Artifact.hpp"
 
+int key; // identifier
 int rarity;
 int lifepoints; // quanti punti vita dà
 Artifact ::Artifact()
 {
+    key = 0;
     rarity = 0;
     lifepoints = 0;
     tag = 111;
@@ -11,9 +13,9 @@ Artifact ::Artifact()
     position.x = 0;
 }
 
-Artifact ::Artifact(int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
+Artifact ::Artifact(int key, int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
 {
-
+    this->key = key;
     this->rarity = rarity;
     this->position.y = posy;
     this->position.x = posx;

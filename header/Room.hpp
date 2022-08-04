@@ -1,6 +1,7 @@
 // Room class file
 #include <ncurses.h>
 #include "Entity.hpp"
+#include "Protagonist.hpp"
 
 const int MAXDOORS = 2;
 const int WIDTH = 30, HEIGTH = 100;
@@ -42,7 +43,7 @@ typedef listEnemies *pListEnemies;
 struct listArtifacts
 {
     // current artifact
-    // artifact key
+    Artifact p;
     listArtifacts *next;
     listArtifacts *previous;
 };

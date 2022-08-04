@@ -9,7 +9,7 @@ typedef struct pos
 
 class Entity
 {
-protected:
+public:
     pos position;
     chtype tag; // entity's character's type
 

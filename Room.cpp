@@ -35,7 +35,6 @@ void Room::placeObject(pos position, chtype tag)
     this->look[position.y][position.x] = tag;
 }
 
-
 // aux function to prevent non-free wall
 bool Room::tileIsFree(pos position)
 {
@@ -67,7 +66,7 @@ bool Room::checkTilesAround(pos position, pos previousPosition)
     {
         for (j = position.x; j < position.x + 2; j++)
         {
-            if (this->look[i][j] != ' '&& i != previousPosition.y && j != previousPosition.x)
+            if (this->look[i][j] != ' ' && i != previousPosition.y && j != previousPosition.x)
             {
                 free = false;
                 break;
@@ -292,8 +291,8 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    //srand(4); // FIXME: seed casuale
-     srand(time(0)); // seed is 0
+    // srand(4); // FIXME: seed casuale
+    srand(time(0)); // seed is 0
 
     int i = 0;
 
@@ -347,7 +346,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     // PLACING OBJECTS
 
     // place wall
-    const int MAXWALLS = 150; // max number of walls in a room
+    const int MAXWALLS = 150;          // max number of walls in a room
     for (int i = 0; i < MAXWALLS; i++) // number of walls
     {
         const int offsetSXDX = 6, offsetTOPBOTTOM = 3;
@@ -368,6 +367,41 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 
         randomPathWall(pos1, h, w);
         // createWall(w, h, posY, posX);
+    }
+
+    // place artifacts -annalisa
+    int nArtifacts = rand() % 3; // possono essercene da 0 a 2
+    for (int i = 0; i < nArtifacts; i++)
+    {
+        /*
+        percentuali probabilità di spawn in base alla rarità
+        COMMON 60%  RARE 25%  SPECIAL 10%  EPIC 5%
+        */
+        const int probability = 101;
+        int aRarity;
+        int r = rand() % probability;
+        if (r < 61)
+        {
+            aRarity = COMMON;
+        }
+        else if (r > 60 && r < 86)
+        {
+            aRarity = RARE;
+        }
+        else if (r > 85 && r < 96)
+        {
+            aRarity = SPECIAL;
+        }
+        else if (r > 95)
+        {
+            aRarity = EPIC;
+        }
+
+        do
+        {
+            int posy = rand() % WIDTH + 1;
+            int posy = rand() % HEIGTH + 1;
+        } while (TRUE);
     }
 
     // TODO: place player
