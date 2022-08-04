@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ncurses.h>
+#pragma once
 typedef struct pos
 {
     int y;

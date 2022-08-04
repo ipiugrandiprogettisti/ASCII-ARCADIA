@@ -1,5 +1,5 @@
-main: main.o game.o MyString.o myWindow.o utils.o Map.o Room.o Entity.o
-	g++ -o main main.o game.o MyString.o myWindow.o utils.o Map.o Room.o Entity.o -lncurses
+main: main.o game.o MyString.o myWindow.o utils.o Map.o Room.o Entity.o Artifact.o Power.o 
+	g++ -o main main.o game.o MyString.o myWindow.o utils.o Map.o Room.o Entity.o Artifact.o Power.o -lncurses
 main.o: main.cpp header/game.hpp
 	g++ -c main.cpp
 game.o: game.cpp header/game.hpp
@@ -20,8 +20,6 @@ Artifact.o: Artifact.cpp
 	g++ -c Artifact.cpp header/Artifact.hpp
 Power.o: Power.cpp
 	g++ -c Power.cpp header/Power.hpp
-Inventory.o: Inventory.cpp
-	g++ -c Inventory.cpp header/Inventory.hpp
 Protagonist.o: Protagonist.cpp
 	g++ -c Protagonist.cpp header/Protagonist.hpp
 clean:
