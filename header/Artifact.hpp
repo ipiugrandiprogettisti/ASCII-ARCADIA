@@ -1,5 +1,4 @@
 #include "Entity.hpp"
-#include "Character.hpp"
 
 #define COMMON 1  // 1 life point, simbolo ascii 169 "©"
 #define RARE 2    // 3 life points, simbolo ascii 174 "®"
@@ -9,7 +8,7 @@
 //  classe artefatto -> da vita
 class Artifact : public Entity
 {
-protected:
+public:
     int lifepoints; // quanti punti vita dà
     int rarity;
 
@@ -27,8 +26,6 @@ public:
     // sets artifact lifepoints and tag based on rarity
     void setArtifact(Artifact p);
 
-    // resets character life based on artifact healing
-    void gainLife(Character a, Artifact p);
     // print artifact on certain position
     void printArtifact(Artifact p, WINDOW *w);
 };

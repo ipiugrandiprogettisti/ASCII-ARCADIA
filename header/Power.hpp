@@ -8,7 +8,7 @@
 #define BOOSTBULLET 2
 class Power : public Entity
 {
-protected:
+public:
     int type;
 
 public:

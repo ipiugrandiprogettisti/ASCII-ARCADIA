@@ -50,13 +50,6 @@ void Artifact ::setArtifact(Artifact p)
     }
 }
 
-void Artifact ::gainLife(Character a, Artifact p)
-{
-    int actual = a.current_life;
-    int heal = p.lifepoints;
-    a.current_life = actual + heal;
-}
-
 void Artifact ::printArtifact(Artifact p, WINDOW *w)
 {
     int py = p.position.y;

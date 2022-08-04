@@ -4,7 +4,7 @@
 
 // ASCII symbol 182 ¶
 
-//lista degli artefatti che ha presp il protagonista
+// lista degli artefatti che ha preso il protagonista
 typedef struct inventoryA
 {
     Artifact A;
@@ -37,4 +37,17 @@ public:
 
     // print protagonist
     void printProtagonist(Protagonist P, WINDOW *w);
+
+    /*
+     da qui in giù metto le mie funzioni, non toccatele pls -annalisa
+     le funzioni che comprendono sia un artefatto/potere che personaggio
+     le facciamo tutte sulla classe protagonista perchè non posso includere il file
+     personaggio nelle classi artef/potere o si includono  a vicenda e per compilare
+     va in loop
+    */
+
+    // check if the power is of the right type, if it is adds a bullet
+    void addBullet(Protagonist a, Power p);
+    // adds life based on artifact healing
+    void gainLife(Protagonist a, Artifact p);
 };
