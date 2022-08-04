@@ -1,12 +1,28 @@
 #include "header/Character.hpp"
 
-// constructor
-Character::Character(char name[], int current_life, int max_life, int atk_damage)
+int current_life;
+int max_life;
+int atk_damage;
+
+Character::Character()
 {
-    strcpy(this->name, name);
+    current_life = 0;
+    max_life = 0;
+    atk_damage = 0;
+    position.y = 0;
+    position.x = 0;
+    tag = 111;
+}
+// constructor
+Character::Character(int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Entity(y, x, tag)
+{
+
     this->current_life = current_life;
     this->max_life = max_life;
     this->atk_damage = atk_damage;
+    this->position.y = y;
+    this->position.x = x;
+    this->tag = 111;
 }
 
 // ritorna la vita corrente
@@ -26,20 +42,5 @@ void Character::takeDamage(int damage_received)
     else
     {
         this->current_life = 0;
-    }
-}
-
-// ho già fatto io la funzione nella classe artefatto, (Artifact -> gainlife) -annalisa
-
-void Character::increaseLife(int healing)
-{
-    int curr_life = getLife();
-    if (curr_life + healing <= this->max_life)
-    {
-        this->current_life = (curr_life + healing); // su questa riga usate la mia funzione pls (Artifact -> gainlife)
-    }
-    else
-    {
-        this->current_life = this->max_life;
     }
 }

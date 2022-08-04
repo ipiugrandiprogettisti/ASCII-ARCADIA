@@ -1,4 +1,4 @@
-
+#include <iostream>
 #include <ncurses.h>
 typedef struct pos
 {
