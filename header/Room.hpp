@@ -128,6 +128,9 @@ private:
     // check if tiles around wall are free
     bool checkTilesAround(pos position, pos previousPosition);
 
+    // places artifacts
+    void placeArtifacts(WINDOW *w);
+
 public:
     // Constructort
     Room();

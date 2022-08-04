@@ -22,14 +22,29 @@ Artifact ::Artifact(int key, int rarity, int posy, int posx, chtype tag) : Entit
     this->tag = 111;
 }
 
-int Artifact ::getLifepoints(Artifact p)
+int Artifact ::getArtLifepoints(Artifact p)
 {
     return p.lifepoints;
 }
 
-int Artifact ::getRarity(Artifact p)
+int Artifact ::getArtRarity(Artifact p)
 {
     return p.rarity;
+}
+
+chtype Artifact ::getArtTile(int a)
+{
+    switch (a)
+    {
+    case '1':
+        return 169;
+    case '2':
+        return 174;
+    case '3':
+        return 167;
+    case '4':
+        return 163;
+    }
 }
 
 void Artifact ::setArtifact(Artifact p)

@@ -21,9 +21,11 @@ public:
     Artifact(int key, int rarity, int y, int x, chtype tag);
 
     // returns artifact life points
-    int getLifepoints(Artifact p);
+    int getArtLifepoints(Artifact p);
     // returns artifact rarity
-    int getRarity(Artifact p);
+    int getArtRarity(Artifact p);
+    // return chtype
+    chtype getArtTile(int a);
     // sets artifact lifepoints and tag based on rarity
     void setArtifact(Artifact p);
 
