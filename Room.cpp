@@ -75,8 +75,9 @@ bool Room::checkTilesAround(pos position, pos previousPosition)
     }
     return free;
 }
-// places artifacts
-void Room::placeArtifacts(WINDOW *w)
+
+// places random artifacts
+void Room::placeArtifacts(bool b)
 {
 
     int nArtifacts = rand() % 3; // possono essercene da 0 a 2
@@ -89,36 +90,41 @@ void Room::placeArtifacts(WINDOW *w)
         const int probability = 101;
         int aRarity;
         int r = rand() % probability;
+        chtype rar = 111;
         if (r < 61)
         {
             aRarity = COMMON;
+            rar = 169;
         }
         else if (r > 60 && r < 86)
         {
             aRarity = RARE;
+            rar = 174;
         }
         else if (r > 85 && r < 96)
         {
             aRarity = SPECIAL;
+            rar = 167;
         }
         else if (r > 95)
         {
             aRarity = EPIC;
+            rar = 163;
         }
 
+        chtype var = 111;
+        pos posArt;
         do
         {
             int posy = rand() % WIDTH + 1;
             int posx = rand() % HEIGTH + 1;
-            pos posArt;
             posArt.y = posy;
             posArt.x = posx;
-            chtype var = getTile(posArt);
+            var = getTile(posArt);
         } while (var != 111);
-        chtype rarity = getArtTile(aRarity);
-        placeObject(posArt, rarity);
+        placeObject(posArt, rar);
     }
-};
+}
 // random path generator
 void Room::randomPathWall(pos position, int h, int w)
 {
@@ -412,6 +418,8 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         // createWall(w, h, posY, posX);
     }
 
+    // place artifacts
+    // placeArtifacts(true);
     // TODO: place player
     // TODO: place enemies
     // TODO:  place etc

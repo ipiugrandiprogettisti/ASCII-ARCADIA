@@ -129,7 +129,7 @@ private:
     bool checkTilesAround(pos position, pos previousPosition);
 
     // places artifacts
-    void placeArtifacts(WINDOW *w);
+    void placeArtifacts(bool b);
 
 public:
     // Constructort
