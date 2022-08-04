@@ -426,3 +426,9 @@ void Room::openDoors(bool open)
     refresh();
     wrefresh(this->getWindow());
 }
+
+// returns chtype for the given position in room
+chtype Room::getTile(pos position)
+{
+    return this->look[position.y][position.x];
+}

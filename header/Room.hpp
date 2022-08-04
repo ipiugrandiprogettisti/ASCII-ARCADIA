@@ -155,4 +155,7 @@ public:
 
     // open = false -> close doors. and viceversa
     void openDoors(bool open);
+
+    // returns chtype for the given position in room
+    chtype getTile(pos position);
 };
