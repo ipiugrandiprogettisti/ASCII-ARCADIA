@@ -36,11 +36,19 @@ MyString itoa(int num)
 // check if screen size is correct to play the game; 110x40
 void checkScreen(int screenCols, int screenLines)
 {
-    if (screenCols < MIN_COLS && screenLines < MIN_LINES)
+    while ((screenCols < MIN_COLS) || (screenLines < MIN_LINES))
     {
-        endwin();
-        std::cout << "Your screen is too small to play the game.\nTerminal minumum size is 110x40.\n";
-        exit(1);
+        refresh();
+        move(0, 0);
+        printw("Resize your screen...");
+        move(1, 0);
+        MyString str;
+        str += "Minimum resolution is ";
+        str += itoa(MIN_LINES);
+        str += "x";
+        str += itoa(MIN_COLS);
+        mvwaddstr(stdscr, 0, 0, str.get());
+        getmaxyx(stdscr, screenCols, screenLines);
     }
 }
 

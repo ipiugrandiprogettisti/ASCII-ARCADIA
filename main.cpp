@@ -14,16 +14,18 @@ int main(int argc, char *argv[])
     initscr();
     setlocale(LC_ALL, "");
 
-    keypad(stdscr, TRUE);
-    noecho();
+    keypad(stdscr, TRUE); // sets arrow keys
+    noecho();             // char sent by user won't be displayed on the screen
     curs_set(0);
 
-    checkScreen(COLS, LINES); // check if screen size is correct to play the game; 110x40
-    checkColors();            // check if screen supports color
+    checkColors(); // check if screen supports color
 
     int maxY, maxX, offY = 0, offX = 0;
     getmaxyx(stdscr, maxY, maxX);
 
+    checkScreen(maxY, maxX); // check if screen size is correct to play the game; 110x40
+    clear();
+    
     WINDOW *myWin = newwin(maxY, maxX, offY, offX);
     int choice = getMenu(myWin); // draw main menu and get user choice: 0: Play, 1: Credits, 2: Exit
     MyString choiceString = itoa(choice);

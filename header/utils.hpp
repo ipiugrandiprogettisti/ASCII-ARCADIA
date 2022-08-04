@@ -1,5 +1,5 @@
 #include "MyString.hpp"
-const int MIN_COLS = 110, MIN_LINES = 40;
+const int MIN_COLS = 40, MIN_LINES = 110;
 
 // custom itoa, converts int to const char *
 MyString itoa(int num);

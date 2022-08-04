@@ -141,7 +141,7 @@ int getMenu(WINDOW *myWin)
     return selectedItem;
 }
 
-//FIXME: a volte la stessa stanza è ripetuta 2 volte di fila
+// FIXME: a volte la stessa stanza è ripetuta 2 volte di fila
 Map crossRoom(int enteringSide, Map myMap)
 {
     MyString str;
@@ -208,7 +208,7 @@ void startGame(WINDOW *myWin)
     // DEBUG INFO
     // myMap.createRooms(-1, NULL); // first room
     // debugDoors(myMap, 0, 40);
-    //debugRoom(myMap);
+    // debugRoom(myMap);
     // debugDoors(myMap, 0, 40);
 
     MyString str;
@@ -258,6 +258,12 @@ void startGame(WINDOW *myWin)
 
         case 'o': // opens all doors
             myMap.rooms->currentRoom.openDoors(true);
+
+            str += "Cols: ";
+            str += itoa(COLS);
+            str += "Lines: ";
+            str += itoa(LINES);
+            mvaddstr(0, 0, str.get());
             break;
 
         case 'p': // closes all doors
