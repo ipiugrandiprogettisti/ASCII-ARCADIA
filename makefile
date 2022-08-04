@@ -22,6 +22,8 @@ Power.o: Power.cpp
 	g++ -c Power.cpp header/Power.hpp
 Inventory.o: Inventory.cpp
 	g++ -c Inventory.cpp header/Inventory.hpp
+Protagonist.o: Protagonist.cpp
+	g++ -c Protagonist.cpp header/Protagonist.hpp
 clean:
 	rm *.o ./header/*.gch main
 run: main
