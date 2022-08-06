@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
 
     checkScreen(maxY, maxX); // check if screen size is correct to play the game; 110x40
     clear();
-    
+
     WINDOW *myWin = newwin(maxY, maxX, offY, offX);
     int choice = getMenu(myWin); // draw main menu and get user choice: 0: Play, 1: Credits, 2: Exit
     MyString choiceString = itoa(choice);

@@ -17,8 +17,12 @@ typedef struct inventoryP
     inventoryP *next;
 } inventoryP;
 
+//pointer to protagonist's artifacts list
 typedef inventoryA *p_inventA;
+
+//pointer to protagonist's powers list
 typedef inventoryP *p_inventP;
+
 
 // classe protagonista
 class Protagonist : public Character

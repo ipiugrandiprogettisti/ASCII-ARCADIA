@@ -19,7 +19,7 @@ Protagonist::Protagonist()
 
 Protagonist::Protagonist(int n_bullets, p_inventA headA, p_inventP headP, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
 {
-    this->n_bullets = n_bullets;
+    this->n_bullets = 1;
     this->headA = headA;
     this->headP = headP;
     this->current_life = current_life;

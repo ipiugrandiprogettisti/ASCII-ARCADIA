@@ -48,7 +48,7 @@ struct listArtifacts
     listArtifacts *previous;
 };
 
-// pointer to list of the enemies
+// pointer to list of the artifacts
 typedef listArtifacts *pListArtifacts;
 
 // struct that contains all of the dynamic structures that are in the room
