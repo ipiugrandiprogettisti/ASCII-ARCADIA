@@ -107,9 +107,6 @@ private:
     // place a door. y and x are position, i is the side where the door is located
     void placeDoor(door doorInfo);
 
-    // place object in room
-    void placeObject(pos position, chtype tag);
-
     // aux function to prevent non-free wall
     bool tileIsFree(pos position);
 
@@ -161,4 +158,7 @@ public:
 
     // returns chtype for the given position in room
     chtype getTile(pos position);
+
+    // place object in room
+    void placeObject(pos position, chtype tag);
 };

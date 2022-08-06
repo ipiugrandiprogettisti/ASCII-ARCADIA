@@ -29,12 +29,6 @@ void Room::placeDoor(door doorInfo)
         this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.open;
 }
 
-// place object in room
-void Room::placeObject(pos position, chtype tag)
-{
-    this->look[position.y][position.x] = tag;
-}
-
 // aux function to prevent non-free wall
 bool Room::tileIsFree(pos position)
 {
@@ -447,4 +441,10 @@ void Room::openDoors(bool open)
 chtype Room::getTile(pos position)
 {
     return this->look[position.y][position.x];
+}
+
+// place object in room
+void Room::placeObject(pos position, chtype tag)
+{
+    this->look[position.y][position.x] = tag;
 }
