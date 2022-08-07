@@ -212,6 +212,7 @@ void startGame(WINDOW *myWin)
     // debugDoors(myMap, 0, 40);
 
     MyString str;
+    pos position;
     int ch; // pressed key
 
     // KEYBOARD EVENT LISTENER
@@ -259,16 +260,35 @@ void startGame(WINDOW *myWin)
         case 'o': // opens all doors
             myMap.rooms->currentRoom.openDoors(true);
 
-            str += "Cols: ";
+            /*str += "Cols: ";
             str += itoa(COLS);
             str += "Lines: ";
             str += itoa(LINES);
-            mvaddstr(0, 0, str.get());
+            mvaddstr(0, 0, str.get());*/
             break;
 
         case 'p': // closes all doors
             myMap.rooms->currentRoom.openDoors(false);
             break;
+
+        //ESEMPIO .placeObject() senza struct
+        case '1': // oggetto in alto a sinistra
+            myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+            break;
+
+        //ESEMPIO .placeObject() scon struct pos
+        case '2': // oggetto in basso a destra
+            position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
+            position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;
+            myMap.rooms->currentRoom.placeObject(position, ACS_BULLET);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+            break;
+
         default:
             break;
         }

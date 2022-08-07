@@ -4,6 +4,18 @@
 #include "header/utils.hpp"
 #include <ctime>
 
+// place object in room
+void Room::placeObject(pos position, chtype tag)
+{
+    this->look[position.y][position.x] = tag;
+}
+
+// place object in room
+void Room::placeObject(int y, int x, chtype tag)
+{
+    this->look[y][x] = tag;
+}
+
 // place a door. y and x are position, i is the side where the door is located
 void Room::placeDoor(door doorInfo)
 {
@@ -11,22 +23,28 @@ void Room::placeDoor(door doorInfo)
     {
     case 0: // bottom side
     case 2: // top side
-        this->look[doorInfo.y][doorInfo.x - 1] = ACS_RTEE;
-        this->look[doorInfo.y][doorInfo.x + 1] = ACS_LTEE;
+        // this->look[doorInfo.y][doorInfo.x - 1] = ACS_RTEE;
+        this->placeObject(doorInfo.y, doorInfo.x - 1, ACS_RTEE);
+        // this->look[doorInfo.y][doorInfo.x + 1] = ACS_LTEE;
+        this->placeObject(doorInfo.y, doorInfo.x + 1, ACS_LTEE);
         break;
     case 1: // left side
     case 3: // rigth side
-        this->look[doorInfo.y - 1][doorInfo.x] = ACS_BTEE;
-        this->look[doorInfo.y + 1][doorInfo.x] = ACS_TTEE;
+        // this->look[doorInfo.y - 1][doorInfo.x] = ACS_BTEE;
+        this->placeObject(doorInfo.y - 1, doorInfo.x, ACS_BTEE);
+        // this->look[doorInfo.y + 1][doorInfo.x] = ACS_TTEE;
+        this->placeObject(doorInfo.y + 1, doorInfo.x, ACS_TTEE);
         break;
     default:
         break;
     }
 
     if (doorInfo.isOpen == false)
-        this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.close;
+        // this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.close;
+        this->placeObject(doorInfo.y, doorInfo.x, doorInfo.tile.close);
     else
-        this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.open;
+        // this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.open;
+        this->placeObject(doorInfo.y, doorInfo.x, doorInfo.tile.open);
 }
 
 // aux function to prevent non-free wall
@@ -159,7 +177,8 @@ void Room::randomPathWall(pos position, int h, int w)
         }
         if (free)
         {
-            this->look[tmp.y][tmp.x] = ACS_CKBOARD;
+            // this->look[tmp.y][tmp.x] = ACS_CKBOARD;
+            this->placeObject(tmp, ACS_CKBOARD);
             previousPosition = tmp;
         }
     }
@@ -291,7 +310,8 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     int offY = (maxLines - WIDTH) / 2, offX = (maxCols - HEIGTH) / 2; // offset; useful to center box
 
     win = newwin(WIDTH, HEIGTH, offY, offX); // create a CENTERED box
-    this->look[2][2] = (char)key + 48;
+    // this->look[2][2] = (char)key + 48;       // debug info, prints room key
+    this->placeObject(2, 2, (char)key + 48); // debug info, prints room key
 
     // PLACING DOORS
     if (previousRoomExists) // checking where the previous door was in order to place it on the opposite side after
@@ -443,8 +463,14 @@ chtype Room::getTile(pos position)
     return this->look[position.y][position.x];
 }
 
-// place object in room
-void Room::placeObject(pos position, chtype tag)
+// returns the width of the room (look)
+int Room::getMaxWidth()
 {
-    this->look[position.y][position.x] = tag;
+    return WIDTH;
+}
+
+// returns the height of the room (look)
+int Room::getMaxHeight()
+{
+    return HEIGTH;
 }
