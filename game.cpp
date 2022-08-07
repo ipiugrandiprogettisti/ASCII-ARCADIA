@@ -201,6 +201,7 @@ void startGame(WINDOW *myWin)
     door emptyDoor;         // empty door
     // Now game draws first room, where the player spawns safely
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
+    myMap.rooms->currentRoom.placeObject(3, 3, ACS_PI);
     myMap.rooms->currentRoom.drawLook();
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
