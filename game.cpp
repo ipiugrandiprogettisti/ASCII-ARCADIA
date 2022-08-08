@@ -197,10 +197,18 @@ void startGame(WINDOW *myWin)
 {
     clear();
 
+    // prova
+    p_inventA headA = NULL;
+    p_inventP headP = NULL;
+    Protagonist P(10, headA, headP, 10, 10, 1, 3, 1, ACS_PI); // creato protagonista
+
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
     // Now game draws first room, where the player spawns safely
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
+    // prova:
+
+    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
     myMap.rooms->currentRoom.drawLook();
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -221,21 +229,79 @@ void startGame(WINDOW *myWin)
         switch (ch)
         {
         case KEY_LEFT:
+
+            // prova di movimento del player:
+
+            pos newPosLeft;
+            newPosLeft.y = P.position.y;
+            newPosLeft.x = P.position.x - 1;
+            if (myMap.rooms->currentRoom.getTile(newPosLeft) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                P.setPosition(newPosLeft.y, newPosLeft.x);
+                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }
+
             // simula entrata player porta sinistra
             myMap = crossRoom(1, myMap);
             break;
 
         case KEY_RIGHT:
+            // prova di movimento del player
+            pos newPosRight;
+            newPosRight.y = P.position.y;
+            newPosRight.x = P.position.x + 1;
+            if (myMap.rooms->currentRoom.getTile(newPosRight) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                P.setPosition(newPosRight.y, newPosRight.x);
+                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }
+
             // simula entrata player porta destra
             myMap = crossRoom(3, myMap);
             break;
 
         case KEY_UP:
+            // prova di movimento del player
+            pos newPosUp;
+            newPosUp.y = P.position.y - 1;
+            newPosUp.x = P.position.x;
+            if (myMap.rooms->currentRoom.getTile(newPosUp) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                P.setPosition(newPosUp.y, newPosUp.x);
+                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }
+
             // simula entrata player porta superiore
             myMap = crossRoom(2, myMap);
             break;
 
         case KEY_DOWN:
+            // prova di movimento del player
+            pos newPosDown;
+            newPosDown.y = P.position.y + 1;
+            newPosDown.x = P.position.x;
+            if (myMap.rooms->currentRoom.getTile(newPosDown) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                P.setPosition(newPosDown.y, newPosDown.x);
+                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }
+
             // simula entrata player porta inferiore
             myMap = crossRoom(0, myMap);
 
@@ -271,7 +337,7 @@ void startGame(WINDOW *myWin)
             myMap.rooms->currentRoom.openDoors(false);
             break;
 
-        //ESEMPIO .placeObject() senza struct
+        // ESEMPIO .placeObject() senza struct
         case '1': // oggetto in alto a sinistra
             myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
             myMap.rooms->currentRoom.drawLook();
@@ -279,7 +345,7 @@ void startGame(WINDOW *myWin)
             wrefresh(myMap.rooms->currentRoom.getWindow());
             break;
 
-        //ESEMPIO .placeObject() scon struct pos
+        // ESEMPIO .placeObject() scon struct pos
         case '2': // oggetto in basso a destra
             position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
             position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;

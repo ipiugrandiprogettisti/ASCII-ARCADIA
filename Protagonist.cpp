@@ -25,9 +25,9 @@ Protagonist::Protagonist(int n_bullets, p_inventA headA, p_inventP headP, int cu
     this->current_life = current_life;
     this->max_life = max_life;
     this->atk_damage = atk_damage;
-    this->position.y = 0;
-    this->position.x = 0;
-    this->tag = 182;
+    this->position.y = y;
+    this->position.x = x;
+    this->tag = tag;
 }
 
 void Protagonist::printProtagonist(Protagonist P, WINDOW *w)

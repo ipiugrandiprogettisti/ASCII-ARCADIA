@@ -5,9 +5,9 @@
 class Character : public Entity
 {
 protected:
-    int current_life;
-    int max_life;
-    int atk_damage; // danno che produce in attacco
+    int current_life; // in termini di cuori posseduti al momento
+    int max_life;     // cuori  massimi=10
+    int atk_damage;   // danno che produce in attacco
 
 public:
     // constructor

@@ -4,13 +4,13 @@
 #include "header/utils.hpp"
 #include <ctime>
 
-// place object in room
+// place object in room with struct
 void Room::placeObject(pos position, chtype tag)
 {
     this->look[position.y][position.x] = tag;
 }
 
-// place object in room
+// place object in room without struct
 void Room::placeObject(int y, int x, chtype tag)
 {
     this->look[y][x] = tag;
