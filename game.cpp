@@ -153,7 +153,7 @@ Map crossRoom(int enteringSide, Map myMap)
         refresh();
         wrefresh(myMap.rooms->currentRoom.getWindow());
 
-        if (myMap.changeRoom(1))
+        if (myMap.changeRoom(1)) //changeroom ritorna true se si è cambiata stanza
         {
             myMap.rooms->currentRoom.drawLook();
             refresh();
@@ -209,6 +209,7 @@ void startGame(WINDOW *myWin)
     // prova:
 
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+
     myMap.rooms->currentRoom.drawLook();
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -304,7 +305,6 @@ void startGame(WINDOW *myWin)
 
             // simula entrata player porta inferiore
             myMap = crossRoom(0, myMap);
-
             break;
 
         case 'd':

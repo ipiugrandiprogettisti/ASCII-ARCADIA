@@ -138,6 +138,9 @@ public:
     // returns the WINDOW of the room
     WINDOW *getWindow();
 
+    //returns the bool drawn
+    bool getDrawn();
+
     // returns the object list of the room
     objContainer getObjectList();
 

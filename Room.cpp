@@ -250,6 +250,12 @@ WINDOW *Room::getWindow()
     return win;
 }
 
+// returns the bool drawn
+bool Room::getDrawn()
+{
+    return drawn;
+}
+
 // returns the object list of the room
 struct objContainer Room::getObjectList()
 {
@@ -257,6 +263,7 @@ struct objContainer Room::getObjectList()
 }
 
 // returns the given room's door information; if door doesn't exist returns a "-1" door (check struct door)
+// isNextRoom= 1 se è la porta alla stanza successiva, =0 se dà sulla stanza precedente
 struct door Room::getDoor(int isNextRoom)
 {
     struct door myDoor;

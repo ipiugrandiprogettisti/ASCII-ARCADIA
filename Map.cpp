@@ -115,7 +115,7 @@ pListRooms goPreviousRoom(pListRooms myListRooms)
     return myListRooms;
 }
 
-// changes room, 1 = next room, 0 = previous room
+// changes room, 1 = next room, 0 = previous room. La funzione ritorna true se si è cambiata stanza
 bool Map::changeRoom(int isNextRoom)
 {
     bool success = false;
