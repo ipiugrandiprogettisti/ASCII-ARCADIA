@@ -229,8 +229,7 @@ void startGame(WINDOW *myWin)
     {
         switch (ch)
         {
-        case KEY_LEFT:
-
+        case 'a':
             // simula entrata player porta sinistra
 
             if (P.position.x == 0)
@@ -261,8 +260,7 @@ void startGame(WINDOW *myWin)
 
             break;
 
-        case KEY_RIGHT:
-
+        case 'd':
             // simula entrata player porta destra
             if (P.position.x == 99)
             {
@@ -288,11 +286,9 @@ void startGame(WINDOW *myWin)
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
-
             break;
-
-        case KEY_UP:
-
+            
+        case 'w':
             // simula entrata player porta superiore
             if (P.position.y == 0)
             {
@@ -318,11 +314,9 @@ void startGame(WINDOW *myWin)
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
-
             break;
 
-        case KEY_DOWN:
-            
+        case 's':
             // simula entrata player porta inferiore
             if (P.position.y == 29)
             {
@@ -348,10 +342,24 @@ void startGame(WINDOW *myWin)
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
+            break;
+
+        case KEY_LEFT:
+            break;
+
+        case KEY_RIGHT:
 
             break;
 
-        case 'd':
+        case KEY_UP:
+
+            break;
+
+        case KEY_DOWN:
+
+            break;
+
+        case 'i':
             // DEBUGGING INFO
             clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
             clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
