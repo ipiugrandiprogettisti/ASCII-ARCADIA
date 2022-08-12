@@ -287,7 +287,7 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
             break;
-            
+
         case 'w':
             // simula entrata player porta superiore
             if (P.position.y == 0)
@@ -345,6 +345,19 @@ void startGame(WINDOW *myWin)
             break;
 
         case KEY_LEFT:
+            //prova di sparo bullet
+            pos bulletpos;
+            bulletpos.y = P.position.y;
+            bulletpos.x = P.position.x - 1;
+            myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
+            while (myMap.rooms->currentRoom.getTile(bulletpos) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(bulletpos, ' ');
+                bulletpos.x -= 1;
+                myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
+            }
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
             break;
 
         case KEY_RIGHT:
