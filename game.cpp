@@ -153,7 +153,7 @@ Map crossRoom(int enteringSide, Map myMap)
         refresh();
         wrefresh(myMap.rooms->currentRoom.getWindow());
 
-        if (myMap.changeRoom(1)) //changeroom ritorna true se si è cambiata stanza
+        if (myMap.changeRoom(1)) // changeroom ritorna true se si è cambiata stanza
         {
             myMap.rooms->currentRoom.drawLook();
             refresh();
@@ -231,6 +231,19 @@ void startGame(WINDOW *myWin)
         {
         case KEY_LEFT:
 
+            // simula entrata player porta sinistra
+
+            if (P.position.x == 0)
+            {
+                if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                {
+                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                    P.position.x = 98;
+                    myMap = crossRoom(1, myMap);
+                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                }
+            }
+
             // prova di movimento del player:
 
             pos newPosLeft;
@@ -246,11 +259,22 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
 
-            // simula entrata player porta sinistra
-            myMap = crossRoom(1, myMap);
             break;
 
         case KEY_RIGHT:
+
+            // simula entrata player porta destra
+            if (P.position.x == 99)
+            {
+                if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                {
+                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                    P.position.x = 1;
+                    myMap = crossRoom(3, myMap);
+                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                }
+            }
+
             // prova di movimento del player
             pos newPosRight;
             newPosRight.y = P.position.y;
@@ -265,11 +289,22 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
 
-            // simula entrata player porta destra
-            myMap = crossRoom(3, myMap);
             break;
 
         case KEY_UP:
+
+            // simula entrata player porta superiore
+            if (P.position.y == 0)
+            {
+                if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                {
+                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                    P.position.y = 28;
+                    myMap = crossRoom(2, myMap);
+                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                }
+            }
+
             // prova di movimento del player
             pos newPosUp;
             newPosUp.y = P.position.y - 1;
@@ -284,11 +319,22 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
 
-            // simula entrata player porta superiore
-            myMap = crossRoom(2, myMap);
             break;
 
         case KEY_DOWN:
+            
+            // simula entrata player porta inferiore
+            if (P.position.y == 29)
+            {
+                if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                {
+                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                    P.position.y = 1;
+                    myMap = crossRoom(0, myMap);
+                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                }
+            }
+
             // prova di movimento del player
             pos newPosDown;
             newPosDown.y = P.position.y + 1;
@@ -303,8 +349,6 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
 
-            // simula entrata player porta inferiore
-            myMap = crossRoom(0, myMap);
             break;
 
         case 'd':
