@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <stdlib.h>
 #include <ctime>
+#include <unistd.h>
 #include "header/game.hpp"
 #include "header/utils.hpp"
 #include "header/Map.hpp"
@@ -229,8 +230,7 @@ void startGame(WINDOW *myWin)
     {
         switch (ch)
         {
-        case KEY_LEFT:
-
+        case 'a':
             // simula entrata player porta sinistra
 
             if (P.position.x == 0)
@@ -261,8 +261,7 @@ void startGame(WINDOW *myWin)
 
             break;
 
-        case KEY_RIGHT:
-
+        case 'd':
             // simula entrata player porta destra
             if (P.position.x == 99)
             {
@@ -288,11 +287,9 @@ void startGame(WINDOW *myWin)
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
-
             break;
 
-        case KEY_UP:
-
+        case 'w':
             // simula entrata player porta superiore
             if (P.position.y == 0)
             {
@@ -318,11 +315,9 @@ void startGame(WINDOW *myWin)
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
-
             break;
 
-        case KEY_DOWN:
-            
+        case 's':
             // simula entrata player porta inferiore
             if (P.position.y == 29)
             {
@@ -348,10 +343,40 @@ void startGame(WINDOW *myWin)
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
+            break;
+
+        case KEY_LEFT:
+            // prova di sparo bullet
+            pos bulletpos;
+            bulletpos.y = P.position.y;
+            bulletpos.x = P.position.x - 1;
+
+            while (bulletpos.x > 0)
+            {
+                myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
+                myMap.rooms->currentRoom.drawLook();
+                usleep(15000);
+                myMap.rooms->currentRoom.placeObject(bulletpos, ' ');
+                bulletpos.x = bulletpos.x - 1;
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }
+            
+            break;
+
+        case KEY_RIGHT:
 
             break;
 
-        case 'd':
+        case KEY_UP:
+
+            break;
+
+        case KEY_DOWN:
+
+            break;
+
+        case 'i':
             // DEBUGGING INFO
             clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
             clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
