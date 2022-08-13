@@ -344,6 +344,7 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
             break;
+<<<<<<< HEAD
 
         case KEY_LEFT:
             // prova di sparo bullet
@@ -362,6 +363,23 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
             
+=======
+
+        case KEY_LEFT:
+            //prova di sparo bullet
+            pos bulletpos;
+            bulletpos.y = P.position.y;
+            bulletpos.x = P.position.x - 1;
+            myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
+            while (myMap.rooms->currentRoom.getTile(bulletpos) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(bulletpos, ' ');
+                bulletpos.x -= 1;
+                myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
+            }
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+>>>>>>> main
             break;
 
         case KEY_RIGHT:
