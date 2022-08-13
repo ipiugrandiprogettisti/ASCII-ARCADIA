@@ -45,6 +45,8 @@ chtype Artifact ::getArtTile(int a)
     case '4':
         return 163;
     }
+
+    return -1;
 }
 
 void Artifact ::setArtifact(Artifact p)
