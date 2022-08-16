@@ -224,10 +224,12 @@ void startGame(WINDOW *myWin)
     MyString str;
     pos position;
     int ch; // pressed key
+    nodelay(myMap.rooms->currentRoom.getWindow(), TRUE);
 
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
     {
+
         switch (ch)
         {
         case 'a':
@@ -347,6 +349,7 @@ void startGame(WINDOW *myWin)
 
         case KEY_LEFT:
             // prova di sparo bullet
+
             pos bulletpos;
             bulletpos.y = P.position.y;
             bulletpos.x = P.position.x - 1;
@@ -361,7 +364,6 @@ void startGame(WINDOW *myWin)
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
-            
             break;
 
         case KEY_RIGHT:
