@@ -224,7 +224,6 @@ void startGame(WINDOW *myWin)
     MyString str;
     pos position;
     int ch; // pressed key
-    nodelay(myMap.rooms->currentRoom.getWindow(), TRUE);
 
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
@@ -349,7 +348,6 @@ void startGame(WINDOW *myWin)
 
         case KEY_LEFT:
             // prova di sparo bullet
-
             pos bulletpos;
             bulletpos.y = P.position.y;
             bulletpos.x = P.position.x - 1;
@@ -358,7 +356,7 @@ void startGame(WINDOW *myWin)
             {
                 myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
                 myMap.rooms->currentRoom.drawLook();
-                usleep(15000);
+                // usleep(15000);
                 myMap.rooms->currentRoom.placeObject(bulletpos, ' ');
                 bulletpos.x = bulletpos.x - 1;
                 refresh();

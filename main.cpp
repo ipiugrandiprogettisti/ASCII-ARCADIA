@@ -12,6 +12,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     initscr();
+    halfdelay(4);
     setlocale(LC_ALL, "");
 
     keypad(stdscr, TRUE); // sets arrow keys
