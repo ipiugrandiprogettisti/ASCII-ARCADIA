@@ -1,6 +1,15 @@
 
 #include "Entity.hpp"
 
+// struttura proiettile
+typedef struct bullet
+{
+    chtype bullet_tag = ACS_BULLET;
+    int bullet_damage;
+    pos bulletpos;
+
+} bullet;
+
 // classe personaggio generale
 class Character : public Entity
 {

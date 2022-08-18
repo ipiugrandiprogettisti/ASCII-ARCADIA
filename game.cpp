@@ -201,7 +201,8 @@ void startGame(WINDOW *myWin)
     // prova
     p_inventA headA = NULL;
     p_inventP headP = NULL;
-    Protagonist P(10, headA, headP, 10, 10, 1, 3, 1, ACS_PI); // creato protagonista
+    p_bulletlist headB = NULL;
+    Protagonist P(10, headA, headP, headB, 10, 10, 1, 3, 1, ACS_PI); // creato protagonista
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
