@@ -145,52 +145,42 @@ void Room::place_enemies(bool b)
     Enemy en(0, 0, 3, 4, 5, 5, 2, 0, 0, ' ');
 
     int n_enemies = rand() % 2 + 1;
-    for (int i = 1; i < n_enemies; i++)
+    for (int i = 0; i < n_enemies; i++)
     {
         int n_type = rand() % 2 + 1;
-        int enemyy = rand() % WIDTH + 1;
-        int enemyx = rand() % HEIGTH + 1;
         if (n_type == 1)
         {
             en.tag = ACS_BLOCK;
-            en.position.y = enemyy;
-            en.position.x = enemyx;
             en.key = 1;
         }
         else if (n_type == 2)
         {
             en.tag = ACS_NEQUAL;
-            en.position.y = enemyy;
-            en.position.x = enemyx;
             en.key = 2;
         }
         else if (n_type == 3)
         {
-            en.tag = ACS_DIAMOND;
-            en.position.y = enemyy;
-            en.position.x = enemyx;
-            en.key = 2;
+            en.tag = '@';
+            en.key = 3;
         }
 
         bool flag = true;
         pos posEnemy;
-        posEnemy.y = enemyy;
-        posEnemy.x = enemyx;
         chtype p = ' ';
         while (flag == true)
         {
-
+            int enemyy = rand() % WIDTH + 1;
+            int enemyx = rand() % HEIGTH + 1;
+            posEnemy.y = enemyy;
+            posEnemy.x = enemyx;
+            en.position.y = enemyy;
+            en.position.x = enemyx;
             p = getTile(posEnemy);
             if (getTile(posEnemy) == ' ')
             {
                 this->placeObject(posEnemy, en.tag);
                 this->drawLook();
                 flag = false;
-            }
-            else
-            {
-                enemyy = rand() % WIDTH + 1;
-                enemyx = rand() % HEIGTH + 1;
             }
         }
     }
