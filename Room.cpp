@@ -139,51 +139,61 @@ void Room::placeArtifacts(bool b)
     }
 }
 
+void Room::place_enemies(bool b)
+{
 
-
-void Room::place_enemies(bool b){
-    
-    Enemy en(0, 0 ,0 ,0 ,0 ,0 ,0 ,0, 0, ' ');
+    Enemy en(0, 0, 3, 4, 5, 5, 2, 0, 0, ' ');
 
     int n_enemies = rand() % 2 + 1;
-    for (int i = 1; i < n_enemies ; i++)
+    for (int i = 1; i < n_enemies; i++)
     {
         int n_type = rand() % 2 + 1;
-        int y = rand() % WIDTH + 1;
-        int x = rand() % HEIGTH + 1;
-        if(n_type == 1){
-            Enemy en(1, 0, 3, 4, 5, 5, 2, y, x, ACS_BLOCK);
+        int enemyy = rand() % WIDTH + 1;
+        int enemyx = rand() % HEIGTH + 1;
+        if (n_type == 1)
+        {
+            en.tag = ACS_BLOCK;
+            en.position.y = enemyy;
+            en.position.x = enemyx;
+            en.key = 1;
         }
-        else if(n_type == 2){
-            Enemy en(2, 0, 3, 4, 5, 5, 2, y, x, ACS_BBSS);
-
+        else if (n_type == 2)
+        {
+            en.tag = ACS_NEQUAL;
+            en.position.y = enemyy;
+            en.position.x = enemyx;
+            en.key = 2;
         }
-        else if(n_type == 3){
-            Enemy en(3, 0, 3, 4, 5, 5, 2, y, x, ACS_DIAMOND);
-
+        else if (n_type == 3)
+        {
+            en.tag = ACS_DIAMOND;
+            en.position.y = enemyy;
+            en.position.x = enemyx;
+            en.key = 2;
         }
 
         bool flag = true;
         pos posEnemy;
-        posEnemy.y = y;
-        posEnemy.x = x;
+        posEnemy.y = enemyy;
+        posEnemy.x = enemyx;
         chtype p = ' ';
-        while(flag == true){
+        while (flag == true)
+        {
 
             p = getTile(posEnemy);
-            if(getTile(posEnemy)== ' '){
+            if (getTile(posEnemy) == ' ')
+            {
                 this->placeObject(posEnemy, en.tag);
                 this->drawLook();
                 flag = false;
             }
-            else{
-                y = rand() % WIDTH + 1;
-                x = rand() % HEIGTH + 1;
+            else
+            {
+                enemyy = rand() % WIDTH + 1;
+                enemyx = rand() % HEIGTH + 1;
             }
         }
-        
     }
-
 }
 // random path generator
 void Room::randomPathWall(pos position, int h, int w)
