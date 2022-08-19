@@ -1,5 +1,6 @@
 #include "Character.hpp"
 //#include "Map.hpp"
+
 class Enemy : public Character{
 
     protected:
@@ -21,7 +22,7 @@ class Enemy : public Character{
     void random_position(int random_y, int random_x);
 
     //place enemy
-    void place_enemy(Enemy e);
+    //void place_enemy(Enemy e);
 
 
     void set_enemy(Enemy e, int k);

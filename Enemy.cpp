@@ -49,7 +49,7 @@ void Enemy::printEnemy(Enemy en, WINDOW *w)
 void random_position(int random_y, int random_x){
 
     srand(time(NULL));
-    random_y = rand()%29;
+    random_y = rand()%30;
     random_x = rand()%100;
        
 };

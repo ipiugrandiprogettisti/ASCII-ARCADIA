@@ -126,6 +126,10 @@ private:
     // places artifacts
     void placeArtifacts(bool b);
 
+    void place_enemies(bool b);
+
+    
+
 public:
     // Constructort
     Room();
@@ -174,4 +178,6 @@ public:
 
     // returns the height of the room (look)
     int getMaxHeight();
+
+    
 };
