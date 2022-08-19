@@ -184,6 +184,8 @@ void Room::place_enemies(bool b)
             }
         }
     }
+
+    // qui va funzione per aggiungere enemy en alla lista
 }
 // random path generator
 void Room::randomPathWall(pos position, int h, int w)

@@ -1,10 +1,10 @@
-
+#pragma once
 #include <ncurses.h>
 #include <cstring>
 #include <stdlib.h>
 #include <iostream>
 
-//Custom string class
+// Custom string class
 class MyString
 {
     char *data;      /*!< The ASCII characters that comprise the MyString */

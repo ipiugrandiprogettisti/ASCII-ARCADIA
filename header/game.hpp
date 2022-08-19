@@ -1,3 +1,10 @@
+#pragma once
+#include <ncurses.h>
+#include <stdlib.h>
+#include <ctime>
+#include <unistd.h>
+#include "utils.hpp"
+#include "Map.hpp"
 
 // max length of item string
 const int MAX_LENGTH_ITEM = 20;
@@ -15,3 +22,6 @@ int getMenu(WINDOW *myWin);
 
 // starts the game
 void startGame(WINDOW *myWin);
+
+// working during game
+void inGame(WINDOW *myWin);

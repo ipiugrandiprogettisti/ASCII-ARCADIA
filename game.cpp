@@ -1,10 +1,4 @@
-#include <ncurses.h>
-#include <stdlib.h>
-#include <ctime>
-#include <unistd.h>
 #include "header/game.hpp"
-#include "header/utils.hpp"
-#include "header/Map.hpp"
 
 // debug info at top screen printing the room key, cols and lines
 void debugRoom(Map myMap)
@@ -194,6 +188,7 @@ Map crossRoom(int enteringSide, Map myMap)
 }
 
 // starts the game
+
 void startGame(WINDOW *myWin)
 {
     clear();
@@ -225,7 +220,7 @@ void startGame(WINDOW *myWin)
     MyString str;
     pos position;
     int ch; // pressed key
-    
+
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
     {
@@ -431,4 +426,8 @@ void startGame(WINDOW *myWin)
 
         str.reset();
     }
+}
+
+void inGame(WINDOW *myWin)
+{
 }

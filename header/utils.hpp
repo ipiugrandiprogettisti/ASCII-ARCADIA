@@ -1,4 +1,6 @@
+#pragma once
 #include "MyString.hpp"
+
 const int MIN_COLS = 40, MIN_LINES = 110;
 
 // custom itoa, converts int to const char *
@@ -10,5 +12,5 @@ void checkScreen(int screenCols, int screenLines);
 // check if color is supported by user's terminal
 void checkColors();
 
-//clear the screen with " "
-void clearScreen(int y, int x, int length, WINDOW * win, int delay); 
+// clear the screen with " "
+void clearScreen(int y, int x, int length, WINDOW *win, int delay);
