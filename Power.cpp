@@ -5,27 +5,11 @@ Power ::Power()
     type = 0;
 };
 
-Power ::Power(int type, int y, int x, chtype tag) : Entity(position.y, position.x, tag)
+Power ::Power(int y, int x, chtype tag) : Entity(position.y, position.x, tag)
 {
-    this->type = type;
     this->position.y = y;
     this->position.x = x;
-    this->tag = 111;
-};
-
-void Power::setPower(Power p)
-{
-    switch (p.type)
-    {
-    case 1:
-        p.tag = 230;
-    case 2:
-        p.tag = 187;
-    }
-}
-int Power::getType(Power p)
-{
-    return p.type;
+    this->tag = ' ';
 };
 
 void Power ::printPower(Power p, WINDOW *w)

@@ -189,18 +189,23 @@ Map crossRoom(int enteringSide, Map myMap)
 
 // starts the game
 
+Map myMap;
+p_inventA headA;
+p_inventP headP;
+p_bulletlist headB;
+Protagonist p;
 void startGame(WINDOW *myWin)
 {
     clear();
 
     // prova
-    p_inventA headA = NULL;
-    p_inventP headP = NULL;
-    p_bulletlist headB = NULL;
+    headA = NULL;
+    headP = NULL;
+    headB = NULL;
     Protagonist P(10, headA, headP, headB, 10, 10, 1, 3, 1, ACS_PI); // creato protagonista
 
-    Map myMap = Map(myWin); // Map initialize
-    door emptyDoor;         // empty door
+    myMap = Map(myWin); // Map initialize
+    door emptyDoor;     // empty door
     // Now game draws first room, where the player spawns safely
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
     // prova:
@@ -427,7 +432,50 @@ void startGame(WINDOW *myWin)
         str.reset();
     }
 }
-
+Room r = myMap.rooms->currentRoom;
 void inGame(WINDOW *myWin)
 {
+
+    while (1)
+    {
+        // controllo collisione proiettili alleati
+        p_bulletlist tmp = headB;        // lista proiettili protagonista
+        p_bulletlist futureHead = headB; // eseguo varie rimozioni qui, questa diventerà nuova testa
+        while (tmp != NULL)
+        {
+            chtype ctr = ' ';
+
+            pos now = tmp->B.bulletpos;                                     // salvo posizione attuale
+            ctr = r.checkNextPos(now, tmp->B.direction);                    // restituisce char in pos futura
+            if (ctr == ACS_VLINE || ctr == ACS_HLINE || ctr == ACS_CKBOARD) // PROIETTILE COLPIRà MURO/PARETE
+            {
+
+                // rimuove bullet dalla lista
+            }
+            else if (ctr == ACS_GEQUAL || ctr == '&' || ctr == '$' || ctr == ACS_STERLING) // PROIETTILE COLPIRà ARTEF
+            {
+                pos nextP = r.nextPos(now, tmp->B.direction);
+                chtype nextC = r.checkNextPos(nextP, tmp->B.direction); // controlla cosa c'è dopo artefatto
+                if (nextC == ACS_VLINE || nextC == ACS_HLINE || nextC == ACS_CKBOARD)
+                { // dopo proiettile e dopo artefatto c'è muro, faccio sparire proiet
+                    // erase bullet
+                    r.placeObject(now, ' ');
+                    // rimuove bullet dalla lista
+                }
+                else if (nextC == ' ')
+                {
+                    pos nextnext = r.nextPos(nextP, tmp->B.direction);
+                    r.placeObject(now, ' ');
+                    r.placeObject(nextnext, ACS_BULLET);
+                }
+
+                // NON CI SONO ALTRE COLLISIONI DELLA SERIE PROIETT -> ARTEF -> ALTRO PERCHè GLI ARTEFATTI SPAWNANO SOLO DOPO CHE I NEMICI SONO MORTI
+            }
+            else if (ctr == '@' || ctr == ACS_NEQUAL || ctr == ACS_BLOCK)
+            { // PROIETTILE STA PER COLPIRE NEMICO
+              // da decidere se proiettili alleato uccidono nemici con un colpo o tolgono solo parte della vita
+            }
+            tmp = tmp->next;
+        }
+    }
 }

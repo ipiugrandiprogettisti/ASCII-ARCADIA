@@ -1,6 +1,5 @@
 // Room class file
 #include <ncurses.h>
-#include "Entity.hpp"
 #include "Protagonist.hpp"
 #include "Enemy.hpp"
 
@@ -123,13 +122,6 @@ private:
     // check if tiles around wall are free
     bool checkTilesAround(pos position, pos previousPosition);
 
-    // places artifacts
-    void placeArtifacts(bool b);
-
-    void place_enemies(bool b);
-
-    
-
 public:
     // Constructort
     Room();
@@ -179,5 +171,16 @@ public:
     // returns the height of the room (look)
     int getMaxHeight();
 
-    
+    // places random artifacts
+    void placeArtifacts(bool b);
+
+    // places random enemies
+    void place_enemies(bool b);
+
+    // checks what's after a position in a certain direction
+    // 1 dx, 2 basso, 3 sx, 4 alto
+    chtype checkNextPos(pos p, int direction);
+
+    // returns next position in a certain direction
+    pos nextPos(pos p, int direction);
 };
