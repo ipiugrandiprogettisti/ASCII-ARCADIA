@@ -2,6 +2,7 @@
 #include <ncurses.h>
 #include "Entity.hpp"
 #include "Protagonist.hpp"
+#include "Enemy.hpp"
 
 const int MAXDOORS = 2;
 const int WIDTH = 30, HEIGTH = 100;
