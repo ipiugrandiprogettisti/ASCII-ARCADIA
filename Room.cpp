@@ -144,7 +144,7 @@ void Room::place_enemies(bool b)
 
     Enemy en(0, 0, 3, 4, 5, 5, 2, 0, 0, ' ');
 
-    int n_enemies = rand() % 2 + 1;
+    int n_enemies = rand() % 3 + 1;
     for (int i = 0; i < n_enemies; i++)
     {
         int n_type = rand() % 2 + 1;
