@@ -135,7 +135,7 @@ void Room::placeArtifacts(bool b)
             var = getTile(posArt);
         } while (var != ' ');
         this->placeObject(posArt, rar);
-        //this->drawLook();
+        // this->drawLook();
     }
 }
 // random path generator
