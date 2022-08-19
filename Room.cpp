@@ -134,7 +134,8 @@ void Room::placeArtifacts(bool b)
             posArt.x = posx;
             var = getTile(posArt);
         } while (var != 111);
-        placeObject(posArt, rar);
+        this->placeObject(posArt, rar);
+        this->drawLook();
     }
 }
 // random path generator
@@ -440,11 +441,11 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     }
 
     // place artifacts
-    // placeArtifacts(true);
+
     // TODO: place player
     // TODO: place enemies
     // TODO:  place etc
-
+    placeArtifacts(true);
     drawn = true;
 
     return drawn;

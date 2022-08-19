@@ -2,7 +2,7 @@
 #include <ncurses.h>
 #include "Entity.hpp"
 #include "Protagonist.hpp"
-#include "Enemy.hpp"
+//#include "Enemy.hpp"
 
 const int MAXDOORS = 2;
 const int WIDTH = 30, HEIGTH = 100;
@@ -139,7 +139,7 @@ public:
     // returns the WINDOW of the room
     WINDOW *getWindow();
 
-    //returns the bool drawn
+    // returns the bool drawn
     bool getDrawn();
 
     // returns the object list of the room
