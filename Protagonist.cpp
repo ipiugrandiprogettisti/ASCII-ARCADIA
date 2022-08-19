@@ -108,14 +108,6 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
 }
 
 // da qui in giù metto le mie funzioni -annalisa
-// check if the power is of the right type, if it is adds a bullet
-void Protagonist ::addBullet(Protagonist a, Power p)
-{
-    if (p.type == 2)
-    {
-        a.n_bullets++;
-    }
-}
 
 // add life based on artifact healing
 void Protagonist::gainLife(Protagonist a, Artifact p)
@@ -123,13 +115,4 @@ void Protagonist::gainLife(Protagonist a, Artifact p)
     int actual = a.current_life;
     int heal = p.lifepoints;
     a.current_life = actual + heal;
-}
-
-void Protagonist ::eraseItem(Protagonist a, Artifact c, Power p, WINDOW *w)
-{
-    // protagonista e artef/potere nella stessa pos, disegna protagonista sopra
-    if (a.position.y == c.position.y && a.position.x == c.position.x || a.position.y == p.position.y && a.position.x == p.position.x)
-    {
-        mvwaddch(w, a.position.y, a.position.x, a.tag);
-    }
 }

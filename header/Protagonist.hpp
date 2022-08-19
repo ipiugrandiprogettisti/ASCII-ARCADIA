@@ -17,10 +17,10 @@ typedef struct inventoryP
     inventoryP *next;
 } inventoryP;
 
-//pointer to protagonist's artifacts list
+// pointer to protagonist's artifacts list
 typedef inventoryA *p_inventA;
 
-//pointer to protagonist's powers list
+// pointer to protagonist's powers list
 typedef inventoryP *p_inventP;
 
 // lista dei proiettili sparati
@@ -59,21 +59,8 @@ public:
     // inserisce un nuovo bullet in coda
     p_bulletlist bulletTailInsert(p_bulletlist head, bullet b);
 
-    //funzione che rimuove un bullet qualunque
+    // funzione che rimuove un bullet qualunque
     p_bulletlist bulletRemove(p_bulletlist head, bullet b);
 
-    /*
-     da qui in giù metto le mie funzioni, non toccatele pls -annalisa
-     le funzioni che comprendono sia un artefatto/potere che personaggio
-     le facciamo tutte sulla classe protagonista perchè non posso includere il file
-     personaggio nelle classi artef/potere o si includono  a vicenda e per compilare
-     va in loop
-    */
-
-    // check if the power is of the right type, if it is adds a bullet
-    void addBullet(Protagonist a, Power p);
-    // adds life based on artifact healing
     void gainLife(Protagonist a, Artifact p);
-    // erases an item when protagonist passes on it
-    void eraseItem(Protagonist a, Artifact c, Power p, WINDOW *w);
 };
