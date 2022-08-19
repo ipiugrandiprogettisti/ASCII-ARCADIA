@@ -1,5 +1,6 @@
 
 #include "Entity.hpp"
+#pragma once
 
 // struttura proiettile
 typedef struct bullet
@@ -9,7 +10,7 @@ typedef struct bullet
     pos bulletpos;
     int direction;   //0 indica che va verso il basso, 1 che va verso sinistra, 2 verso l'alto e 3 verso destra
 
-} bullet;
+}bullet;
 
 // classe personaggio generale
 class Character : public Entity
