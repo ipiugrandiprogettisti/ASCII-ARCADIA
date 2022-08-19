@@ -102,29 +102,29 @@ void Room::placeArtifacts(bool b)
         const int probability = 101;
         int aRarity;
         int r = rand() % probability;
-        chtype rar = 111;
+        chtype rar = ' ';
         if (r < 61)
         {
             aRarity = COMMON;
-            rar = 169;
+            rar = ACS_GEQUAL;
         }
         else if (r > 60 && r < 86)
         {
             aRarity = RARE;
-            rar = 174;
+            rar = '&';
         }
         else if (r > 85 && r < 96)
         {
             aRarity = SPECIAL;
-            rar = 167;
+            rar = '$';
         }
         else if (r > 95)
         {
             aRarity = EPIC;
-            rar = 163;
+            rar = ACS_STERLING;
         }
 
-        chtype var = 111;
+        chtype var = ' ';
         pos posArt;
         do
         {
@@ -133,9 +133,9 @@ void Room::placeArtifacts(bool b)
             posArt.y = posy;
             posArt.x = posx;
             var = getTile(posArt);
-        } while (var != 111);
+        } while (var != ' ');
         this->placeObject(posArt, rar);
-        this->drawLook();
+        //this->drawLook();
     }
 }
 // random path generator
