@@ -2,7 +2,9 @@
 
 int key; // identifier
 int rarity;
-int lifepoints; // quanti punti vita dà
+int lifepoints; // amount of lifepoints given
+
+//constructor
 Artifact ::Artifact()
 {
     key = 0;
@@ -13,6 +15,7 @@ Artifact ::Artifact()
     position.x = 0;
 }
 
+//constructor
 Artifact ::Artifact(int key, int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
 {
     this->key = key;
@@ -22,15 +25,18 @@ Artifact ::Artifact(int key, int rarity, int posy, int posx, chtype tag) : Entit
     this->tag = 111;
 }
 
+//returns lifepoints
 int Artifact ::getArtLifepoints(Artifact p)
 {
     return p.lifepoints;
 }
 
+//returns rarity
 int Artifact ::getArtRarity(Artifact p)
 {
     return p.rarity;
 }
+
 
 chtype Artifact ::getArtTile(int a)
 {
@@ -49,6 +55,7 @@ chtype Artifact ::getArtTile(int a)
     return -1;
 }
 
+// sets artifact lifepoints and tag based on rarity
 void Artifact ::setArtifact(Artifact p)
 {
     int prarity = p.rarity;

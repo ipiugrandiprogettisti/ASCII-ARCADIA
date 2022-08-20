@@ -1,6 +1,6 @@
 #include "header/Enemy.hpp"
 
-
+//constructor
 Enemy::Enemy()
 {
     range_move = 0;
@@ -15,6 +15,7 @@ Enemy::Enemy()
     tag = 111;
 }
 
+//constructor
 Enemy::Enemy(int key, int bullets_dmg, int bullets_range, int range_move, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
 {
     this->bullets_dmg = bullets_dmg;
@@ -46,6 +47,7 @@ void Enemy::printEnemy(Enemy en, WINDOW *w)
 
 // casella vuota ' '
 
+//sets random coordintes
 void random_position(int random_y, int random_x){
 
     srand(time(NULL));

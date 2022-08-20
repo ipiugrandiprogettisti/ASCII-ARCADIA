@@ -1,13 +1,11 @@
 #include "header/Protagonist.hpp"
 
-int n_bullets;
 p_inventA headA;
 p_inventP headP;
 p_bulletlist headB;
 
 Protagonist::Protagonist()
 {
-    n_bullets = 0;
     headA = NULL;
     headP = NULL;
     headB = NULL;
@@ -19,9 +17,8 @@ Protagonist::Protagonist()
     tag = 111;
 }
 
-Protagonist::Protagonist(int n_bullets, p_inventA headA, p_inventP headP, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
+Protagonist::Protagonist(p_inventA headA, p_inventP headP, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
 {
-    this->n_bullets = 1;
     this->headA = headA;
     this->headP = headP;
     this->headB = headB;
@@ -41,17 +38,18 @@ void Protagonist::printProtagonist(Protagonist P, WINDOW *w)
     mvwaddch(w, p_y, p_x, P.tag);
 }
 
-// funzione che aggiunge un nuovo bullet in testa
+// head insert new bullet
 p_bulletlist Protagonist::bulletHeadInsert(p_bulletlist head, bullet b)
 {
     p_bulletlist newbullet = new bulletlist;
     newbullet->B = b;
     newbullet->next = head;
+    head = newbullet;
 
-    return newbullet;
+    return head;
 }
 
-// funzione che aggiunge un nuovo bullet in coda
+// tail insert a new bullet
 p_bulletlist Protagonist::bulletTailInsert(p_bulletlist head, bullet b)
 {
     p_bulletlist tmp;
@@ -73,7 +71,7 @@ p_bulletlist Protagonist::bulletTailInsert(p_bulletlist head, bullet b)
     return head;
 }
 
-// funzione che rimuove un bullet qualunque
+// removes whatever bullet given as a parameter
 p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
 {
     p_bulletlist x;
@@ -83,7 +81,7 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
     {
         head = head;
     }
-    else if (head->B.bullet_damage == b.bullet_damage && head->B.bullet_tag == b.bullet_tag && head->B.bulletpos.x == b.bulletpos.x && head->B.bulletpos.y == b.bulletpos.y)
+    else if (head->B.bullet_damage == b.bullet_damage && head->B.bullet_tag == b.bullet_tag && head->B.bulletpos.x == b.bulletpos.x && head->B.bulletpos.y == b.bulletpos.y && head->B.direction == b.direction)
     {
         tmp = head;
         head = head->next;
@@ -94,7 +92,7 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
         x = head;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->B.bullet_damage == b.bullet_damage && x->next->B.bullet_tag == b.bullet_tag && x->next->B.bulletpos.x == b.bulletpos.x && x->next->B.bulletpos.y == b.bulletpos.y)
+            if (x->next->B.bullet_damage == b.bullet_damage && x->next->B.bullet_tag == b.bullet_tag && x->next->B.bulletpos.x == b.bulletpos.x && x->next->B.bulletpos.y == b.bulletpos.y && x->next->B.direction == b.direction)
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -106,8 +104,6 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
     }
     return head;
 }
-
-// da qui in giù metto le mie funzioni -annalisa
 
 // add life based on artifact healing
 void Protagonist::gainLife(Protagonist a, Artifact p)

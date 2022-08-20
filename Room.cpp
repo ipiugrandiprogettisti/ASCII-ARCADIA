@@ -139,6 +139,7 @@ void Room::placeArtifacts(bool b)
     }
 }
 
+//places random enemies
 void Room::place_enemies(bool b)
 {
 
@@ -187,6 +188,8 @@ void Room::place_enemies(bool b)
 
     // qui va funzione per aggiungere enemy en alla lista
 }
+
+
 // random path generator
 void Room::randomPathWall(pos position, int h, int w)
 {
@@ -538,20 +541,20 @@ chtype Room::checkNextPos(pos p, int direction)
     pos next = p;
 
     // testo future posizioni su posizione di prova
-    if (direction == 1)
-    { // direzione 1 : va verso dx, aumenta x di 1
+    if (direction == 3)
+    { // direzione 3 : va verso dx, aumenta x di 1
         next.x++;
     }
-    else if (direction == 2)
-    { // direzione 2 : va verso il basso, aumenta y di 1
+    else if (direction == 0)
+    { // direzione 0 : va verso il basso, aumenta y di 1
         next.y++;
     }
-    else if (direction == 3)
-    { // direzione 3 : va verso sx, diminuisce x di 1
+    else if (direction == 1)
+    { // direzione 1 : va verso sx, diminuisce x di 1
         next.x--;
     }
-    else if (direction == 4)
-    { // direzione 4: va verso l'alto, diminuisce y di 1
+    else if (direction == 2)
+    { // direzione 2: va verso l'alto, diminuisce y di 1
         next.y--;
     }
 
@@ -564,20 +567,20 @@ pos Room::nextPos(pos p, int direction)
     pos next = p;
 
     // testo future posizioni su posizione di prova
-    if (direction == 1)
-    { // direzione 1 : va verso dx, aumenta x di 1
+    if (direction == 3)
+    { // direzione 3 : va verso dx, aumenta x di 1
         next.x++;
     }
-    else if (direction == 2)
-    { // direzione 2 : va verso il basso, aumenta y di 1
+    else if (direction == 0)
+    { // direzione 0 : va verso il basso, aumenta y di 1
         next.y++;
     }
-    else if (direction == 3)
-    { // direzione 3 : va verso sx, diminuisce x di 1
+    else if (direction == 1)
+    { // direzione 1 : va verso sx, diminuisce x di 1
         next.x--;
     }
-    else if (direction == 4)
-    { // direzione 4: va verso l'alto, diminuisce y di 1
+    else if (direction == 2)
+    { // direzione 2: va verso l'alto, diminuisce y di 1
         next.y--;
     }
 

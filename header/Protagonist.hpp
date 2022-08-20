@@ -2,7 +2,7 @@
 #include "Artifact.hpp"
 #include "Power.hpp"
 
-// ASCII symbol 182 ¶
+// ASCII symbol ACS_PI
 
 // lista degli artefatti che ha preso il protagonista
 typedef struct inventoryA
@@ -38,7 +38,6 @@ typedef bulletlist *p_bulletlist;
 class Protagonist : public Character
 {
 public:
-    int n_bullets;
     p_inventA headA;
     p_inventP headP;
     p_bulletlist headB;
@@ -47,19 +46,20 @@ public:
     Protagonist();
 
     // constructor
-    Protagonist(int n_bullets, p_inventA headA, p_inventP headP, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag);
+    Protagonist(p_inventA headA, p_inventP headP, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag);
 
     // print protagonist
     void printProtagonist(Protagonist P, WINDOW *w);
 
-    // inserisce un nuovo bullet in testa
+    // head insert a new bullet
     p_bulletlist bulletHeadInsert(p_bulletlist head, bullet b);
 
-    // inserisce un nuovo bullet in coda
+    // tail insert a new bullet
     p_bulletlist bulletTailInsert(p_bulletlist head, bullet b);
 
-    // funzione che rimuove un bullet qualunque
+    // removes whatever bullet is given as parameter
     p_bulletlist bulletRemove(p_bulletlist head, bullet b);
 
+    //increases life basing on the gained artifact
     void gainLife(Protagonist a, Artifact p);
 };

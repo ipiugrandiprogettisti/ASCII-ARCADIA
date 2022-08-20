@@ -25,13 +25,13 @@ Character::Character(int current_life, int max_life, int atk_damage, int y, int 
     this->tag = 111;
 }
 
-// ritorna la vita corrente
+// returns current life
 int Character::getLife()
 {
     return current_life;
 }
 
-// prende in input il danno ricevuto e aggiorna la vita sottraendoglielo
+// updates life according to the damage received
 void Character::takeDamage(int damage_received)
 {
     int curr_life = getLife();

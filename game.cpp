@@ -197,14 +197,16 @@ void startGame(WINDOW *myWin)
     p_inventA headA = NULL;
     p_inventP headP = NULL;
     p_bulletlist headB = NULL;
-    Protagonist P(10, headA, headP, headB, 10, 10, 1, 3, 1, ACS_PI); // creato protagonista
+
+    // creation of the protagonist (player)
+    Protagonist P(headA, headP, headB, 10, 10, 1, 3, 1, ACS_PI);
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
     // Now game draws first room, where the player spawns safely
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
-    // prova:
 
+    // spawns protagonist
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
 
     myMap.rooms->currentRoom.drawLook();
@@ -228,7 +230,7 @@ void startGame(WINDOW *myWin)
         switch (ch)
         {
         case 'a':
-            // simula entrata player porta sinistra
+            // player enters left door
 
             if (P.position.x == 0)
             {
@@ -241,7 +243,7 @@ void startGame(WINDOW *myWin)
                 }
             }
 
-            // prova di movimento del player:
+            // player's movement
 
             pos newPosLeft;
             newPosLeft.y = P.position.y;
@@ -259,7 +261,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'd':
-            // simula entrata player porta destra
+            // player enters right door
             if (P.position.x == 99)
             {
                 if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
@@ -271,7 +273,7 @@ void startGame(WINDOW *myWin)
                 }
             }
 
-            // prova di movimento del player
+            // player's movement
             pos newPosRight;
             newPosRight.y = P.position.y;
             newPosRight.x = P.position.x + 1;
@@ -287,7 +289,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'w':
-            // simula entrata player porta superiore
+            // player enters front door
             if (P.position.y == 0)
             {
                 if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
@@ -299,7 +301,7 @@ void startGame(WINDOW *myWin)
                 }
             }
 
-            // prova di movimento del player
+            // player's movement
             pos newPosUp;
             newPosUp.y = P.position.y - 1;
             newPosUp.x = P.position.x;
@@ -315,7 +317,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 's':
-            // simula entrata player porta inferiore
+            // player enters back door
             if (P.position.y == 29)
             {
                 if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
@@ -327,7 +329,7 @@ void startGame(WINDOW *myWin)
                 }
             }
 
-            // prova di movimento del player
+            // player's movement
             pos newPosDown;
             newPosDown.y = P.position.y + 1;
             newPosDown.x = P.position.x;
@@ -343,7 +345,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case KEY_LEFT:
-            // prova di sparo bullet
+
             pos bulletpos;
             bulletpos.y = P.position.y;
             bulletpos.x = P.position.x - 1;
