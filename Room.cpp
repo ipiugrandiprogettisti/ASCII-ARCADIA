@@ -583,3 +583,97 @@ pos Room::nextPos(pos p, int direction)
 
     return next;
 };
+
+// manages ally bullet collisions and movement
+void Room::aBullMovement(Room r, Protagonist P)
+{
+    // controllo collisione proiettili alleati
+    p_bulletlist tmp = P.headB; // lista proiettili protagonista
+
+    p_bulletlist workingHead = P.headB; // eseguo varie rimozioni qui
+    // scorro lista proiettili
+    while (tmp != NULL)
+    {
+
+        chtype ctr = ' ';
+
+        pos now = tmp->B.bulletpos;                                     // salvo posizione attuale
+        ctr = r.checkNextPos(now, tmp->B.direction);                    // char in pos futura
+        pos nextP = r.nextPos(now, tmp->B.direction);                   // pos futura
+        if (ctr == ACS_VLINE || ctr == ACS_HLINE || ctr == ACS_CKBOARD) // PROIETTILE COLPIRà MURO/PARETE
+        {
+            bullet remove = tmp->B;              // salvo proiettile del nodo attuale
+            r.placeObject(now, ' ');             // rimuove bullet da posizione attuale
+            P.bulletRemove(workingHead, remove); // rimuove bullet dalla lista
+        }
+        else if (ctr == ACS_GEQUAL || ctr == '&' || ctr == '$' || ctr == ACS_STERLING) // PROIETTILE COLPIRà ARTEF
+        {
+            chtype nextC = r.checkNextPos(nextP, tmp->B.direction); // controlla cosa c'è dopo artefatto //due posti dopo bull
+            if (nextC == ACS_VLINE || nextC == ACS_HLINE || nextC == ACS_CKBOARD)
+            {                                        // dopo proiettile e dopo artefatto c'è muro, faccio sparire proiettile
+                bullet remove = tmp->B;              // salvo proiettile del nodo attuale
+                r.placeObject(now, ' ');             // rimuove bullet da posizione attuale
+                P.bulletRemove(workingHead, remove); // rimuove bullet dalla lista
+            }
+            else if (nextC == ' ')
+            {
+                pos nextnext = r.nextPos(nextP, tmp->B.direction);
+                r.placeObject(now, ' ');             // pos attuale cancello
+                r.placeObject(nextnext, ACS_BULLET); // pos futura disegno
+                tmp->B.bulletpos = nextnext;         // aggiorno posizione sulla lista
+            }
+
+            // NON CI SONO ALTRE COLLISIONI DELLA SERIE PROIETT -> ARTEF -> ALTRO PERCHè GLI ARTEFATTI SPAWNANO SOLO DOPO CHE I NEMICI SONO MORTI
+        }
+        else if (ctr == '@' || ctr == ACS_NEQUAL || ctr == ACS_BLOCK) // PROIETTILE STA PER COLPIRE NEMICO
+        {
+            // da decidere se proiettili alleato uccidono nemici con un colpo o tolgono solo parte della vita
+        }
+        else if (ctr == ACS_BULLET) // PROIETTILE ALL STA PER COLPIRE PRIOETTILE NEMICO
+        {
+            // manca ancora lista proiettili nemici, ho usato lista proiett all, da cambiare
+            int dirNem = 0;
+            int dirAll = tmp->B.direction;
+            p_bulletlist tmpnem;
+            /*
+            bisogna capire la direzione del proiettile nemico
+            se sono perpendicolari basta muovere di una posizione proiettile nemico
+            e poi posizionare proiettile all
+
+            se sono direzionati nella stessa retta sono diretti uno contro l'altro,
+            non possono avere la stessa direzione
+            in questo caso basta scambiarli di posizione
+            */
+            // scorro lista proiettili nemici per capire quale proiettile è in quella pos, e mi salvo la direzione
+            while (tmpnem != NULL)
+            { // manca lista proiettili nemici
+                pos posnem = tmp->B.bulletpos;
+                if (posnem.y == nextP.y && posnem.x == nextP.x)
+                {
+                    dirNem = tmpnem->B.direction;
+                    if (dirNem == dirAll + 2 || dirNem == dirAll - 2)
+                    { // stessa retta, stanno per scontrarsi frontalmente, scambio pos
+                        // non serve cambire char, è lo stesso
+                        tmpnem->B.bulletpos = now;
+                        tmp->B.bulletpos = nextP;
+                    }
+                    else if (dirNem == dirAll + 1 || dirNem == dirAll - 1 || dirNem == dirAll + 3 || dirNem == dirAll - 3)
+                    { // sono perpendicolari
+                        pos nextPosEnemyBull = nextPos(nextP, dirNem);
+                        tmpnem->B.bulletpos = nextPosEnemyBull;    // aggiorno posizione bullnem in lista
+                        placeObject(nextPosEnemyBull, ACS_BULLET); // disegno in prox pos
+                    }
+                }
+                tmpnem = tmpnem->next;
+            }
+        }
+        else if (ctr == ' ')
+        { // se prossima pos è vuota aggiorno pos proiettile e lo piazzo
+            tmp->B.bulletpos = nextP;
+            placeObject(now, ' ');
+            placeObject(nextP, ACS_BULLET);
+        }
+
+        tmp = tmp->next;
+    }
+}

@@ -177,10 +177,15 @@ public:
     // places random enemies
     void place_enemies(bool b);
 
+    // collision functions
+
     // checks what's after a position in a certain direction
     // 1 dx, 2 basso, 3 sx, 4 alto
     chtype checkNextPos(pos p, int direction);
 
     // returns next position in a certain direction
     pos nextPos(pos p, int direction);
+
+    // manages ally bullet collisions and movement
+    void aBullMovement(Room r, Protagonist P);
 };

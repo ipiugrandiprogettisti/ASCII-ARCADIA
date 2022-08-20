@@ -37,13 +37,12 @@ typedef bulletlist *p_bulletlist;
 // classe protagonista
 class Protagonist : public Character
 {
-protected:
+public:
     int n_bullets;
     p_inventA headA;
     p_inventP headP;
     p_bulletlist headB;
 
-public:
     // constructor
     Protagonist();
 
