@@ -1,13 +1,12 @@
 #include "header/Artifact.hpp"
 
-int key; // identifier
 int rarity;
 int lifepoints; // amount of lifepoints given
 
-//constructor
+// constructor
 Artifact ::Artifact()
 {
-    key = 0;
+
     rarity = 0;
     lifepoints = 0;
     tag = 111;
@@ -15,70 +14,63 @@ Artifact ::Artifact()
     position.x = 0;
 }
 
-//constructor
-Artifact ::Artifact(int key, int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
+// constructor
+Artifact ::Artifact(int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
 {
-    this->key = key;
     this->rarity = rarity;
     this->position.y = posy;
     this->position.x = posx;
-    this->tag = 111;
+    this->tag = ' ';
 }
 
-//returns lifepoints
-int Artifact ::getArtLifepoints(Artifact p)
+// returns lifepoints
+int Artifact ::getArtLifepoints()
 {
-    return p.lifepoints;
+    switch (tag)
+    {
+    case 'ACS_GEQUAL':
+        return 1;
+    case '&':
+        return 3;
+    case '$':
+        return 5;
+    case 'ACS_STERLING':
+        return 7;
+    };
 }
 
-//returns rarity
-int Artifact ::getArtRarity(Artifact p)
+chtype Artifact ::getArtTile()
 {
-    return p.rarity;
-}
-
-
-chtype Artifact ::getArtTile(int a)
-{
-    switch (a)
+    switch (rarity)
     {
     case '1':
-        return 169;
+        return ACS_GEQUAL;
     case '2':
-        return 174;
+        return '&';
     case '3':
-        return 167;
+        return '$';
     case '4':
-        return 163;
+        return ACS_STERLING;
     }
-
-    return -1;
 }
 
 // sets artifact lifepoints and tag based on rarity
-void Artifact ::setArtifact(Artifact p)
+void Artifact ::setArtifact(int r)
 {
-    int prarity = p.rarity;
-    switch (prarity)
+    rarity = r;
+    switch (r)
     {
     case '1':
-        p.lifepoints = 1;
-        p.tag = 169;
+        lifepoints = 1;
+        tag = ACS_GEQUAL;
     case '2':
-        p.lifepoints = 3;
-        p.tag = 174;
+        lifepoints = 3;
+        tag = '&';
     case '3':
-        p.lifepoints = 7;
-        p.tag = 167;
+        lifepoints = 5;
+        tag = '$';
     case '4':
-        p.lifepoints = 10;
-        p.tag = 163;
+        lifepoints = 7;
+        tag = ACS_STERLING;
     }
-}
-
-void Artifact ::printArtifact(Artifact p, WINDOW *w)
-{
-    int py = p.position.y;
-    int px = p.position.x;
-    mvwaddch(w, py, px, p.tag);
 }

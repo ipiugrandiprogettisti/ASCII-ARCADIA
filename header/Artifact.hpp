@@ -9,7 +9,6 @@
 class Artifact : public Entity
 {
 public:
-    int key;
     int lifepoints; // quanti punti vita dà
     int rarity;
 
@@ -18,17 +17,14 @@ public:
     Artifact();
     // artifact constructor with rarity, pos y, posx, tag (set it 111 by default)
     // after creating an artifact you need to set  his tag and lifepoints with funct setArtifact()
-    Artifact(int key, int rarity, int y, int x, chtype tag);
+    Artifact(int rarity, int y, int x, chtype tag);
 
     // returns artifact life points
-    int getArtLifepoints(Artifact p);
-    // returns artifact rarity
-    int getArtRarity(Artifact p);
-    // return chtype
-    chtype getArtTile(int a);
-    // sets artifact lifepoints and tag based on rarity
-    void setArtifact(Artifact p);
+    int getArtLifepoints();
 
-    // print artifact on certain position
-    void printArtifact(Artifact p, WINDOW *w);
+    // return chtype
+    chtype getArtTile();
+
+    // sets artifact lifepoints and tag based on rarity
+    void setArtifact(int r);
 };

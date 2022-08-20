@@ -95,36 +95,33 @@ void Room::placeArtifacts(bool b)
     int nArtifacts = rand() % 3; // possono essercene da 0 a 2
     for (int i = 0; i < nArtifacts; i++)
     {
+        Artifact p;
         /*
         percentuali probabilità di spawn in base alla rarità
         COMMON 60%  RARE 25%  SPECIAL 10%  EPIC 5%
         */
         const int probability = 101;
-        int aRarity;
+
         int r = rand() % probability;
-        chtype rar = ' ';
+
         if (r < 61)
         {
-            aRarity = COMMON;
-            rar = ACS_GEQUAL;
+            p.setArtifact(1);
         }
         else if (r > 60 && r < 86)
         {
-            aRarity = RARE;
-            rar = '&';
+            p.setArtifact(2);
         }
         else if (r > 85 && r < 96)
         {
-            aRarity = SPECIAL;
-            rar = '$';
+            p.setArtifact(3);
         }
         else if (r > 95)
         {
-            aRarity = EPIC;
-            rar = ACS_STERLING;
+            p.setArtifact(4);
         }
-
-        chtype var = ' ';
+        chtype rar = p.tag; // tag artefatto
+        chtype var = ' ';   // uso per controllare tag in posizione in cui voglio spawnare
         pos posArt;
         do
         {
@@ -135,7 +132,9 @@ void Room::placeArtifacts(bool b)
             var = getTile(posArt);
         } while (var != ' ');
         this->placeObject(posArt, rar);
-        // this->drawLook();
+
+        // qui va funzione per aggiungere artefatto alla lista
+        //  this->drawLook();
     }
 }
 
