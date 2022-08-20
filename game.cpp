@@ -343,7 +343,7 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
             break;
-
+            
         case KEY_LEFT:
 
             pos bulletpos;

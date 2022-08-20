@@ -177,6 +177,8 @@ public:
     // places random enemies
     void place_enemies(bool b);
 
+    void ProtagonistMovement(Protagonist p, int direction);
+
     // collision functions
 
     // checks what's after a position in a certain direction

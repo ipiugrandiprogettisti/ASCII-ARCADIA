@@ -139,7 +139,7 @@ void Room::placeArtifacts(bool b)
     }
 }
 
-//places random enemies
+// places random enemies
 void Room::place_enemies(bool b)
 {
 
@@ -188,7 +188,6 @@ void Room::place_enemies(bool b)
 
     // qui va funzione per aggiungere enemy en alla lista
 }
-
 
 // random path generator
 void Room::randomPathWall(pos position, int h, int w)
@@ -678,5 +677,22 @@ void Room::aBullMovement(Room r, Protagonist P)
         }
 
         tmp = tmp->next;
+    }
+}
+
+// makes the player move
+void Room::ProtagonistMovement(Protagonist p, int direction)
+{
+    pos currentpos = p.position;
+    pos newPos = Room::nextPos(p.position, direction);
+    if (Room::getTile(newPos) == ' ')
+    {
+        Room::placeObject(p.position, ' ');
+        p.setPosition(newPos.y, newPos.x);
+        Room::drawLook();
+    }
+    else if (Room::getTile(newPos) == ACS_GEQUAL)
+    {
+        /* code */
     }
 }
