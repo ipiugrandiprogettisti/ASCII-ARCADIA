@@ -15,12 +15,13 @@ typedef struct bullet
 // classe personaggio generale
 class Character : public Entity
 {
-protected:
+
+
+public:
+
     int current_life; // in termini di cuori posseduti al momento
     int max_life;     // cuori  massimi=10
     int atk_damage;   // danno che produce in attacco
-
-public:
     // constructor
     Character();
 

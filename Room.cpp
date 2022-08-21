@@ -161,23 +161,28 @@ void Room::placePower(bool b)
 void Room::place_enemies(bool b)
 {
 
-    Enemy en(0, 0, 3, 4, 5, 5, 2, 0, 0, ' ');
+    Enemy en(0, 5, 5, 2, 0, 0, ' ');
+    
+    int n;
+    int n_enemies = rand() % 100 + 1;
+    if(n_enemies <=25) n = 1;
+    else if(n_enemies >=25 && n_enemies <= 50) n= 2;
+    else if (n_enemies >= 75 && n_enemies <= 100) n = 3;
 
-    int n_enemies = rand() % 3 + 1;
-    for (int i = 0; i < n_enemies; i++)
+    for (int i = 0; i < n; i++)
     {
-        int n_type = rand() % 2 + 1;
-        if (n_type == 1)
+        int n_type = rand() % 100 + 1;
+        if (n_type <= 40)
         {
             en.tag = ACS_BLOCK;
             en.key = 1;
         }
-        else if (n_type == 2)
+        else if (n_type <= 80 && n_type >= 40)
         {
             en.tag = ACS_NEQUAL;
             en.key = 2;
         }
-        else if (n_type == 3)
+        else if (n_type <= 100 && n_type >= 80)
         {
             en.tag = '@';
             en.key = 3;
@@ -804,4 +809,96 @@ void Room::ProtagonistMovement(Protagonist p, int direction)
     {
         /* code */
     }
+}
+
+/*
+p_bulletsEnemis Room::bulletHeadInsert_enemy(p_bulletsEnemis head, bullet b)
+{
+
+    p_bulletsEnemis newbullet = new bulletsEnemies;
+    newbullet-> bullet_enemy = b;
+    newbullet->next = head;
+    head = newbullet;
+
+    return head;
+
+}
+*/
+pListEnemies Room::HeadInsert_enemy(pListEnemies head, Enemy en)
+{
+
+    pListEnemies newEnemy = new listEnemies;
+    newEnemy-> body = en;
+    newEnemy->next = head;
+    head = newEnemy;
+
+    return head;
+
+}
+/*
+p_bulletsEnemis Room::bullet_enemyRemove(p_bulletsEnemis head, bullet b)
+{
+    p_bulletsEnemis x;
+    p_bulletsEnemis tmp;
+    bool found = false;
+    if (head == NULL)
+    {
+        head = head;
+    }
+    else if (head->bullet_enemy.bullet_damage == b.bullet_damage && head->bullet_enemy.bullet_tag == b.bullet_tag && head->bullet_enemy.bulletpos.x == b.bulletpos.x && head->bullet_enemy.bulletpos.y == b.bulletpos.y && head->bullet_enemy.direction == b.direction)
+    {
+        tmp = head;
+        head = head->next;
+        delete tmp;
+    }
+    else
+    {
+        x = head;
+        while (!found && (x != NULL) && (x->next != NULL))
+        {
+            if (x->next->bullet_enemy.bullet_damage == b.bullet_damage && x->next->bullet_enemy.bullet_tag == b.bullet_tag && x->next->bullet_enemy.bulletpos.x == b.bulletpos.x && x->next->bullet_enemy.bulletpos.y == b.bulletpos.y && x->next->bullet_enemy.direction == b.direction)
+            {
+                tmp = x->next;
+                x->next = x->next->next;
+                delete tmp;
+                found = true;
+            }
+            x = x->next;
+        }
+    }
+    return head;
+}
+*/
+pListEnemies enemyRemove(pListEnemies head, Enemy en)
+{
+    pListEnemies x;
+    pListEnemies tmp;
+    bool found = false;
+    if (head == NULL)
+    {
+        head = head;
+    }
+    else if (head->body.key == en.key && head->body.current_life == en.current_life && head->body.max_life == en.max_life && head->body.atk_damage == en.atk_damage && head->body.position.y == en.position.y && head->body.position.x == en.position.x &&head->body.tag == en.tag)
+    {
+        tmp = head;
+        head = head->next;
+        delete tmp;
+    }
+    else
+    {
+        x = head;
+        while (!found && (x != NULL) && (x->next != NULL))
+        {
+            if (x->next->body.key == en.key && x->next->body.current_life == en.current_life && x->next->body.max_life == en.max_life && x->next->body.atk_damage == en.atk_damage && x->next->body.position.y == en.position.y && x->next->body.position.x == en.position.x &&x->next->body.tag == en.tag)
+            {
+                tmp = x->next;
+                x->next = x->next->next;
+                delete tmp;
+                found = true;
+            }
+            x = x->next;
+        }
+    }
+    return head;
+
 }

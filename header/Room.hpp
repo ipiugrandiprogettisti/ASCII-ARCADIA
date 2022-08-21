@@ -32,8 +32,9 @@ struct listEnemies
 {
     // current enemy
     // enemy key
+    Enemy body;
     listEnemies *next;
-    listEnemies *previous;
+    //listEnemies *previous;
 };
 
 // pointer to list of the enemies
@@ -67,6 +68,17 @@ struct listArtifacts
     listArtifacts *next;
     listArtifacts *previous;
 };
+
+/*
+// list of enemies's bullets
+struct bulletsEnemies{
+
+    bullet bullet_enemy;
+    bulletsEnemies *next;
+
+};
+typedef bulletsEnemies *p_bulletsEnemis;
+*/
 
 // pointer to list of the artifacts
 typedef listArtifacts *pListArtifacts;
@@ -216,4 +228,19 @@ public:
 
     // manages ally bullet collisions and movement
     void aBullMovement(Protagonist P);
+
+
+    // head insert new bullet for enemy
+    //p_bulletsEnemis bulletHeadInsert_enemy(p_bulletsEnemis head, bullet b);
+    
+    // head insert new enemy
+    pListEnemies HeadInsert_enemy(pListEnemies head, Enemy en);
+
+    // removes enemy bullet given as a parameter
+    //p_bulletsEnemis bullet_enemyRemove(p_bulletsEnemis head, bullet b);
+
+    //removes enemy given
+    pListEnemies enemyRemove(pListEnemies head, Enemy en);
+
+
 };
