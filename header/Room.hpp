@@ -39,6 +39,26 @@ struct listEnemies
 // pointer to list of the enemies
 typedef listEnemies *pListEnemies;
 
+// list of artifacts
+typedef struct artifactsList
+{
+    Artifact A;
+    artifactsList *next;
+
+} artifactsList;
+
+// pointer to list of artifacts
+typedef artifactsList *p_artifactsList;
+
+typedef struct powersList
+{
+    Power P;
+    powersList *next;
+} powersList;
+
+// pointer to protagonist's powers list
+typedef powersList *p_powersList;
+
 // artifacts list
 struct listArtifacts
 {
@@ -173,6 +193,9 @@ public:
 
     // places random artifacts
     void placeArtifacts(bool b);
+
+    // removes artifacts
+    p_artifactsList removeArtifact(p_artifactsList head, chtype tag, pos position);
 
     // places random enemies
     void place_enemies(bool b);

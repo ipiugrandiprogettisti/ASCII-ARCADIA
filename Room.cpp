@@ -679,6 +679,40 @@ void Room::aBullMovement(Protagonist P)
     }
 }
 
+// artifactslist remove
+p_artifactsList Room::removeArtifact(p_artifactsList head, chtype tag, pos position)
+{
+    p_artifactsList x;
+    p_artifactsList tmp;
+    bool found = false;
+    if (head == NULL)
+    {
+        head = head;
+    }
+    else if (head->A.tag == tag && head->A.getPosition().x == position.x && head->A.getPosition().x == position.y)
+    {
+        tmp = head;
+        head = head->next;
+        delete tmp;
+    }
+    else
+    {
+        x = head;
+        while (!found && (x != NULL) && (x->next != NULL))
+        {
+            if (x->next->A.tag == tag && x->next->A.getPosition().x == position.x && x->next->A.getPosition().y == position.y)
+            {
+                tmp = x->next;
+                x->next = x->next->next;
+                delete tmp;
+                found = true;
+            }
+            x = x->next;
+        }
+    }
+    return head;
+}
+
 // makes the player move
 void Room::ProtagonistMovement(Protagonist p, int direction)
 {

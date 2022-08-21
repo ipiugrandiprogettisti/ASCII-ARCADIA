@@ -1,13 +1,9 @@
 #include "header/Protagonist.hpp"
 
-p_inventA headA;
-p_inventP headP;
 p_bulletlist headB;
 
 Protagonist::Protagonist()
 {
-    headA = NULL;
-    headP = NULL;
     headB = NULL;
     current_life = 0;
     max_life = 0;
@@ -17,10 +13,8 @@ Protagonist::Protagonist()
     tag = 111;
 }
 
-Protagonist::Protagonist(p_inventA headA, p_inventP headP, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
+Protagonist::Protagonist(p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
 {
-    this->headA = headA;
-    this->headP = headP;
     this->headB = headB;
     this->current_life = current_life;
     this->max_life = max_life;

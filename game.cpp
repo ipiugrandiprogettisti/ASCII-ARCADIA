@@ -194,12 +194,10 @@ void startGame(WINDOW *myWin)
     clear();
 
     // prova
-    p_inventA headA = NULL;
-    p_inventP headP = NULL;
     p_bulletlist headB = NULL;
 
     // creation of the protagonist (player)
-    Protagonist P(headA, headP, headB, 10, 10, 1, 3, 1, ACS_PI);
+    Protagonist P(headB, 10, 10, 1, 3, 1, ACS_PI);
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
@@ -343,7 +341,7 @@ void startGame(WINDOW *myWin)
                 wrefresh(myMap.rooms->currentRoom.getWindow());
             }
             break;
-            
+
         case KEY_LEFT:
 
             pos bulletpos;
