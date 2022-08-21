@@ -194,6 +194,9 @@ public:
     // places random artifacts
     void placeArtifacts(bool b);
 
+    // place 1 power to open door
+    void placePower(bool b);
+
     // removes artifacts
     p_artifactsList removeArtifact(p_artifactsList head, chtype tag, pos position);
 
