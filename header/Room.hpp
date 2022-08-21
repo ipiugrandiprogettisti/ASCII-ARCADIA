@@ -182,7 +182,7 @@ public:
     // collision functions
 
     // checks what's after a position in a certain direction
-    // 1 dx, 2 basso, 3 sx, 4 alto
+    // 0 basso, 1 sx, 2 alto, 3 dx
     chtype checkNextPos(pos p, int direction);
 
     // returns next position in a certain direction

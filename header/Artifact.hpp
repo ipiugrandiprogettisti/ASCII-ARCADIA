@@ -1,9 +1,9 @@
 #include "Entity.hpp"
 
-#define COMMON 1  // 1 life point, simbolo ascii 169 "©"
-#define RARE 2    // 3 life points, simbolo ascii 174 "®"
-#define SPECIAL 3 // 7 life points, simbolo ascii 167 "§"
-#define EPIC 4    // 10 life points, simbolo ascii 163 "£"
+#define COMMON 1  // 1 life point, simbolo ascii 'C'
+#define RARE 2    // 3 life points, simbolo ascii 'R'
+#define SPECIAL 3 // 5 life points, simbolo ascii "$"
+#define EPIC 4    // 7 life points, simbolo ascii "£"
 
 //  classe artefatto -> da vita
 class Artifact : public Entity

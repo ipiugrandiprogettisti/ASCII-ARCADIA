@@ -28,9 +28,9 @@ int Artifact ::getArtLifepoints()
 {
     switch (tag)
     {
-    case 'ACS_GEQUAL':
+    case 'C':
         return 1;
-    case '&':
+    case 'R':
         return 3;
     case '$':
         return 5;
@@ -44,9 +44,9 @@ chtype Artifact ::getArtTile()
     switch (rarity)
     {
     case '1':
-        return ACS_GEQUAL;
+        return 'C';
     case '2':
-        return '&';
+        return 'R';
     case '3':
         return '$';
     case '4':
@@ -62,10 +62,10 @@ void Artifact ::setArtifact(int r)
     {
     case '1':
         lifepoints = 1;
-        tag = ACS_GEQUAL;
+        tag = 'C';
     case '2':
         lifepoints = 3;
-        tag = '&';
+        tag = 'R';
     case '3':
         lifepoints = 5;
         tag = '$';
