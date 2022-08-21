@@ -189,5 +189,5 @@ public:
     pos nextPos(pos p, int direction);
 
     // manages ally bullet collisions and movement
-    void aBullMovement(Room r, Protagonist P);
+    void aBullMovement(Protagonist P);
 };

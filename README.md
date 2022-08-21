@@ -34,6 +34,7 @@ Prioettile: ACS_BULLET
 Artefatti: 'C' (common) 'R' (rare) '$' (special) ACS_STERLING (epic)
 Nemici: '@' ACS_NEQUAL ACS_BLOCK
 Muri dxsx: ACS_VLINE ACS_HLINE ACS_CKBOARD
+Potere: 'P'
 
 DIREZIONI
 

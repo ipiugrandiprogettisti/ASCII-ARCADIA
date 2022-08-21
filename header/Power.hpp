@@ -6,9 +6,6 @@
 class Power : public Entity
 {
 public:
-    int type;
-
-public:
     Power();
     // power constructor with type, pos y, posx, tag (set it 111 by default)
     // after creating a power you need to set his tag with funct setPower()

@@ -586,7 +586,7 @@ pos Room::nextPos(pos p, int direction)
 };
 
 // manages ally bullet collisions and movement
-void Room::aBullMovement(Room r, Protagonist P)
+void Room::aBullMovement(Protagonist P)
 {
     // controllo collisione proiettili alleati
     p_bulletlist tmp = P.headB; // lista proiettili protagonista
@@ -599,29 +599,29 @@ void Room::aBullMovement(Room r, Protagonist P)
         chtype ctr = ' ';
 
         pos now = tmp->B.bulletpos;                                     // salvo posizione attuale
-        ctr = r.checkNextPos(now, tmp->B.direction);                    // char in pos futura
-        pos nextP = r.nextPos(now, tmp->B.direction);                   // pos futura
+        ctr = checkNextPos(now, tmp->B.direction);                      // char in pos futura
+        pos nextP = nextPos(now, tmp->B.direction);                     // pos futura
         if (ctr == ACS_VLINE || ctr == ACS_HLINE || ctr == ACS_CKBOARD) // PROIETTILE COLPIRà MURO/PARETE
         {
             bullet remove = tmp->B;              // salvo proiettile del nodo attuale
-            r.placeObject(now, ' ');             // rimuove bullet da posizione attuale
+            placeObject(now, ' ');               // rimuove bullet da posizione attuale
             P.bulletRemove(workingHead, remove); // rimuove bullet dalla lista
         }
-        else if (ctr == ACS_GEQUAL || ctr == '&' || ctr == '$' || ctr == ACS_STERLING) // PROIETTILE COLPIRà ARTEF
+        else if (ctr == 'C' || ctr == 'R' || ctr == '$' || ctr == ACS_STERLING) // PROIETTILE COLPIRà ARTEF
         {
-            chtype nextC = r.checkNextPos(nextP, tmp->B.direction); // controlla cosa c'è dopo artefatto //due posti dopo bull
+            chtype nextC = checkNextPos(nextP, tmp->B.direction); // controlla cosa c'è dopo artefatto //due posti dopo bull
             if (nextC == ACS_VLINE || nextC == ACS_HLINE || nextC == ACS_CKBOARD)
             {                                        // dopo proiettile e dopo artefatto c'è muro, faccio sparire proiettile
                 bullet remove = tmp->B;              // salvo proiettile del nodo attuale
-                r.placeObject(now, ' ');             // rimuove bullet da posizione attuale
+                placeObject(now, ' ');               // rimuove bullet da posizione attuale
                 P.bulletRemove(workingHead, remove); // rimuove bullet dalla lista
             }
             else if (nextC == ' ')
             {
-                pos nextnext = r.nextPos(nextP, tmp->B.direction);
-                r.placeObject(now, ' ');             // pos attuale cancello
-                r.placeObject(nextnext, ACS_BULLET); // pos futura disegno
-                tmp->B.bulletpos = nextnext;         // aggiorno posizione sulla lista
+                pos nextnext = nextPos(nextP, tmp->B.direction);
+                placeObject(now, ' ');             // pos attuale cancello
+                placeObject(nextnext, ACS_BULLET); // pos futura disegno
+                tmp->B.bulletpos = nextnext;       // aggiorno posizione sulla lista
             }
 
             // NON CI SONO ALTRE COLLISIONI DELLA SERIE PROIETT -> ARTEF -> ALTRO PERCHè GLI ARTEFATTI SPAWNANO SOLO DOPO CHE I NEMICI SONO MORTI
@@ -690,7 +690,7 @@ void Room::ProtagonistMovement(Protagonist p, int direction)
         p.setPosition(newPos.y, newPos.x);
         Room::drawLook();
     }
-    else if (Room::getTile(newPos) == ACS_GEQUAL)
+    else if (Room::getTile(newPos) == 'C')
     {
         /* code */
     }
