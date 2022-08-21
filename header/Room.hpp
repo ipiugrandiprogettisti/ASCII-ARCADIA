@@ -27,24 +27,15 @@ struct door
     closeOpenTile tile;
 };
 
-//list of the enemies's bullets
-struct bulletlEnemies
-{
-    bullet B_en;
-    bulletlEnemies *next;
-
-};
-typedef bulletlEnemies *p_bulletEnemies;
-
 // enemies list
 struct listEnemies
 {
     // current enemy
     // enemy key
-    Enemy enem;
     listEnemies *next;
-    
+    listEnemies *previous;
 };
+
 // pointer to list of the enemies
 typedef listEnemies *pListEnemies;
 
@@ -68,6 +59,24 @@ typedef struct powersList
 // pointer to protagonist's powers list
 typedef powersList *p_powersList;
 
+// artifacts list
+struct listArtifacts
+{
+    // current artifact
+    Artifact p;
+    listArtifacts *next;
+    listArtifacts *previous;
+};
+
+// pointer to list of the artifacts
+typedef listArtifacts *pListArtifacts;
+
+// struct that contains all of the dynamic structures that are in the room
+struct objContainer
+{
+    pListEnemies enemies;
+    pListArtifacts artifacts;
+};
 
 // place a door. y and x are position, i is the side where the door is located
 void placeDoor(WINDOW *win, door doorInfo);
@@ -80,6 +89,7 @@ protected:
     int key;      // unique
     WINDOW *win;
     struct door doorInfo[MAXDOORS]; // these are the door information. doorInfo[0] = previous door, [1] = next door
+    objContainer objects;
     bool drawn = false; // specifies whether room has already been drawn or not
     // this is what the room looks like by default; default is only bordered, no walls. Max length of the room is WIDTH and HEIGTH
     chtype look[WIDTH][HEIGTH] = {{ACS_ULCORNER, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_HLINE, ACS_URCORNER},
@@ -147,6 +157,9 @@ public:
 
     // returns the bool drawn
     bool getDrawn();
+
+    // returns the object list of the room
+    objContainer getObjectList();
 
     // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
     struct door getDoor(int isNextRoom);

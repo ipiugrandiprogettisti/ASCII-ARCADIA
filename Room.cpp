@@ -161,7 +161,7 @@ void Room::placePower(bool b)
 void Room::place_enemies(bool b)
 {
 
-    Enemy en(0, 3, 4, 5, 5, 2, 0, 0, ' ');
+    Enemy en(0, 0, 3, 4, 5, 5, 2, 0, 0, ' ');
 
     int n_enemies = rand() % 3 + 1;
     for (int i = 0; i < n_enemies; i++)
@@ -287,9 +287,10 @@ Room ::Room()
 {
     int key = -1; // a room is always created with a given key. if no set it to -1 (error)
     win = NULL;   // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
-    pListEnemies head_enemy = NULL;
-    p_artifactsList head_artifacts = NULL;
-    p_powersList head_power = NULL;
+    objects.artifacts = new listArtifacts;
+    objects.enemies = new listEnemies;
+    objects.artifacts = NULL; // set the amount of artifacts in the room to 0
+    objects.enemies = NULL;   // set the amount of artifacts in the room to 0
 
     // doorInfo are already set when defined, check Room.hpp for more info
 }
@@ -299,9 +300,12 @@ Room::Room(int key)
 {
     this->key = key;  // unique
     this->win = NULL; // at the time of creating a new room its window will be null. the first time that it will be drawed it also will be assigned
-    pListEnemies head_enemy = NULL;
-    p_artifactsList head_artifacts = NULL;
-    p_powersList head_power = NULL;
+    objects.artifacts = new listArtifacts;
+    objects.enemies = new listEnemies;
+    objects.artifacts = NULL; // set the amount of artifacts in the room to 0
+    objects.enemies = NULL;   // set the amount of artifacts in the room to 0
+
+    // doorInfo are already set when defined, check Room.hpp for more info
 }
 
 // returns the key of the room
@@ -322,7 +326,11 @@ bool Room::getDrawn()
     return drawn;
 }
 
-
+// returns the object list of the room
+struct objContainer Room::getObjectList()
+{
+    return objects;
+}
 
 // returns the given room's door information; if door doesn't exist returns a "-1" door (check struct door)
 // isNextRoom= 1 se è la porta alla stanza successiva, =0 se dà sulla stanza precedente

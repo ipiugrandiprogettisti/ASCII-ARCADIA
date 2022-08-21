@@ -4,6 +4,7 @@
 Enemy::Enemy()
 {
     range_move = 0;
+    bullets_dmg = 0;
     key = 0;
     bullets_range = 0;
     current_life = 0;
@@ -15,9 +16,9 @@ Enemy::Enemy()
 }
 
 //constructor
-Enemy::Enemy(int key, int bullets_range, int range_move, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
+Enemy::Enemy(int key, int bullets_dmg, int bullets_range, int range_move, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
 {
-    
+    this->bullets_dmg = bullets_dmg;
     this->key = key;
     this->bullets_range = bullets_range;
     this->range_move = range_move;
