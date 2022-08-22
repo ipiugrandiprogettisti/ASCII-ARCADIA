@@ -134,6 +134,7 @@ void Room::placeArtifacts(bool b)
         this->placeObject(posArt, rar);
 
         // qui va funzione per aggiungere artefatto alla lista
+
         //  this->drawLook();
     }
 }
@@ -162,12 +163,21 @@ void Room::place_enemies(bool b)
 {
 
     Enemy en(0, 5, 5, 2, 0, 0, ' ');
-    
+
     int n;
-    int n_enemies = rand() % 100 + 1;
-    if(n_enemies <=25) n = 1;
-    else if(n_enemies >=25 && n_enemies <= 50) n= 2;
-    else if (n_enemies >= 75 && n_enemies <= 100) n = 3;
+    int n_enemies = rand() % 10 + 1;
+    if (n_enemies <= 4)
+    {
+        n = 1;
+    }
+    else if (n_enemies >= 5 && n_enemies <= 7)
+    {
+        n = 2;
+    }
+    else if (n_enemies >= 8 && n_enemies <= 10)
+    {
+        n = 3;
+    }
 
     for (int i = 0; i < n; i++)
     {
@@ -200,7 +210,7 @@ void Room::place_enemies(bool b)
             en.position.y = enemyy;
             en.position.x = enemyx;
             p = getTile(posEnemy);
-            if (getTile(posEnemy) == ' ')
+            if (p == ' ')
             {
                 this->placeObject(posEnemy, en.tag);
                 this->drawLook();
@@ -292,10 +302,12 @@ Room ::Room()
 {
     int key = -1; // a room is always created with a given key. if no set it to -1 (error)
     win = NULL;   // at the time of creating a room its window will be null. the first time that it will be drawed it also will be assigned
-    objects.artifacts = new listArtifacts;
+    objects.artifacts = new artifactsList;
     objects.enemies = new listEnemies;
+    objects.powers = new powersList;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
-    objects.enemies = NULL;   // set the amount of artifacts in the room to 0
+    objects.enemies = NULL;   // set the amount of enemies in the room to 0
+    objects.powers = NULL;    // set the amount of powers in the room to 0
 
     // doorInfo are already set when defined, check Room.hpp for more info
 }
@@ -305,11 +317,12 @@ Room::Room(int key)
 {
     this->key = key;  // unique
     this->win = NULL; // at the time of creating a new room its window will be null. the first time that it will be drawed it also will be assigned
-    objects.artifacts = new listArtifacts;
+    objects.artifacts = new artifactsList;
     objects.enemies = new listEnemies;
+    objects.powers = new powersList;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
     objects.enemies = NULL;   // set the amount of artifacts in the room to 0
-
+    objects.powers = NULL;
     // doorInfo are already set when defined, check Room.hpp for more info
 }
 
@@ -828,12 +841,11 @@ pListEnemies Room::HeadInsert_enemy(pListEnemies head, Enemy en)
 {
 
     pListEnemies newEnemy = new listEnemies;
-    newEnemy-> body = en;
+    newEnemy->e = en;
     newEnemy->next = head;
     head = newEnemy;
 
     return head;
-
 }
 /*
 p_bulletsEnemis Room::bullet_enemyRemove(p_bulletsEnemis head, bullet b)
@@ -878,7 +890,7 @@ pListEnemies enemyRemove(pListEnemies head, Enemy en)
     {
         head = head;
     }
-    else if (head->body.key == en.key && head->body.current_life == en.current_life && head->body.max_life == en.max_life && head->body.atk_damage == en.atk_damage && head->body.position.y == en.position.y && head->body.position.x == en.position.x &&head->body.tag == en.tag)
+    else if (head->e.key == en.key && head->e.current_life == en.current_life && head->e.max_life == en.max_life && head->e.atk_damage == en.atk_damage && head->e.position.y == en.position.y && head->e.position.x == en.position.x && head->e.tag == en.tag)
     {
         tmp = head;
         head = head->next;
@@ -889,7 +901,7 @@ pListEnemies enemyRemove(pListEnemies head, Enemy en)
         x = head;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->body.key == en.key && x->next->body.current_life == en.current_life && x->next->body.max_life == en.max_life && x->next->body.atk_damage == en.atk_damage && x->next->body.position.y == en.position.y && x->next->body.position.x == en.position.x &&x->next->body.tag == en.tag)
+            if (x->next->e.key == en.key && x->next->e.current_life == en.current_life && x->next->e.max_life == en.max_life && x->next->e.atk_damage == en.atk_damage && x->next->e.position.y == en.position.y && x->next->e.position.x == en.position.x && x->next->e.tag == en.tag)
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -900,5 +912,4 @@ pListEnemies enemyRemove(pListEnemies head, Enemy en)
         }
     }
     return head;
-
 }
