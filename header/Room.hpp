@@ -176,45 +176,30 @@ public:
     // aux function to prevent non-free wall
     bool tileIsFree(pos position);
 
-    // place object in room
-    void placeObject(pos position, chtype tag);
-
-    // place object in room
-    void placeObject(int x, int y, chtype tag);
-
     // returns the width of the room (look)
     int getMaxWidth();
 
     // returns the height of the room (look)
     int getMaxHeight();
 
+    // placing functions
+
+    // place object in room
+    void placeObject(pos position, chtype tag);
+    // place object in room
+    void placeObject(int x, int y, chtype tag);
     // places random artifacts
     void placeArtifacts(bool b);
-
+    // places random enemies
+    void place_enemies(bool b);
     // place 1 power to open door
     void placePower(bool b);
+
+    // list functions
 
     // removes artifacts
     p_artifactsList removeArtifact(p_artifactsList head, chtype tag, pos position);
 
-    // places random enemies
-    void place_enemies(bool b);
-
-    void ProtagonistMovement(Protagonist p, int direction);
-
-    // collision functions
-
-    // checks what's after a position in a certain direction
-    // 0 basso, 1 sx, 2 alto, 3 dx
-    chtype checkNextPos(pos p, int direction);
-
-    // returns next position in a certain direction
-    pos nextPos(pos p, int direction);
-
-    // manages ally bullet collisions and movement
-    void aBullMovement(Protagonist p, bullet b);
-
-    void allABullMovement(Protagonist p);
     // head insert new bullet for enemy
     p_bulletsEnemies enBullHeadInsert(p_bulletsEnemies head, bullet b);
 
@@ -227,6 +212,28 @@ public:
     // removes enemy given
     pListEnemies enemyRemove(pListEnemies head, Enemy en);
 
-    //enemies movement
+    // movement/collision functions
+    // 0 basso, 1 sx, 2 alto, 3 dx
+
+    // protagonist movement
+    void ProtagonistMovement(Protagonist p, int direction);
+
+    // one enemy movement
     void enemy_movement(Enemy e, Protagonist P);
+
+    void allEnemyMov(Protagonist p);
+    // checks what's after a position in a certain direction
+    chtype checkNextPos(pos p, int direction);
+
+    // returns next position in a certain direction
+    pos nextPos(pos p, int direction);
+
+    // manages one ally bullet collisions and movement
+    void aBullMov(Protagonist p, bullet b);
+
+    // manages all ally bullets
+    void allABullMov(Protagonist p);
+
+    // one function for all independent movements (enemy, enemybull, allybull)
+    void oneMove(Protagonist p);
 };

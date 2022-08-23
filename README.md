@@ -38,7 +38,7 @@ Potere: 'P'
 
 DIREZIONI
 
-0 basse
+0 basso
 1 sx
 2 alto
 3 dx
