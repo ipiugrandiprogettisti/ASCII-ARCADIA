@@ -214,6 +214,7 @@ public:
     // manages ally bullet collisions and movement
     void aBullMovement(Protagonist p, bullet b);
 
+    void allABullMovement(Protagonist p);
     // head insert new bullet for enemy
     p_bulletsEnemies enBullHeadInsert(p_bulletsEnemies head, bullet b);
 

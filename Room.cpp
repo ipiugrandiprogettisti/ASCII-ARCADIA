@@ -625,7 +625,7 @@ pos Room::nextPos(pos p, int direction)
 
     return next;
 };
-// manages ally bullet collisions and movement
+// manages one ally bullet collision and movement
 void Room::aBullMovement(Protagonist P, bullet b)
 {
     // controllo collisione proiettili alleati
@@ -769,6 +769,11 @@ void Room::aBullMovement(Protagonist P, bullet b)
     }
 }
 
+// manages all ally bullets
+void allABullMovement(Protagonist p)
+{
+    p_bulletlist tmp = p.headB;
+};
 // artifactslist remove
 p_artifactsList Room::removeArtifact(p_artifactsList head, chtype tag, pos position)
 {
