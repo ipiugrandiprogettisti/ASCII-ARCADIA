@@ -57,16 +57,14 @@ typedef struct powersList
 // pointer to protagonist's powers list
 typedef powersList *p_powersList;
 
-/*
 // list of enemies's bullets
-struct bulletsEnemies{
+struct bulletsEnemies
+{
 
-    bullet bullet_enemy;
+    bullet B;
     bulletsEnemies *next;
-
 };
-typedef bulletsEnemies *p_bulletsEnemis;
-*/
+typedef bulletsEnemies *p_bulletsEnemies;
 
 // struct that contains all of the dynamic structures that are in the room
 struct objContainer
@@ -74,6 +72,7 @@ struct objContainer
     pListEnemies enemies;
     p_artifactsList artifacts;
     p_powersList powers;
+    p_bulletsEnemies bulletEnemies;
 };
 
 // place a door. y and x are position, i is the side where the door is located
@@ -213,16 +212,16 @@ public:
     pos nextPos(pos p, int direction);
 
     // manages ally bullet collisions and movement
-    void aBullMovement(Protagonist P);
+    void aBullMovement(Protagonist p, bullet b);
 
     // head insert new bullet for enemy
-    // p_bulletsEnemis bulletHeadInsert_enemy(p_bulletsEnemis head, bullet b);
+    p_bulletsEnemies enBullHeadInsert(p_bulletsEnemies head, bullet b);
 
     // head insert new enemy
     pListEnemies HeadInsert_enemy(pListEnemies head, Enemy en);
 
     // removes enemy bullet given as a parameter
-    // p_bulletsEnemis bullet_enemyRemove(p_bulletsEnemis head, bullet b);
+    p_bulletsEnemies bullet_enemyRemove(p_bulletsEnemies head, bullet b);
 
     // removes enemy given
     pListEnemies enemyRemove(pListEnemies head, Enemy en);

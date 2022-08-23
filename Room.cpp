@@ -305,10 +305,11 @@ Room ::Room()
     objects.artifacts = new artifactsList;
     objects.enemies = new listEnemies;
     objects.powers = new powersList;
+    objects.bulletEnemies = new bulletsEnemies;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
     objects.enemies = NULL;   // set the amount of enemies in the room to 0
     objects.powers = NULL;    // set the amount of powers in the room to 0
-
+    objects.bulletEnemies = NULL;
     // doorInfo are already set when defined, check Room.hpp for more info
 }
 
@@ -320,9 +321,11 @@ Room::Room(int key)
     objects.artifacts = new artifactsList;
     objects.enemies = new listEnemies;
     objects.powers = new powersList;
+    objects.bulletEnemies = new bulletsEnemies;
     objects.artifacts = NULL; // set the amount of artifacts in the room to 0
     objects.enemies = NULL;   // set the amount of artifacts in the room to 0
     objects.powers = NULL;
+    objects.bulletEnemies = NULL;
     // doorInfo are already set when defined, check Room.hpp for more info
 }
 
@@ -623,153 +626,146 @@ pos Room::nextPos(pos p, int direction)
     return next;
 };
 // manages ally bullet collisions and movement
-void Room::aBullMovement(Protagonist P)
+void Room::aBullMovement(Protagonist P, bullet b)
 {
     // controllo collisione proiettili alleati
     p_bulletlist tmp = P.headB; // lista proiettili protagonista
 
-    p_bulletlist workingHead = P.headB; // eseguo varie rimozioni qui
-    // scorro lista proiettili
-    while (tmp != NULL)
+    chtype nextP = ' ';
+
+    pos now = b.bulletpos;                                                // salvo posizione attuale
+    nextP = checkNextPos(now, b.direction);                               // char in pos futura
+    pos posNextP = nextPos(now, b.direction);                             // pos futura
+    if (nextP == ACS_VLINE || nextP == ACS_HLINE || nextP == ACS_CKBOARD) // PROIETTILE -> MURO
     {
-
-        chtype nextP = ' ';
-
-        pos now = tmp->B.bulletpos;                                           // salvo posizione attuale
-        nextP = checkNextPos(now, tmp->B.direction);                          // char in pos futura
-        pos posNextP = nextPos(now, tmp->B.direction);                        // pos futura
-        if (nextP == ACS_VLINE || nextP == ACS_HLINE || nextP == ACS_CKBOARD) // PROIETTILE -> MURO
-        {
-            bullet remove = tmp->B;              // salvo proiettile del nodo attuale
-            placeObject(now, ' ');               // rimuove bullet da posizione attuale
-            P.bulletRemove(workingHead, remove); // rimuove bullet dalla lista
+        placeObject(now, ' ');  // rimuove bullet da posizione attuale
+        P.bulletRemove(tmp, b); // rimuove bullet dalla lista
+    }
+    else if (nextP == 'C' || nextP == 'R' || nextP == '$' || nextP == ACS_STERLING) // PROIETTILE -> ARTEF
+    {
+        chtype nextA = checkNextPos(posNextP, b.direction);                   // chtype dopo artefatto //due posti dopo bull
+        pos posNextA = nextPos(posNextP, b.direction);                        // posizione dopo Artefatto
+        if (nextA == ACS_VLINE || nextA == ACS_HLINE || nextA == ACS_CKBOARD) // PROIETTILE -> ARTEF -> MURO
+        {                                                                     // dopo proiettile e dopo artefatto c'è muro, faccio sparire proiettile
+            placeObject(now, ' ');                                            // rimuove bullet da posizione attuale
+            P.bulletRemove(tmp, b);                                           // rimuove bullet dalla lista
         }
-        else if (nextP == 'C' || nextP == 'R' || nextP == '$' || nextP == ACS_STERLING) // PROIETTILE -> ARTEF
+        else if (nextA == ' ') // PROIETTILE -> ARTEF -> SPAZIO VUOTO
         {
-            chtype nextA = checkNextPos(posNextP, tmp->B.direction);              // chtype dopo artefatto //due posti dopo bull
-            pos posNextA = nextPos(posNextP, tmp->B.direction);                   // posizione dopo Artefatto
-            if (nextA == ACS_VLINE || nextA == ACS_HLINE || nextA == ACS_CKBOARD) // PROIETTILE -> ARTEF -> MURO
-            {                                                                     // dopo proiettile e dopo artefatto c'è muro, faccio sparire proiettile
-                bullet remove = tmp->B;                                           // salvo proiettile del nodo attuale
-                placeObject(now, ' ');                                            // rimuove bullet da posizione attuale
-                P.bulletRemove(workingHead, remove);                              // rimuove bullet dalla lista
-            }
-            else if (nextA == ' ') // PROIETTILE -> ARTEF -> SPAZIO VUOTO
+
+            placeObject(now, ' ');             // pos attuale cancello
+            placeObject(posNextA, ACS_BULLET); // pos futura disegno
+            b.bulletpos = posNextA;            // aggiorno posizione sulla lista
+        }
+        else if (nextA == 'P') // PROIETTILE -> ARTEF -> POTERE
+        {
+            chtype nextB = checkNextPos(posNextA, b.direction);                   // chtype dopo potere
+            pos posNextB = nextPos(posNextA, b.direction);                        // pos dopo potere, tre posti dopo bull
+            if (nextB == ACS_VLINE || nextB == ACS_HLINE || nextB == ACS_CKBOARD) // PROIETTILE -> ARTEF -> POTERE -> MURO
             {
 
+                placeObject(now, ' ');  // rimuove bullet da posizione attuale
+                P.bulletRemove(tmp, b); // rimuove bullet dalla lista
+            }
+            else if (nextB == ' ') // PROIETTILE -> ARTEF -> POTERE -> SPAZIO VUOTO
+            {
                 placeObject(now, ' ');             // pos attuale cancello
-                placeObject(posNextA, ACS_BULLET); // pos futura disegno
-                tmp->B.bulletpos = posNextA;       // aggiorno posizione sulla lista
+                placeObject(posNextB, ACS_BULLET); // pos futura disegno
+                b.bulletpos = posNextB;            // aggiorno posizione sulla lista
             }
-            else if (nextA == 'P') // PROIETTILE -> ARTEF -> POTERE
+        }
+
+        // NON CI SONO ALTRE COLLISIONI DELLA SERIE PROIETT -> ARTEF -> ALTRO PERCHè GLI ARTEFATTI SPAWNANO SOLO DOPO CHE I NEMICI SONO MORTI
+    }
+    else if (nextP == '@' || nextP == ACS_NEQUAL || nextP == ACS_BLOCK) // PROIETTILE -> NEMICO
+    {
+        // proiettili alleato tolgono solo parte della vita
+        /*
+        scorri lista nemici, trovi il nemico in pos nextP,
+        controlli la vita, togli vita in base al proiettile,
+        cancelli proiettile, cancelli nemico se finisce la vita
+        */
+    }
+    else if (nextP == ACS_BULLET) // PROIETTILE -> PROETTILE NEMICO
+    {
+        // manca ancora lista proiettili nemici, ho usato lista proiett all, da cambiare
+        int dirNem = 0;
+        int dirAll = b.direction;
+        p_bulletsEnemies tmpnem;
+        /*
+        bisogna capire la direzione del proiettile nemico
+        se sono perpendicolari basta muovere di una posizione proiettile nemico
+        e poi posizionare proiettile all
+
+        se sono direzionati nella stessa retta sono diretti uno contro l'altro,
+        non possono avere la stessa direzione
+        in questo caso basta scambiarli di posizione
+        */
+        // scorro lista proiettili nemici per capire quale proiettile è in quella pos, e mi salvo la direzione
+        while (tmpnem != NULL)
+        {                                     // manca lista proiettili nemici
+            pos posnem = tmpnem->B.bulletpos; // posizione del proiettile in lista che sto controllando
+            if (posnem.y == posNextP.y && posnem.x == posNextP.x)
             {
-                chtype nextB = checkNextPos(posNextA, tmp->B.direction);              // chtype dopo potere
-                pos posNextB = nextPos(posNextA, tmp->B.direction);                   // pos dopo potere, tre posti dopo bull
-                if (nextB == ACS_VLINE || nextB == ACS_HLINE || nextB == ACS_CKBOARD) // PROIETTILE -> ARTEF -> POTERE -> MURO
-                {
-                    bullet remove = tmp->B;              // salvo proiettile del nodo attuale
-                    placeObject(now, ' ');               // rimuove bullet da posizione attuale
-                    P.bulletRemove(workingHead, remove); // rimuove bullet dalla lista
+                dirNem = tmpnem->B.direction;
+                if (dirNem == dirAll + 2 || dirNem == dirAll - 2)
+                { // direzione sulla stessa retta, stanno per scontrarsi frontalmente, scambio pos
+                    // non serve cambire char, è lo stesso
+                    tmpnem->B.bulletpos = now;
+                    b.bulletpos = posNextP;
                 }
-                else if (nextB == ' ') // PROIETTILE -> ARTEF -> POTERE -> SPAZIO VUOTO
-                {
-                    placeObject(now, ' ');             // pos attuale cancello
-                    placeObject(posNextB, ACS_BULLET); // pos futura disegno
-                    tmp->B.bulletpos = posNextB;       // aggiorno posizione sulla lista
-                }
-            }
-
-            // NON CI SONO ALTRE COLLISIONI DELLA SERIE PROIETT -> ARTEF -> ALTRO PERCHè GLI ARTEFATTI SPAWNANO SOLO DOPO CHE I NEMICI SONO MORTI
-        }
-        else if (nextP == '@' || nextP == ACS_NEQUAL || nextP == ACS_BLOCK) // PROIETTILE -> NEMICO
-        {
-            // da decidere se proiettili alleato uccidono nemici con un colpo o tolgono solo parte della vita
-        }
-        else if (nextP == ACS_BULLET) // PROIETTILE -> PROETTILE NEMICO
-        {
-            // manca ancora lista proiettili nemici, ho usato lista proiett all, da cambiare
-            int dirNem = 0;
-            int dirAll = tmp->B.direction;
-            p_bulletlist tmpnem;
-            /*
-            bisogna capire la direzione del proiettile nemico
-            se sono perpendicolari basta muovere di una posizione proiettile nemico
-            e poi posizionare proiettile all
-
-            se sono direzionati nella stessa retta sono diretti uno contro l'altro,
-            non possono avere la stessa direzione
-            in questo caso basta scambiarli di posizione
-            */
-            // scorro lista proiettili nemici per capire quale proiettile è in quella pos, e mi salvo la direzione
-            while (tmpnem != NULL)
-            {                                     // manca lista proiettili nemici
-                pos posnem = tmpnem->B.bulletpos; // posizione del proiettile in lista che sto controllando
-                if (posnem.y == posNextP.y && posnem.x == posNextP.x)
-                {
-                    dirNem = tmpnem->B.direction;
-                    if (dirNem == dirAll + 2 || dirNem == dirAll - 2)
-                    { // direzione sulla stessa retta, stanno per scontrarsi frontalmente, scambio pos
-                        // non serve cambire char, è lo stesso
-                        tmpnem->B.bulletpos = now;
-                        tmp->B.bulletpos = posNextP;
-                    }
-                    else if (dirNem == dirAll + 1 || dirNem == dirAll - 1 || dirNem == dirAll + 3 || dirNem == dirAll - 3)
-                    { // direzioni perpendicolari
-                        pos nextPosEnemyBull = nextPos(posNextP, dirNem);
-                        // devo fare funzione per controllare dove sta andando il proiettile nemico
-                        tmpnem->B.bulletpos = nextPosEnemyBull;    // aggiorno posizione bullnem in lista
-                        tmp->B.bulletpos = posNextP;               // aggiorno posizione bullall in lista
-                        placeObject(nextPosEnemyBull, ACS_BULLET); // disegno in prox pos
-                        placeObject(now, ' ');                     // cancello da vecchia pos
-                    }
-                }
-                tmpnem = tmpnem->next;
-            }
-        }
-        else if (nextP == 'P') // PROIETTILE -> POTERE
-        {
-            chtype nextA = checkNextPos(posNextP, tmp->B.direction); // chtype dopo potere //due posti dopo bull
-            pos posNextA = nextPos(posNextP, tmp->B.direction);      // posizione dopo potere
-
-            if (nextA == 'C' || nextA == 'R' || nextA == '$' || nextA == ACS_STERLING)
-            {                                                                         // PROIETTILE -> POTERE -> ARTEFATTO
-                chtype nextB = checkNextPos(posNextA, tmp->B.direction);              // chtype dopo artefatto
-                pos posNextB = nextPos(posNextA, tmp->B.direction);                   // pos dopo artef, tre posti dopo bull
-                if (nextB == ACS_VLINE || nextB == ACS_HLINE || nextB == ACS_CKBOARD) // PROIETTILE ->POTERE -> ARTEF -> MURO
-                {
-                    bullet remove = tmp->B;              // salvo proiettile del nodo attuale
-                    placeObject(now, ' ');               // rimuove bullet da posizione attuale
-                    P.bulletRemove(workingHead, remove); // rimuove bullet dalla lista
-                }
-                else if (nextB == ' ') // PROIETTILE -> POTERE -> ARTEFATTO -> SPAZIO VUOTO
-                {
-                    placeObject(now, ' ');             // pos attuale cancello
-                    placeObject(posNextB, ACS_BULLET); // pos futura disegno
-                    tmp->B.bulletpos = posNextB;       // aggiorno posizione sulla lista
+                else if (dirNem == dirAll + 1 || dirNem == dirAll - 1 || dirNem == dirAll + 3 || dirNem == dirAll - 3)
+                { // direzioni perpendicolari
+                    pos nextPosEnemyBull = nextPos(posNextP, dirNem);
+                    // devo fare funzione per controllare dove sta andando il proiettile nemico
+                    tmpnem->B.bulletpos = nextPosEnemyBull;    // aggiorno posizione bullnem in lista
+                    b.bulletpos = posNextP;                    // aggiorno posizione bullall in lista
+                    placeObject(nextPosEnemyBull, ACS_BULLET); // disegno in prox pos
+                    placeObject(now, ' ');                     // cancello da vecchia pos
                 }
             }
-            else if (nextA == ' ')
+            tmpnem = tmpnem->next;
+        }
+    }
+    else if (nextP == 'P') // PROIETTILE -> POTERE
+    {
+        chtype nextA = checkNextPos(posNextP, b.direction); // chtype dopo potere //due posti dopo bull
+        pos posNextA = nextPos(posNextP, b.direction);      // posizione dopo potere
+
+        if (nextA == 'C' || nextA == 'R' || nextA == '$' || nextA == ACS_STERLING)
+        {                                                                         // PROIETTILE -> POTERE -> ARTEFATTO
+            chtype nextB = checkNextPos(posNextA, b.direction);                   // chtype dopo artefatto
+            pos posNextB = nextPos(posNextA, b.direction);                        // pos dopo artef, tre posti dopo bull
+            if (nextB == ACS_VLINE || nextB == ACS_HLINE || nextB == ACS_CKBOARD) // PROIETTILE ->POTERE -> ARTEF -> MURO
             {
-
+                // salvo proiettile del nodo attuale
+                placeObject(now, ' ');  // rimuove bullet da posizione attuale
+                P.bulletRemove(tmp, b); // rimuove bullet dalla lista
+            }
+            else if (nextB == ' ') // PROIETTILE -> POTERE -> ARTEFATTO -> SPAZIO VUOTO
+            {
                 placeObject(now, ' ');             // pos attuale cancello
-                placeObject(posNextA, ACS_BULLET); // pos futura disegno
-                tmp->B.bulletpos = posNextA;       // aggiorno posizione sulla lista
-            }
-            else if (nextA == ACS_VLINE || nextA == ACS_HLINE || nextA == ACS_CKBOARD) // PROIETTILE -> POTERE -> MURO
-            {                                                                          // dopo proiettile e dopo potere c'è muro, faccio sparire proiettile
-                bullet remove = tmp->B;                                                // salvo proiettile del nodo attuale
-                placeObject(now, ' ');                                                 // rimuove bullet da posizione attuale
-                P.bulletRemove(workingHead, remove);                                   // rimuove bullet dalla lista
+                placeObject(posNextB, ACS_BULLET); // pos futura disegno
+                b.bulletpos = posNextB;            // aggiorno posizione sulla lista
             }
         }
-        else if (nextP == ' ')
-        { // se prossima pos è vuota aggiorno pos proiettile e lo piazzo
-            tmp->B.bulletpos = posNextP;
-            placeObject(now, ' ');
-            placeObject(posNextP, ACS_BULLET);
+        else if (nextA == ' ')
+        {
+            placeObject(now, ' ');             // pos attuale cancello
+            placeObject(posNextA, ACS_BULLET); // pos futura disegno
+            b.bulletpos = posNextA;            // aggiorno posizione sulla lista
         }
-
-        tmp = tmp->next;
+        else if (nextA == ACS_VLINE || nextA == ACS_HLINE || nextA == ACS_CKBOARD) // PROIETTILE -> POTERE -> MURO
+        {                                                                          // dopo proiettile e dopo potere c'è muro, faccio sparire proiettile
+            placeObject(now, ' ');                                                 // rimuove bullet da posizione attuale
+            P.bulletRemove(tmp, b);                                                // rimuove bullet dalla lista
+        }
+    }
+    else if (nextP == ' ')
+    { // se prossima pos è vuota aggiorno pos proiettile e lo piazzo
+        b.bulletpos = posNextP;
+        placeObject(now, ' ');
+        placeObject(posNextP, ACS_BULLET);
     }
 }
 
@@ -824,19 +820,17 @@ void Room::ProtagonistMovement(Protagonist p, int direction)
     }
 }
 
-/*
-p_bulletsEnemis Room::bulletHeadInsert_enemy(p_bulletsEnemis head, bullet b)
+p_bulletsEnemies Room::enBullHeadInsert(p_bulletsEnemies head, bullet b)
 {
 
-    p_bulletsEnemis newbullet = new bulletsEnemies;
-    newbullet-> bullet_enemy = b;
+    p_bulletsEnemies newbullet = new bulletsEnemies;
+    newbullet->B = b;
     newbullet->next = head;
     head = newbullet;
 
     return head;
-
 }
-*/
+
 pListEnemies Room::HeadInsert_enemy(pListEnemies head, Enemy en)
 {
 
@@ -847,17 +841,17 @@ pListEnemies Room::HeadInsert_enemy(pListEnemies head, Enemy en)
 
     return head;
 }
-/*
-p_bulletsEnemis Room::bullet_enemyRemove(p_bulletsEnemis head, bullet b)
+
+p_bulletsEnemies Room::bullet_enemyRemove(p_bulletsEnemies head, bullet b)
 {
-    p_bulletsEnemis x;
-    p_bulletsEnemis tmp;
+    p_bulletsEnemies x;
+    p_bulletsEnemies tmp;
     bool found = false;
     if (head == NULL)
     {
         head = head;
     }
-    else if (head->bullet_enemy.bullet_damage == b.bullet_damage && head->bullet_enemy.bullet_tag == b.bullet_tag && head->bullet_enemy.bulletpos.x == b.bulletpos.x && head->bullet_enemy.bulletpos.y == b.bulletpos.y && head->bullet_enemy.direction == b.direction)
+    else if (head->B.bullet_damage == b.bullet_damage && head->B.bullet_tag == b.bullet_tag && head->B.bulletpos.x == b.bulletpos.x && head->B.bulletpos.y == b.bulletpos.y && head->B.direction == b.direction)
     {
         tmp = head;
         head = head->next;
@@ -868,7 +862,7 @@ p_bulletsEnemis Room::bullet_enemyRemove(p_bulletsEnemis head, bullet b)
         x = head;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->bullet_enemy.bullet_damage == b.bullet_damage && x->next->bullet_enemy.bullet_tag == b.bullet_tag && x->next->bullet_enemy.bulletpos.x == b.bulletpos.x && x->next->bullet_enemy.bulletpos.y == b.bulletpos.y && x->next->bullet_enemy.direction == b.direction)
+            if (x->next->B.bullet_damage == b.bullet_damage && x->next->B.bullet_tag == b.bullet_tag && x->next->B.bulletpos.x == b.bulletpos.x && x->next->B.bulletpos.y == b.bulletpos.y && x->next->B.direction == b.direction)
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -880,8 +874,8 @@ p_bulletsEnemis Room::bullet_enemyRemove(p_bulletsEnemis head, bullet b)
     }
     return head;
 }
-*/
-pListEnemies enemyRemove(pListEnemies head, Enemy en)
+
+pListEnemies Room::enemyRemove(pListEnemies head, Enemy en)
 {
     pListEnemies x;
     pListEnemies tmp;
