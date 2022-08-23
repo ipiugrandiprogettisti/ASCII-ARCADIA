@@ -226,4 +226,7 @@ public:
 
     // removes enemy given
     pListEnemies enemyRemove(pListEnemies head, Enemy en);
+
+    //enemies movement
+    void enemy_movement(Enemy e, Protagonist P);
 };

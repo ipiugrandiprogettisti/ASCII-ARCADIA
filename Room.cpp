@@ -912,3 +912,43 @@ pListEnemies Room::enemyRemove(pListEnemies head, Enemy en)
     }
     return head;
 }
+
+void Room::enemy_movement(Enemy e, Protagonist P)
+{
+    int direction = rand() % 4 ; // 0 dwn, 1 sx , 2 up, 3 dx
+    pos now = e.position;
+    chtype c_next = checkNextPos(now, direction);
+    pos next = nextPos(now, direction);
+    if(c_next == ' ')
+    {
+        placeObject(next, e.tag);
+        placeObject(now, ' ');
+        e.position = next;
+
+    }
+    if(c_next == ACS_PI)
+    {
+        int life_now = P.current_life;
+        life_now -= e.atk_damage;
+        if(life_now <= 0)
+        {
+            //DA INSERIRE MENU' DI MORTE  
+        }
+        if(life_now > 0)
+        {
+            chtype c_next2;
+            pos next_2;
+           do
+           {
+            int new_dir = rand()% 4;
+           c_next2 = checkNextPos(next, new_dir);
+           next_2 = nextPos(next, new_dir);
+           }while(c_next2 != ' ');
+
+            placeObject(next_2, e.tag);
+            placeObject(next, ' ');
+            e.position = next_2;
+
+        }
+    }
+}
