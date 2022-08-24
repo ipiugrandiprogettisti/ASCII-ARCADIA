@@ -993,7 +993,7 @@ void Room::oneMove(Protagonist p)
 }
 
 // da rivedere
-void Room::enemy_bullet(Enemy en, Protagonist p, bullet b)
+void Room::spawnEnBull(Enemy en, Protagonist p, bullet b)
 {
     // non passare protagonist (che non ti serve), e bullet (che lo crei dentro)
     // meno argomenti passi alle funzioni meglio è
@@ -1004,9 +1004,11 @@ void Room::enemy_bullet(Enemy en, Protagonist p, bullet b)
     anna
     */
     // quando il proiettile colpisce una qualsiasi entità scompare, e se è il protaginista ad essere colpito si fa il conto dei danni
-    // devi gestire comunque anche i casi in cui scompare
-    // guarda come ho fatto io quando c'erano dei muri
-
+    /*
+    devi gestire comunque anche i casi in cui scompare
+    guarda come ho fatto io quando c'erano dei muri
+    anna
+    */
     b.direction = rand() % 4;
     pos now = en.position;
     chtype c_next = checkNextPos(now, b.direction);
