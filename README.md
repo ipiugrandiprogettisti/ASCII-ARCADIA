@@ -32,7 +32,7 @@ Angoli muri: ACS_ULCORNER ACS_LLCORNER ACS_LRCORNER ACS_URCORNER
 Protagonista: ACS_PI
 Prioettile: ACS_BULLET
 Artefatti: 'C' (common) 'R' (rare) '$' (special) ACS_STERLING (epic)
-Nemici: '@' ACS_NEQUAL ACS_BLOCK
+Nemici: '@' (si muove e spara) ACS_NEQUAL(si muove e basta e fa danno al nemico se questo gli va sopra) ACS_BLOCK (non si muove ma spara)
 Muri dxsx: ACS_VLINE ACS_HLINE ACS_CKBOARD
 Potere: 'P'
 
@@ -41,4 +41,4 @@ DIREZIONI
 0 basso
 1 sx
 2 alto
-3 dx
+3 dx 

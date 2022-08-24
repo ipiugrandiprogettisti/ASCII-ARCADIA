@@ -969,7 +969,12 @@ void Room::allEnemyMov(Protagonist p)
     while (entmp != NULL)
     {
         Enemy ee = entmp->e;
-        enemy_movement(ee, p);
+        
+        if(ee.key != 1)
+        {
+            enemy_movement(ee, p);
+        }
+        
         entmp = entmp->next;
     }
 }
