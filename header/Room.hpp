@@ -234,6 +234,13 @@ public:
     // manages all ally bullets
     void allABullMov(Protagonist p);
 
+    //bulletes appear next to the enemy
+    void enemy_bullet(Enemy en, Protagonist p, bullet b);
+
+    //make enemies's bullet move
+    void enBullet_move(bullet b, Protagonist p);
+
     // one function for all independent movements (enemy, enemybull, allybull)
     void oneMove(Protagonist p);
+
 };

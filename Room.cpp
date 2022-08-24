@@ -214,6 +214,7 @@ void Room::place_enemies(bool b)
             {
                 this->placeObject(posEnemy, en.tag);
                 this->drawLook();
+                HeadInsert_enemy(objects.enemies, en);
                 flag = false;
             }
         }
@@ -990,3 +991,63 @@ void Room::oneMove(Protagonist p)
     // TO-DO
     // all enemy bullets movement
 }
+
+//da rivedere
+void Room::enemy_bullet(Enemy en, Protagonist p, bullet b)
+{
+    //quando il proiettile colpisce una qualsiasi entità scompare, e se è il protaginista ad essere colpito si fa il conto dei danni
+    b.direction = rand()% 4;
+    pos now = en.position;
+    chtype c_next = checkNextPos(now, b.direction);
+    pos next = nextPos(now, b.direction);
+    if (c_next == ' ')
+    {
+        b.bulletpos = next; // non so se va bene metterlo qui o se devo metterlo al posto di next = ecc.
+        //ceh non so se devo salvarmi comunque la posizione anche se non posso stamparlo
+        placeObject(b.bulletpos, b.bullet_tag);
+        enBullHeadInsert(objects.bulletEnemies, b);
+
+    }
+    if (c_next == ACS_PI)          
+    {
+        int life_now = p.current_life;
+        life_now -= b.bullet_damage;
+        if (life_now <= 0)
+        {
+            // DA INSERIRE MENU' DI MORTE
+        }
+
+    }
+}
+
+//NON FINITA: vanno gestite diverse collisioni
+void Room::enBullet_move(bullet b, Protagonist p)
+{
+    pos now = b.bulletpos;
+    pos next = nextPos(now, b.direction);
+    chtype c_next = checkNextPos(now, b.direction);
+    if(c_next == ' ')
+    {
+        placeObject(next, b.bullet_tag);
+        placeObject(now, ' ');
+        b.bulletpos = next;
+        
+    }
+    if (c_next == ACS_PI)// se il proiettile incontra un nemico il priettile viene cancellato e il nemico perde i danni       
+    {
+        int life_now = p.current_life;
+        life_now -= b.bullet_damage;
+        if (life_now <= 0)
+        {
+            // DA INSERIRE MENU' DI MORTE
+        }
+        placeObject(now, ' ');  
+
+    }
+    else // se il proiettile incontra un ostacolo(muri, poteri, artefatti) si ferma e quindi cancello la sua pozione precedente all'incontro
+    {
+        placeObject(now, ' ');
+    }
+
+}
+
