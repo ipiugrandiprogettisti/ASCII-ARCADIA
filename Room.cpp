@@ -970,12 +970,12 @@ void Room::allEnemyMov(Protagonist p)
     while (entmp != NULL)
     {
         Enemy ee = entmp->e;
-        
-        if(ee.key != 1)
+
+        if (ee.key != 1)
         {
             enemy_movement(ee, p);
         }
-        
+
         entmp = entmp->next;
     }
 }
@@ -992,23 +992,33 @@ void Room::oneMove(Protagonist p)
     // all enemy bullets movement
 }
 
-//da rivedere
+// da rivedere
 void Room::enemy_bullet(Enemy en, Protagonist p, bullet b)
 {
-    //quando il proiettile colpisce una qualsiasi entità scompare, e se è il protaginista ad essere colpito si fa il conto dei danni
-    b.direction = rand()% 4;
+    // non passare protagonist (che non ti serve), e bullet (che lo crei dentro)
+    // meno argomenti passi alle funzioni meglio è
+    /*
+    immagina la funzione in sè cosa deve fare, c'è un nemico e deve spawnargli un proiettile di fianco,
+    quindi il proiettile è nuovo e te lo crei dentro (poi te lo salvi in lista con head_insert)
+    il protagonista non ti serve perchè lo usavi per gestire una collisione (c'è un'altra funzione per quello)
+    anna
+    */
+    // quando il proiettile colpisce una qualsiasi entità scompare, e se è il protaginista ad essere colpito si fa il conto dei danni
+    // devi gestire comunque anche i casi in cui scompare
+    // guarda come ho fatto io quando c'erano dei muri
+
+    b.direction = rand() % 4;
     pos now = en.position;
     chtype c_next = checkNextPos(now, b.direction);
     pos next = nextPos(now, b.direction);
     if (c_next == ' ')
     {
         b.bulletpos = next; // non so se va bene metterlo qui o se devo metterlo al posto di next = ecc.
-        //ceh non so se devo salvarmi comunque la posizione anche se non posso stamparlo
+        // ceh non so se devo salvarmi comunque la posizione anche se non posso stamparlo
         placeObject(b.bulletpos, b.bullet_tag);
         enBullHeadInsert(objects.bulletEnemies, b);
-
     }
-    if (c_next == ACS_PI)          
+    if (c_next == ACS_PI)
     {
         int life_now = p.current_life;
         life_now -= b.bullet_damage;
@@ -1016,24 +1026,22 @@ void Room::enemy_bullet(Enemy en, Protagonist p, bullet b)
         {
             // DA INSERIRE MENU' DI MORTE
         }
-
     }
 }
 
-//NON FINITA: vanno gestite diverse collisioni
+// NON FINITA: vanno gestite diverse collisioni
 void Room::enBullet_move(bullet b, Protagonist p)
 {
     pos now = b.bulletpos;
     pos next = nextPos(now, b.direction);
     chtype c_next = checkNextPos(now, b.direction);
-    if(c_next == ' ')
+    if (c_next == ' ')
     {
         placeObject(next, b.bullet_tag);
         placeObject(now, ' ');
         b.bulletpos = next;
-        
     }
-    if (c_next == ACS_PI)// se il proiettile incontra un nemico il priettile viene cancellato e il nemico perde i danni       
+    if (c_next == ACS_PI) // se il proiettile incontra un nemico il priettile viene cancellato e il nemico perde i danni
     {
         int life_now = p.current_life;
         life_now -= b.bullet_damage;
@@ -1043,14 +1051,10 @@ void Room::enBullet_move(bullet b, Protagonist p)
         }
         placeObject(now, ' ');
         bullet_enemyRemove(objects.bulletEnemies, b);
-
-
     }
     else // se il proiettile incontra un ostacolo(muri, poteri, artefatti --- su poteri e artefatti ho il dubbio se fare così o meno) si ferma e quindi cancello la sua pozione precedente all'incontro
     {
         placeObject(now, ' ');
         bullet_enemyRemove(objects.bulletEnemies, b);
     }
-
 }
-
