@@ -1041,12 +1041,15 @@ void Room::enBullet_move(bullet b, Protagonist p)
         {
             // DA INSERIRE MENU' DI MORTE
         }
-        placeObject(now, ' ');  
+        placeObject(now, ' ');
+        bullet_enemyRemove(objects.bulletEnemies, b);
+
 
     }
-    else // se il proiettile incontra un ostacolo(muri, poteri, artefatti) si ferma e quindi cancello la sua pozione precedente all'incontro
+    else // se il proiettile incontra un ostacolo(muri, poteri, artefatti --- su poteri e artefatti ho il dubbio se fare così o meno) si ferma e quindi cancello la sua pozione precedente all'incontro
     {
         placeObject(now, ' ');
+        bullet_enemyRemove(objects.bulletEnemies, b);
     }
 
 }
