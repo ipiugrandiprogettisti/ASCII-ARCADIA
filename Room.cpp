@@ -959,6 +959,22 @@ void Room::enemy_movement(Enemy e, Protagonist P)
             e.position = next_2;
         }
     }
+    if(c_next == ACS_BULLET)
+    {
+        e.current_life -= 2; // qua andrà inserito il danno del bullet del protagonista;
+        if(e.current_life <= 0)
+        {
+            placeObject(e.position, ' ');
+            enemyRemove(objects.enemies, e);
+            if(objects.enemies == NULL)
+            {
+                //richiamare spwan artifact e open doors
+                placeArtifacts(1);
+                openDoors(true);
+            }
+        }
+    }
+
 }
 
 void Room::allEnemyMov(Protagonist p)
@@ -993,22 +1009,8 @@ void Room::oneMove(Protagonist p)
 }
 
 // da rivedere
-void Room::spawnEnBull(Enemy en, Protagonist p, bullet b)
+void Room::spawnEnBull(Enemy en, bullet b)
 {
-    // non passare protagonist (che non ti serve), e bullet (che lo crei dentro)
-    // meno argomenti passi alle funzioni meglio è
-    /*
-    immagina la funzione in sè cosa deve fare, c'è un nemico e deve spawnargli un proiettile di fianco,
-    quindi il proiettile è nuovo e te lo crei dentro (poi te lo salvi in lista con head_insert)
-    il protagonista non ti serve perchè lo usavi per gestire una collisione (c'è un'altra funzione per quello)
-    anna
-    */
-    // quando il proiettile colpisce una qualsiasi entità scompare, e se è il protaginista ad essere colpito si fa il conto dei danni
-    /*
-    devi gestire comunque anche i casi in cui scompare
-    guarda come ho fatto io quando c'erano dei muri
-    anna
-    */
     b.direction = rand() % 4;
     pos now = en.position;
     chtype c_next = checkNextPos(now, b.direction);
@@ -1020,18 +1022,9 @@ void Room::spawnEnBull(Enemy en, Protagonist p, bullet b)
         placeObject(b.bulletpos, b.bullet_tag);
         enBullHeadInsert(objects.bulletEnemies, b);
     }
-    if (c_next == ACS_PI)
-    {
-        int life_now = p.current_life;
-        life_now -= b.bullet_damage;
-        if (life_now <= 0)
-        {
-            // DA INSERIRE MENU' DI MORTE
-        }
-    }
 }
 
-// NON FINITA: vanno gestite diverse collisioni
+//da rivedere
 void Room::enBullet_move(bullet b, Protagonist p)
 {
     pos now = b.bulletpos;
@@ -1054,9 +1047,87 @@ void Room::enBullet_move(bullet b, Protagonist p)
         placeObject(now, ' ');
         bullet_enemyRemove(objects.bulletEnemies, b);
     }
-    else // se il proiettile incontra un ostacolo(muri, poteri, artefatti --- su poteri e artefatti ho il dubbio se fare così o meno) si ferma e quindi cancello la sua pozione precedente all'incontro
+    if (c_next == ACS_VLINE || c_next == ACS_HLINE || c_next == ACS_CKBOARD) //COLLISIONI PROIETTILE-MURO
     {
+        //cancello il proiettile e lo rimuovo dalla lista
         placeObject(now, ' ');
         bullet_enemyRemove(objects.bulletEnemies, b);
     }
+    //non ci sono collisioni tra i proiettili del nemico e gli artefatti
+    
+    if(c_next == 'P') //COLLISIONE PROIETTILE-POTERE
+    {
+        pos next_P = nextPos(next, b.direction); // posizione dopo il potere
+        chtype c_nextP = checkNextPos(next, b.direction);
+        
+        if (c_nextP == ' ') //dopo il potere c'è uno spazio vuoto
+        {
+            placeObject(now, ' ');           
+            placeObject(next_P, ACS_BULLET); 
+            b.bulletpos = next_P;            
+        }
+        else if (c_nextP == ACS_VLINE || c_nextP == ACS_HLINE || c_nextP == ACS_CKBOARD) //dopo il potere c'è un muro
+        {                                                                         
+            placeObject(now, ' ');                                               
+            bullet_enemyRemove(objects.bulletEnemies, b);                                                
+        }
+        else if(c_nextP == ACS_PI)
+        {
+            p.current_life -= b.bullet_damage;
+            if(p.current_life <= 0)
+            {
+                //MENU' di MORTE
+            }
+            placeObject(now, ' ');
+            bullet_enemyRemove(objects.bulletEnemies, b);           
+            
+        }
+        else if(c_nextP == ACS_BLOCK || c_nextP == ACS_NEQUAL || c_nextP == '@')
+        {
+            placeObject(now, ' ');                                               
+            bullet_enemyRemove(objects.bulletEnemies, b); 
+        }       
+    }
+    if(c_next == ACS_BLOCK || c_next == ACS_NEQUAL || c_next == '@') //COLLISIONE PRIOETTILE NEMICO
+    {
+        //cancello il proiettile e lo rimuovo dalla lista
+        placeObject(now, ' ');                                               
+        bullet_enemyRemove(objects.bulletEnemies, b); 
+        
+    }
+    //COLLISIONE PROIETTILE - PROIETTILE 
+    if(c_next == ACS_BULLET)
+    {
+        //cancello il bullet che ha fatto collisione
+        placeObject(now, ' ');                                               
+        bullet_enemyRemove(objects.bulletEnemies, b);
+        p_bulletlist tmp = p.headB;
+
+        //scorro la lista dei proiettili alleati e rimuovo il proiettile che ha fatto collisione se c'è
+        while(tmp != NULL)
+        {
+            if(tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.y == next.y)
+            {
+                placeObject(next, ' ');
+                p.bulletRemove(tmp, tmp->B);
+
+            }
+            tmp = tmp->next;
+        }
+
+    }
+    
 }
+
+
+void Room::allEnBullet_move(Protagonist p)
+{
+    p_bulletsEnemies enBulltmp = objects.bulletEnemies;
+    while (enBulltmp != NULL)
+    {
+        bullet enB = enBulltmp->B;
+        enBullet_move(enB, p);
+        enBulltmp = enBulltmp->next;
+    }
+}
+
