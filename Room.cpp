@@ -1114,6 +1114,7 @@ void Room::enBullet_move(bullet b, Protagonist p)
             }
             tmp = tmp->next;
         }
+        //da fare collisione proiettile nemico- proiettile nemico
 
     }
     
