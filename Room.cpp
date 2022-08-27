@@ -1095,29 +1095,80 @@ void Room::enBullet_move(bullet b, Protagonist p)
         bullet_enemyRemove(objects.bulletEnemies, b); 
         
     }
-    //COLLISIONE PROIETTILE - PROIETTILE 
+    //COLLISIONE PROIETTILE - PROIETTILE
+    //da rivedere
     if(c_next == ACS_BULLET)
     {
-        //cancello il bullet che ha fatto collisione
-        placeObject(now, ' ');                                               
-        bullet_enemyRemove(objects.bulletEnemies, b);
+        p_bulletsEnemies tmpEn = objects.bulletEnemies;
         p_bulletlist tmp = p.headB;
+        bool flag = false;
+        /*
+        bisogna capire la direzione del proiettile nemico
+        se sono perpendicolari basta muovere di una posizione proiettile nemico
+        e poi posizionare proiettile all
 
-        //scorro la lista dei proiettili alleati e rimuovo il proiettile che ha fatto collisione se c'è
+        se sono direzionati nella stessa retta sono diretti uno contro l'altro,
+        non possono avere la stessa direzione
+        in questo caso basta scambiarli di posizione
+        */
+        // scorro lista proiettili nemici per capire quale proiettile è in quella pos, e mi salvo la direzione
         while(tmp != NULL)
         {
+            
             if(tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.y == next.y)
             {
-                placeObject(next, ' ');
-                p.bulletRemove(tmp, tmp->B);
-
+                flag = true;
+                if(tmp->B.direction == b.direction + 2 || tmp->B.direction == b.direction -2)
+                {
+                    // direzione sulla stessa retta, stanno per scontrarsi frontalmente, scambio pos
+                    tmp->B.bulletpos = now;
+                    b.bulletpos = next;
+                }
+                else if(tmp->B.direction == b.direction + 1 || tmp->B.direction == b.direction - 1 || tmp->B.direction == b.direction + 3 || tmp->B.direction == b.direction - 3)
+                { // direzioni perpendicolari
+                    pos allyPos_next = nextPos(next, tmp->B.direction);
+                    chtype c_allyPos = checkNextPos(next, tmp->B.direction);
+                    
+                    if(c_allyPos == ' ')
+                    {
+                        tmp->B.bulletpos = allyPos_next;    
+                        b.bulletpos = next;                    
+                        placeObject(allyPos_next, ACS_BULLET); 
+                        placeObject(now, ' ');  
+                    }
+                    //manca il controllo con il potere
+                    else
+                    {
+                        //rimuovo il proiettile alleato perchè ha fatto  collisione
+                        placeObject(now, ' ');
+                        p.bulletRemove(tmp, tmp->B);   
+                    }
+                 
+                }
+                tmp = tmp->next;
+                
             }
-            tmp = tmp->next;
         }
-        //da fare collisione proiettile nemico- proiettile nemico
+        if(flag = false) //vuol dire che il proiettile che ha incontrato era un altro proiettile nemico
+        {
+            //scambio anche nel caso di collisione PROIETTILE NEMICO-PROIETTILE NEMICO(?)
+            //adesso ho messo di no poi al massimo si cambia
+            while(tmpEn != NULL)
+            {
+                if(tmpEn->B.bulletpos.x == next.x && tmpEn->B.bulletpos.y == next.y)
+                {
+                    placeObject(next, ' ');
+                    placeObject(now, ' ');                                               
+                    bullet_enemyRemove(objects.bulletEnemies, b);
+                    bullet_enemyRemove(objects.bulletEnemies, tmpEn->B);
 
-    }
-    
+                }
+                tmpEn = tmpEn->next;
+            }
+            
+        }
+
+    }   
 }
 
 
