@@ -25,6 +25,6 @@ pos Entity::getPosition()
 // sets Entity's new position
 void Entity::setPosition(int newy, int newx)
 {
-    position.y = newy;
-    position.x = newx;
+    this->position.y = newy;
+    this->position.x = newx;
 };

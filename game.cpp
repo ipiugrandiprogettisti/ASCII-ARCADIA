@@ -240,16 +240,15 @@ void startGame(WINDOW *myWin)
                     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                 }
             }
-            /*else
-            {
-                myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-            }*/
-
+            
             // player's movement
 
-            pos newPosLeft;
+            myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+
+            /*pos newPosLeft;
             newPosLeft.y = P.position.y;
             newPosLeft.x = P.position.x - 1;
             if (myMap.rooms->currentRoom.getTile(newPosLeft) == ' ')
@@ -260,7 +259,7 @@ void startGame(WINDOW *myWin)
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
-            }
+            }*/
 
             break;
 

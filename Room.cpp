@@ -604,28 +604,35 @@ chtype Room::checkNextPos(pos p, int direction)
 
 pos Room::nextPos(pos p, int direction)
 {
-    pos next = p;
+    pos next;
+    next.y = p.y;
+    next.x = p.x;
 
     // testo future posizioni su posizione di prova
     if (direction == 3)
     { // direzione 3 : va verso dx, aumenta x di 1
+        next.y = p.y;
         next.x++;
     }
     else if (direction == 0)
     { // direzione 0 : va verso il basso, aumenta y di 1
         next.y++;
+        next.x = p.x;
     }
     else if (direction == 1)
     { // direzione 1 : va verso sx, diminuisce x di 1
         next.x--;
+        next.y = p.y;
     }
     else if (direction == 2)
     { // direzione 2: va verso l'alto, diminuisce y di 1
         next.y--;
+        next.x = p.x;
     }
 
     return next;
-};
+}
+
 // manages one ally bullet collision and movement
 void Room::aBullMov(Protagonist P, bullet b)
 {
@@ -819,23 +826,23 @@ p_artifactsList Room::removeArtifact(p_artifactsList head, chtype tag, pos posit
 }
 
 // makes the player move
-void Room::ProtagonistMovement(Protagonist p, int direction)
+void Room::ProtagonistMovement(Protagonist &p, int direction)
 {
-    pos currentpos = p.position;
-    pos newPos = Room::nextPos(p.position, direction);
+    pos currentpos = p.getPosition();
+    pos newPos = Room::nextPos(currentpos, direction);
+
     if (Room::getTile(newPos) == ' ')
     {
-        Room::placeObject(p.position, ' ');
+        Room::placeObject(currentpos, ' ');
         p.setPosition(newPos.y, newPos.x);
-        Room::placeObject(p.position, p.tag);
-        Room::drawLook();
-        refresh();
-        wrefresh(Room::getWindow());
+        Room::placeObject(p.getPosition(), p.tag);
+
     }
-    else if (Room::getTile(newPos) == 'C' || 'R' || '$' || ACS_STERLING) // hits artifact
+    /*else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == ACS_STERLING) // hits artifact
     {
+        Room::placeObject(currentpos, ' ');
         p.setPosition(newPos.y, newPos.x);
-        Room::placeObject(p.position, p.tag);
+        Room::placeObject(p.getPosition(), p.tag);
         switch (Room::getTile(newPos))
         {
         case 'C':
@@ -858,18 +865,14 @@ void Room::ProtagonistMovement(Protagonist p, int direction)
         default:
             break;
         }
-        Room::drawLook();
-        refresh();
-        wrefresh(Room::getWindow());
-    }
+    }*/
     else if (Room::getTile(newPos) == 'P') // hits power
     {
+        Room::placeObject(p.getPosition(), ' ');
         p.setPosition(newPos.y, newPos.x);
-        Room::placeObject(p.position, p.tag);
+        Room::placeObject(p.getPosition(), p.tag);
         Room::openDoors(true);
-        Room::drawLook();
-        refresh();
-        wrefresh(Room::getWindow());
+
     }
 }
 
