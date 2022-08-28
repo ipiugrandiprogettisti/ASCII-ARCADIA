@@ -827,11 +827,49 @@ void Room::ProtagonistMovement(Protagonist p, int direction)
     {
         Room::placeObject(p.position, ' ');
         p.setPosition(newPos.y, newPos.x);
+        Room::placeObject(p.position, p.tag);
         Room::drawLook();
+        refresh();
+        wrefresh(Room::getWindow());
     }
-    else if (Room::getTile(newPos) == 'C')
+    else if (Room::getTile(newPos) == 'C' || 'R' || '$' || ACS_STERLING) // hits artifact
     {
-        /* code */
+        p.setPosition(newPos.y, newPos.x);
+        Room::placeObject(p.position, p.tag);
+        switch (Room::getTile(newPos))
+        {
+        case 'C':
+            p.gainLife(p, 1);
+            Room::removeArtifact(this->objects.artifacts, 'C', newPos);
+            break;
+        case 'R':
+            p.gainLife(p, 3);
+            Room::removeArtifact(this->objects.artifacts, 'R', newPos);
+            break;
+        case '$':
+            p.gainLife(p, 5);
+            Room::removeArtifact(this->objects.artifacts, '$', newPos);
+            break;
+        case 'ACS_STERLING':
+            p.gainLife(p, 7);
+            Room::removeArtifact(this->objects.artifacts, 'ACS_STERLING', newPos);
+            break;
+
+        default:
+            break;
+        }
+        Room::drawLook();
+        refresh();
+        wrefresh(Room::getWindow());
+    }
+    else if (Room::getTile(newPos) == 'P') // hits power
+    {
+        p.setPosition(newPos.y, newPos.x);
+        Room::placeObject(p.position, p.tag);
+        Room::openDoors(true);
+        Room::drawLook();
+        refresh();
+        wrefresh(Room::getWindow());
     }
 }
 
@@ -959,22 +997,21 @@ void Room::enemy_movement(Enemy e, Protagonist P)
             e.position = next_2;
         }
     }
-    if(c_next == ACS_BULLET)
+    if (c_next == ACS_BULLET)
     {
         e.current_life -= 2; // qua andrà inserito il danno del bullet del protagonista;
-        if(e.current_life <= 0)
+        if (e.current_life <= 0)
         {
             placeObject(e.position, ' ');
             enemyRemove(objects.enemies, e);
-            if(objects.enemies == NULL)
+            if (objects.enemies == NULL)
             {
-                //richiamare spwan artifact e open doors
+                // richiamare spwan artifact e open doors
                 placeArtifacts(1);
                 openDoors(true);
             }
         }
     }
-
 }
 
 void Room::allEnemyMov(Protagonist p)
@@ -1024,7 +1061,7 @@ void Room::spawnEnBull(Enemy en, bullet b)
     }
 }
 
-//da rivedere
+// da rivedere
 void Room::enBullet_move(bullet b, Protagonist p)
 {
     pos now = b.bulletpos;
@@ -1047,57 +1084,55 @@ void Room::enBullet_move(bullet b, Protagonist p)
         placeObject(now, ' ');
         bullet_enemyRemove(objects.bulletEnemies, b);
     }
-    if (c_next == ACS_VLINE || c_next == ACS_HLINE || c_next == ACS_CKBOARD) //COLLISIONI PROIETTILE-MURO
+    if (c_next == ACS_VLINE || c_next == ACS_HLINE || c_next == ACS_CKBOARD) // COLLISIONI PROIETTILE-MURO
     {
-        //cancello il proiettile e lo rimuovo dalla lista
+        // cancello il proiettile e lo rimuovo dalla lista
         placeObject(now, ' ');
         bullet_enemyRemove(objects.bulletEnemies, b);
     }
-    //non ci sono collisioni tra i proiettili del nemico e gli artefatti
-    
-    if(c_next == 'P') //COLLISIONE PROIETTILE-POTERE
+    // non ci sono collisioni tra i proiettili del nemico e gli artefatti
+
+    if (c_next == 'P') // COLLISIONE PROIETTILE-POTERE
     {
         pos next_P = nextPos(next, b.direction); // posizione dopo il potere
         chtype c_nextP = checkNextPos(next, b.direction);
-        
-        if (c_nextP == ' ') //dopo il potere c'è uno spazio vuoto
+
+        if (c_nextP == ' ') // dopo il potere c'è uno spazio vuoto
         {
-            placeObject(now, ' ');           
-            placeObject(next_P, ACS_BULLET); 
-            b.bulletpos = next_P;            
+            placeObject(now, ' ');
+            placeObject(next_P, ACS_BULLET);
+            b.bulletpos = next_P;
         }
-        else if (c_nextP == ACS_VLINE || c_nextP == ACS_HLINE || c_nextP == ACS_CKBOARD) //dopo il potere c'è un muro
-        {                                                                         
-            placeObject(now, ' ');                                               
-            bullet_enemyRemove(objects.bulletEnemies, b);                                                
+        else if (c_nextP == ACS_VLINE || c_nextP == ACS_HLINE || c_nextP == ACS_CKBOARD) // dopo il potere c'è un muro
+        {
+            placeObject(now, ' ');
+            bullet_enemyRemove(objects.bulletEnemies, b);
         }
-        else if(c_nextP == ACS_PI)
+        else if (c_nextP == ACS_PI)
         {
             p.current_life -= b.bullet_damage;
-            if(p.current_life <= 0)
+            if (p.current_life <= 0)
             {
-                //MENU' di MORTE
+                // MENU' di MORTE
             }
             placeObject(now, ' ');
-            bullet_enemyRemove(objects.bulletEnemies, b);           
-            
+            bullet_enemyRemove(objects.bulletEnemies, b);
         }
-        else if(c_nextP == ACS_BLOCK || c_nextP == ACS_NEQUAL || c_nextP == '@')
+        else if (c_nextP == ACS_BLOCK || c_nextP == ACS_NEQUAL || c_nextP == '@')
         {
-            placeObject(now, ' ');                                               
-            bullet_enemyRemove(objects.bulletEnemies, b); 
-        }       
+            placeObject(now, ' ');
+            bullet_enemyRemove(objects.bulletEnemies, b);
+        }
     }
-    if(c_next == ACS_BLOCK || c_next == ACS_NEQUAL || c_next == '@') //COLLISIONE PRIOETTILE NEMICO
+    if (c_next == ACS_BLOCK || c_next == ACS_NEQUAL || c_next == '@') // COLLISIONE PRIOETTILE NEMICO
     {
-        //cancello il proiettile e lo rimuovo dalla lista
-        placeObject(now, ' ');                                               
-        bullet_enemyRemove(objects.bulletEnemies, b); 
-        
+        // cancello il proiettile e lo rimuovo dalla lista
+        placeObject(now, ' ');
+        bullet_enemyRemove(objects.bulletEnemies, b);
     }
-    //COLLISIONE PROIETTILE - PROIETTILE
-    //da rivedere
-    if(c_next == ACS_BULLET)
+    // COLLISIONE PROIETTILE - PROIETTILE
+    // da rivedere
+    if (c_next == ACS_BULLET)
     {
         p_bulletsEnemies tmpEn = objects.bulletEnemies;
         p_bulletlist tmp = p.headB;
@@ -1112,65 +1147,59 @@ void Room::enBullet_move(bullet b, Protagonist p)
         in questo caso basta scambiarli di posizione
         */
         // scorro lista proiettili nemici per capire quale proiettile è in quella pos, e mi salvo la direzione
-        while(tmp != NULL)
+        while (tmp != NULL)
         {
-            
-            if(tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.y == next.y)
+
+            if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.y == next.y)
             {
                 flag = true;
-                if(tmp->B.direction == b.direction + 2 || tmp->B.direction == b.direction -2)
+                if (tmp->B.direction == b.direction + 2 || tmp->B.direction == b.direction - 2)
                 {
                     // direzione sulla stessa retta, stanno per scontrarsi frontalmente, scambio pos
                     tmp->B.bulletpos = now;
                     b.bulletpos = next;
                 }
-                else if(tmp->B.direction == b.direction + 1 || tmp->B.direction == b.direction - 1 || tmp->B.direction == b.direction + 3 || tmp->B.direction == b.direction - 3)
+                else if (tmp->B.direction == b.direction + 1 || tmp->B.direction == b.direction - 1 || tmp->B.direction == b.direction + 3 || tmp->B.direction == b.direction - 3)
                 { // direzioni perpendicolari
                     pos allyPos_next = nextPos(next, tmp->B.direction);
                     chtype c_allyPos = checkNextPos(next, tmp->B.direction);
-                    
-                    if(c_allyPos == ' ')
+
+                    if (c_allyPos == ' ')
                     {
-                        tmp->B.bulletpos = allyPos_next;    
-                        b.bulletpos = next;                    
-                        placeObject(allyPos_next, ACS_BULLET); 
-                        placeObject(now, ' ');  
+                        tmp->B.bulletpos = allyPos_next;
+                        b.bulletpos = next;
+                        placeObject(allyPos_next, ACS_BULLET);
+                        placeObject(now, ' ');
                     }
-                    //manca il controllo con il potere
+                    // manca il controllo con il potere
                     else
                     {
-                        //rimuovo il proiettile alleato perchè ha fatto  collisione
+                        // rimuovo il proiettile alleato perchè ha fatto  collisione
                         placeObject(now, ' ');
-                        p.bulletRemove(tmp, tmp->B);   
+                        p.bulletRemove(tmp, tmp->B);
                     }
-                 
                 }
                 tmp = tmp->next;
-                
             }
         }
-        if(flag = false) //vuol dire che il proiettile che ha incontrato era un altro proiettile nemico
+        if (flag = false) // vuol dire che il proiettile che ha incontrato era un altro proiettile nemico
         {
-            //scambio anche nel caso di collisione PROIETTILE NEMICO-PROIETTILE NEMICO(?)
-            //adesso ho messo di no poi al massimo si cambia
-            while(tmpEn != NULL)
+            // scambio anche nel caso di collisione PROIETTILE NEMICO-PROIETTILE NEMICO(?)
+            // adesso ho messo di no poi al massimo si cambia
+            while (tmpEn != NULL)
             {
-                if(tmpEn->B.bulletpos.x == next.x && tmpEn->B.bulletpos.y == next.y)
+                if (tmpEn->B.bulletpos.x == next.x && tmpEn->B.bulletpos.y == next.y)
                 {
                     placeObject(next, ' ');
-                    placeObject(now, ' ');                                               
+                    placeObject(now, ' ');
                     bullet_enemyRemove(objects.bulletEnemies, b);
                     bullet_enemyRemove(objects.bulletEnemies, tmpEn->B);
-
                 }
                 tmpEn = tmpEn->next;
             }
-            
         }
-
-    }   
+    }
 }
-
 
 void Room::allEnBullet_move(Protagonist p)
 {
@@ -1182,4 +1211,3 @@ void Room::allEnBullet_move(Protagonist p)
         enBulltmp = enBulltmp->next;
     }
 }
-

@@ -240,6 +240,12 @@ void startGame(WINDOW *myWin)
                     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                 }
             }
+            /*else
+            {
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }*/
 
             // player's movement
 

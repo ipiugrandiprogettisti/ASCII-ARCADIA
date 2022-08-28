@@ -40,5 +40,5 @@ public:
     p_bulletlist bulletRemove(p_bulletlist head, bullet b);
 
     // increases life basing on the gained artifact
-    void gainLife(Protagonist a, Artifact p);
+    void gainLife(Protagonist a, int p);
 };

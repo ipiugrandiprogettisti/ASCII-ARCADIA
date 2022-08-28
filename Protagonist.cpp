@@ -99,10 +99,10 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
     return head;
 }
 
-// add life based on artifact healing
-void Protagonist::gainLife(Protagonist a, Artifact p)
+// add life
+void Protagonist::gainLife(Protagonist a, int p)
 {
     int actual = a.current_life;
-    int heal = p.lifepoints;
+    int heal = p;
     a.current_life = actual + heal;
 }
