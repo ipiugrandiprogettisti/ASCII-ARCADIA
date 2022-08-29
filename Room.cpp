@@ -130,7 +130,7 @@ void Room::placeArtifacts(bool b)
             posArt.y = posy;
             posArt.x = posx;
             var = getTile(posArt);
-        } while (var != ' ');
+        } while (var != ' ' || posArt.y > (WIDTH - 3) || posArt.y < 3 || posArt.x > (HEIGTH - 3) || posArt.x < 3);
         this->placeObject(posArt, rar);
 
         // qui va funzione per aggiungere artefatto alla lista
@@ -154,7 +154,7 @@ void Room::placePower(bool b)
         posPow.y = posy;
         posPow.x = posx;
         var = getTile(posPow);
-    } while (var != ' ');
+    } while (var != ' ' || posPow.y > (WIDTH - 3) || posPow.y < 3 || posPow.x > (HEIGTH - 3) || posPow.x < 3);
     this->placeObject(posPow, rar);
 };
 
@@ -410,7 +410,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 
     win = newwin(WIDTH, HEIGTH, offY, offX); // create a CENTERED box
     // this->look[2][2] = (char)key + 48;       // debug info, prints room key
-    //this->placeObject(2, 2, (char)key + 48); // debug info, prints room key
+    // this->placeObject(2, 2, (char)key + 48); // debug info, prints room key
 
     // PLACING DOORS
     if (previousRoomExists) // checking where the previous door was in order to place it on the opposite side after
@@ -508,7 +508,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     // PLACING OBJECTS
 
     // place wall
-    const int MAXWALLS = 75;          // max number of walls in a room
+    const int MAXWALLS = 75;           // max number of walls in a room
     for (int i = 0; i < MAXWALLS; i++) // number of walls
     {
         const int offsetSXDX = 6, offsetTOPBOTTOM = 3;
@@ -836,7 +836,6 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         Room::placeObject(currentpos, ' ');
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
-
     }
     /*else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == ACS_STERLING) // hits artifact
     {
@@ -872,7 +871,6 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
         Room::openDoors(true);
-
     }
 }
 
