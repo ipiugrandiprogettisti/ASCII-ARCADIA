@@ -244,4 +244,7 @@ public:
 
     // one function for all independent movements (enemy, enemybull, allybull)
     void oneMove(Protagonist p);
+    /*
+    void spawnSXBul(Protagonist p);
+    */
 };

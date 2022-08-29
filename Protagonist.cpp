@@ -100,9 +100,32 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
 }
 
 // add life
-void Protagonist::gainLife(Protagonist a, int p)
+void Protagonist::gainLife(int p)
 {
-    int actual = a.current_life;
+    int actual = current_life;
     int heal = p;
-    a.current_life = actual + heal;
+    current_life = actual + heal;
 }
+
+// spawn bullet at sx
+/*
+pos Protagonist ::createBul(int direction)
+{
+    pos bpos;
+    switch(direction){
+        case 0:
+            bpos.y = position.y++;
+            bpos.x = position.x;
+        case 1:
+        etc..
+    }
+
+    bullet bl;
+    bl.bulletpos = bpos;
+    bl.bullet_tag = ACS_BULLET;
+    bl.bullet_damage = 10; // <-- messo a caso
+    bl.direction = 1;
+
+    this->bulletHeadInsert(headB, bl);
+}
+*/

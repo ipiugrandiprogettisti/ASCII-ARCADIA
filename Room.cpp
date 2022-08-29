@@ -1212,3 +1212,10 @@ void Room::allEnBullet_move(Protagonist p)
         enBulltmp = enBulltmp->next;
     }
 }
+/*
+void Room::spawnSXBul(Protagonist p)
+{
+    pos blletpos = p.createSXBul();
+    placeObject(blletpos, ACS_BULLET);
+};
+*/
