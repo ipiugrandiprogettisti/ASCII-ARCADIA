@@ -136,6 +136,15 @@ int getMenu(WINDOW *myWin)
     return selectedItem;
 }
 
+void printRoomKey(int key)
+{
+    MyString str;
+    str += "Stanza: ";
+    str += itoa(key);
+    clearScreen(0, 0, str.getLength(), stdscr, 0);
+    mvaddstr(0, 0, str.get());
+}
+
 // FIXME: a volte la stessa stanza è ripetuta 2 volte di fila
 Map crossRoom(int enteringSide, Map myMap)
 {
@@ -151,6 +160,7 @@ Map crossRoom(int enteringSide, Map myMap)
         if (myMap.changeRoom(1)) // changeroom ritorna true se si è cambiata stanza
         {
             myMap.rooms->currentRoom.drawLook();
+            printRoomKey(myMap.rooms->currentRoom.getKey());
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
@@ -166,6 +176,7 @@ Map crossRoom(int enteringSide, Map myMap)
         if (myMap.changeRoom(0))
         {
             myMap.rooms->currentRoom.drawLook();
+            printRoomKey(myMap.rooms->currentRoom.getKey());
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
@@ -208,6 +219,7 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
 
     myMap.rooms->currentRoom.drawLook();
+    printRoomKey(myMap.rooms->currentRoom.getKey());
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
@@ -240,7 +252,7 @@ void startGame(WINDOW *myWin)
                     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                 }
             }
-            
+
             // player's movement
 
             myMap.rooms->currentRoom.ProtagonistMovement(P, 1);

@@ -410,7 +410,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 
     win = newwin(WIDTH, HEIGTH, offY, offX); // create a CENTERED box
     // this->look[2][2] = (char)key + 48;       // debug info, prints room key
-    this->placeObject(2, 2, (char)key + 48); // debug info, prints room key
+    //this->placeObject(2, 2, (char)key + 48); // debug info, prints room key
 
     // PLACING DOORS
     if (previousRoomExists) // checking where the previous door was in order to place it on the opposite side after
@@ -508,7 +508,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     // PLACING OBJECTS
 
     // place wall
-    const int MAXWALLS = 150;          // max number of walls in a room
+    const int MAXWALLS = 75;          // max number of walls in a room
     for (int i = 0; i < MAXWALLS; i++) // number of walls
     {
         const int offsetSXDX = 6, offsetTOPBOTTOM = 3;
