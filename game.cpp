@@ -204,11 +204,10 @@ void startGame(WINDOW *myWin)
 
     clear();
 
-    // prova
     p_bulletlist headB = NULL;
 
     // creation of the protagonist (player)
-    Protagonist P(headB, 10, 10, 1, 3, 1, ACS_PI);
+    Protagonist P(headB, 10, 10, 1, 1, 1, ACS_PI);
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
@@ -298,6 +297,13 @@ void startGame(WINDOW *myWin)
                         }
 
                         // player's movement
+
+                        myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
+                        myMap.rooms->currentRoom.drawLook();
+                        refresh();
+                        wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                        /*
                         pos newPosRight;
                         newPosRight.y = P.position.y;
                         newPosRight.x = P.position.x + 1;
@@ -309,7 +315,7 @@ void startGame(WINDOW *myWin)
                             myMap.rooms->currentRoom.drawLook();
                             refresh();
                             wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }
+                        }*/
                         break;
 
                     case 'w':
@@ -326,6 +332,13 @@ void startGame(WINDOW *myWin)
                         }
 
                         // player's movement
+
+                        myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
+                        myMap.rooms->currentRoom.drawLook();
+                        refresh();
+                        wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                        /*
                         pos newPosUp;
                         newPosUp.y = P.position.y - 1;
                         newPosUp.x = P.position.x;
@@ -337,7 +350,7 @@ void startGame(WINDOW *myWin)
                             myMap.rooms->currentRoom.drawLook();
                             refresh();
                             wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }
+                        }*/
                         break;
 
                     case 's':
@@ -354,7 +367,13 @@ void startGame(WINDOW *myWin)
                         }
 
                         // player's movement
-                        pos newPosDown;
+
+                        myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
+                        myMap.rooms->currentRoom.drawLook();
+                        refresh();
+                        wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                        /*pos newPosDown;
                         newPosDown.y = P.position.y + 1;
                         newPosDown.x = P.position.x;
                         if (myMap.rooms->currentRoom.getTile(newPosDown) == ' ')
@@ -365,12 +384,17 @@ void startGame(WINDOW *myWin)
                             myMap.rooms->currentRoom.drawLook();
                             refresh();
                             wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }
+                        }*/
                         break;
 
                     case KEY_LEFT:
 
-                        pos bulletpos;
+                        myMap.rooms->currentRoom.spawnAllyBullet(P, 1);
+                        /*myMap.rooms->currentRoom.drawLook();
+                        refresh();
+                        wrefresh(myMap.rooms->currentRoom.getWindow());*/
+
+                        /*pos bulletpos;
                         bulletpos.y = P.position.y;
                         bulletpos.x = P.position.x - 1;
 
@@ -378,24 +402,26 @@ void startGame(WINDOW *myWin)
                         {
                             myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
                             myMap.rooms->currentRoom.drawLook();
-                            // usleep(15000);
+                            usleep(15000);
                             myMap.rooms->currentRoom.placeObject(bulletpos, ' ');
                             bulletpos.x = bulletpos.x - 1;
                             refresh();
                             wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }
+                        }*/
                         break;
 
                     case KEY_RIGHT:
 
+                        myMap.rooms->currentRoom.spawnAllyBullet(P, 3);
                         break;
 
                     case KEY_UP:
 
+                        myMap.rooms->currentRoom.spawnAllyBullet(P, 2);
                         break;
 
                     case KEY_DOWN:
-
+                        myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
                         break;
 
                     case 'i':

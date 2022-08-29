@@ -837,7 +837,7 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
     }
-    /*else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == ACS_STERLING) // hits artifact
+    else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == ACS_STERLING) // hits artifact
     {
         Room::placeObject(currentpos, ' ');
         p.setPosition(newPos.y, newPos.x);
@@ -845,26 +845,26 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         switch (Room::getTile(newPos))
         {
         case 'C':
-            p.gainLife(p, 1);
+            p.gainLife(1);
             Room::removeArtifact(this->objects.artifacts, 'C', newPos);
             break;
         case 'R':
-            p.gainLife(p, 3);
+            p.gainLife(3);
             Room::removeArtifact(this->objects.artifacts, 'R', newPos);
             break;
         case '$':
-            p.gainLife(p, 5);
+            p.gainLife(5);
             Room::removeArtifact(this->objects.artifacts, '$', newPos);
             break;
         case 'ACS_STERLING':
-            p.gainLife(p, 7);
+            p.gainLife(7);
             Room::removeArtifact(this->objects.artifacts, 'ACS_STERLING', newPos);
             break;
 
         default:
             break;
         }
-    }*/
+    }
     else if (Room::getTile(newPos) == 'P') // hits power
     {
         Room::placeObject(p.getPosition(), ' ');
@@ -1219,3 +1219,78 @@ void Room::spawnSXBul(Protagonist p)
     placeObject(blletpos, ACS_BULLET);
 };
 */
+
+// spawns allybullets right next to the player
+void Room::spawnAllyBullet(Protagonist &p, int dir)
+{
+    bullet b;
+    b.direction = dir;
+    pos newpos;
+    switch (b.direction)
+    {
+    case 0:
+        newpos.y = p.getPosition().y + 1;
+        newpos.x = p.getPosition().x;
+        if (Room::getTile(newpos) == ' ')
+        {
+            b.bulletpos.y = p.getPosition().y + 1;
+            b.bulletpos.x = p.getPosition().x;
+            Room::placeObject(b.bulletpos, b.bullet_tag);
+            p.bulletHeadInsert(p.headB, b);
+            Room::drawLook();
+            refresh();
+            wrefresh(this->getWindow());
+        }
+
+        break;
+
+    case 1:
+        newpos.y = p.getPosition().y;
+        newpos.x = p.getPosition().x - 1;
+        if (Room::getTile(newpos) == ' ')
+        {
+            b.bulletpos.y = p.getPosition().y;
+            b.bulletpos.x = p.getPosition().x - 1;
+            Room::placeObject(b.bulletpos, b.bullet_tag);
+            p.bulletHeadInsert(p.headB, b);
+            Room::drawLook();
+            refresh();
+            wrefresh(this->getWindow());
+        }
+
+        break;
+    case 2:
+
+        newpos.y = p.getPosition().y - 1;
+        newpos.x = p.getPosition().x;
+        if (Room::getTile(newpos) == ' ')
+        {
+            b.bulletpos.y = p.getPosition().y - 1;
+            b.bulletpos.x = p.getPosition().x;
+            Room::placeObject(b.bulletpos, b.bullet_tag);
+            p.bulletHeadInsert(p.headB, b);
+            Room::drawLook();
+            refresh();
+            wrefresh(this->getWindow());
+        }
+
+        break;
+
+    case 3:
+
+        newpos.y = p.getPosition().y;
+        newpos.x = p.getPosition().x + 1;
+        if (Room::getTile(newpos) == ' ')
+        {
+            b.bulletpos.y = p.getPosition().y;
+            b.bulletpos.x = p.getPosition().x + 1;
+            Room::placeObject(b.bulletpos, b.bullet_tag);
+            p.bulletHeadInsert(p.headB, b);
+            Room::drawLook();
+            refresh();
+            wrefresh(this->getWindow());
+        }
+    default:
+        break;
+    }
+}

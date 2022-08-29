@@ -247,4 +247,7 @@ public:
     /*
     void spawnSXBul(Protagonist p);
     */
+
+    // spawns allybullets right next to the player
+    void spawnAllyBullet(Protagonist &p, int dir);
 };

@@ -102,9 +102,9 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
 // add life
 void Protagonist::gainLife(int p)
 {
-    int actual = current_life;
+    int actual = this->current_life;
     int heal = p;
-    current_life = actual + heal;
+    this->current_life = actual + heal;
 }
 
 // spawn bullet at sx
