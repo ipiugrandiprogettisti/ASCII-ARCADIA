@@ -15,8 +15,9 @@ Artifact ::Artifact()
 }
 
 // constructor
-Artifact ::Artifact(int rarity, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
+Artifact ::Artifact(int rarity, int lifepoints, int posy, int posx, chtype tag) : Entity(position.y, position.x, tag)
 {
+    this->lifepoints = lifepoints;
     this->rarity = rarity;
     this->position.y = posy;
     this->position.x = posx;
@@ -35,7 +36,7 @@ int Artifact ::getArtLifepoints()
         lifep = 3;
     case '$':
         lifep = 5;
-    case 'ACS_STERLING':
+    case 'ACS_DIAMOND':
         lifep = 7;
     };
 
@@ -54,28 +55,30 @@ chtype Artifact ::getArtTile()
     case '3':
         r = '$';
     case '4':
-        r = ACS_STERLING;
+        r = ACS_DIAMOND;
     }
     return r;
 }
 
 // sets artifact lifepoints and tag based on rarity
+/*
 void Artifact ::setArtifact(int r)
 {
-    rarity = r;
     switch (r)
     {
     case '1':
         lifepoints = 1;
-        tag = 'C';
+        tag = ACS_DARROW;
     case '2':
         lifepoints = 3;
-        tag = 'R';
+        tag = ACS_LANTERN;
     case '3':
         lifepoints = 5;
         tag = '$';
     case '4':
         lifepoints = 7;
-        tag = ACS_STERLING;
+        tag = ACS_DIAMOND;
     }
+    rarity = r;
 }
+*/

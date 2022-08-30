@@ -17,7 +17,7 @@ public:
     Artifact();
     // artifact constructor with rarity, pos y, posx, tag (set it 111 by default)
     // after creating an artifact you need to set  his tag and lifepoints with funct setArtifact()
-    Artifact(int rarity, int y, int x, chtype tag);
+    Artifact(int rarity, int lifepoints, int y, int x, chtype tag);
 
     // returns artifact life points
     int getArtLifepoints();
@@ -26,5 +26,5 @@ public:
     chtype getArtTile();
 
     // sets artifact lifepoints and tag based on rarity
-    void setArtifact(int r);
+    // void setArtifact(int r);
 };

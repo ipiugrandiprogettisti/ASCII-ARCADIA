@@ -88,57 +88,6 @@ bool Room::checkTilesAround(pos position, pos previousPosition)
     return free;
 }
 
-// places random artifacts
-void Room::placeArtifacts(bool b)
-{
-
-    int nArtifacts = rand() % 3; // possono essercene da 0 a 2
-    for (int i = 0; i < nArtifacts; i++)
-    {
-        Artifact p;
-        /*
-        percentuali probabilità di spawn in base alla rarità
-        COMMON 60%  RARE 25%  SPECIAL 10%  EPIC 5%
-        */
-        const int probability = 101;
-
-        int r = rand() % probability;
-
-        if (r < 61)
-        {
-            p.setArtifact(1);
-        }
-        else if (r > 60 && r < 86)
-        {
-            p.setArtifact(2);
-        }
-        else if (r > 85 && r < 96)
-        {
-            p.setArtifact(3);
-        }
-        else if (r > 95)
-        {
-            p.setArtifact(4);
-        }
-        chtype rar = p.tag; // tag artefatto
-        chtype var = ' ';   // uso per controllare tag in posizione in cui voglio spawnare
-        pos posArt;
-        do
-        {
-            int posy = rand() % WIDTH + 1;
-            int posx = rand() % HEIGTH + 1;
-            posArt.y = posy;
-            posArt.x = posx;
-            var = getTile(posArt);
-        } while (var != ' ' || posArt.y > (WIDTH - 3) || posArt.y < 3 || posArt.x > (HEIGTH - 3) || posArt.x < 3);
-        this->placeObject(posArt, rar);
-
-        // qui va funzione per aggiungere artefatto alla lista
-
-        //  this->drawLook();
-    }
-}
-
 // places 1 power to open door
 void Room::placePower(bool b)
 {
@@ -158,26 +107,61 @@ void Room::placePower(bool b)
     this->placeObject(posPow, rar);
 };
 
+// places artifacts
+void Room::placeArtifacts()
+{
+    Artifact a(0, 0, 2, 2, ' ');
+    int nArt = rand() % 3;
+    for (int i = 0; i < nArt; i++)
+    {
+        chtype chflag;
+        do
+        {
+            a.position.x = rand() % HEIGTH;
+            a.position.y = rand() % WIDTH;
+            pos flag;
+            flag.x = a.position.x;
+            flag.y = a.position.y;
+            chflag = this->getTile(flag);
+        } while (chflag != ' ');
+
+        int artRarity = rand() % 100 + 1;
+
+        if (artRarity <= 60 && artRarity > 0)
+        {
+            a.tag = 'C';
+            a.rarity = 1;
+            a.lifepoints = 1;
+        }
+        else if (artRarity > 60 && artRarity <= 85)
+        {
+            a.tag = 'R';
+            a.rarity = 2;
+            a.lifepoints = 3;
+        }
+        else if (artRarity > 85 && artRarity <= 95)
+        {
+            a.tag = '$';
+            a.rarity = 3;
+            a.lifepoints = 5;
+        }
+        else if (artRarity > 95 && artRarity >= 100)
+        {
+            a.tag = ACS_DIAMOND;
+            a.rarity = 4;
+            a.lifepoints = 7;
+        }
+
+        placeObject(a.position, a.tag);
+    }
+}
 // places random enemies
 void Room::place_enemies(bool b)
 {
 
     Enemy en(0, 5, 5, 2, 0, 0, ' ');
 
-    int n;
-    int n_enemies = rand() % 10 + 1;
-    if (n_enemies <= 4)
-    {
-        n = 1;
-    }
-    else if (n_enemies >= 5 && n_enemies <= 7)
-    {
-        n = 2;
-    }
-    else if (n_enemies >= 8 && n_enemies <= 10)
-    {
-        n = 3;
-    }
+    int n = rand() % 3 + 1;
 
     for (int i = 0; i < n; i++)
     {
@@ -536,8 +520,9 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     // TODO: place player
     // TODO: place enemies
     // TODO:  place etc
-    placeArtifacts(1);
+
     place_enemies(1);
+    placeArtifacts();
     placePower(1);
     drawn = true;
 
@@ -1007,9 +992,9 @@ void Room::enemy_movement(Enemy e, Protagonist P)
             enemyRemove(objects.enemies, e);
             if (objects.enemies == NULL)
             {
-                // richiamare spwan artifact e open doors
-                placeArtifacts(1);
-                openDoors(true);
+                // richiamare spwan artifact
+                // placeArtifacts(1);
+                // openDoors(true);
             }
         }
     }
@@ -1183,7 +1168,7 @@ void Room::enBullet_move(bullet b, Protagonist p)
                 tmp = tmp->next;
             }
         }
-        if (flag = false) // vuol dire che il proiettile che ha incontrato era un altro proiettile nemico
+        if (flag == false) // vuol dire che il proiettile che ha incontrato era un altro proiettile nemico
         {
             // scambio anche nel caso di collisione PROIETTILE NEMICO-PROIETTILE NEMICO(?)
             // adesso ho messo di no poi al massimo si cambia

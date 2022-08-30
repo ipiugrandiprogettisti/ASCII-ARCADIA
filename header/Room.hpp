@@ -189,7 +189,7 @@ public:
     // place object in room
     void placeObject(int x, int y, chtype tag);
     // places random artifacts
-    void placeArtifacts(bool b);
+    void placeArtifacts();
     // places random enemies
     void place_enemies(bool b);
     // place 1 power to open door
