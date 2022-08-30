@@ -225,20 +225,20 @@ void startGame(WINDOW *myWin)
     MyString string2;
     string2 += "HEARTS: ";
     string2 += itoa(10);
-    clearScreen(1, 15, string2.getLength(), stdscr, 0);
-    mvaddstr(1, 15, string2.get());
+    clearScreen(2, 15, string2.getLength(), stdscr, 0);
+    mvaddstr(2, 15, string2.get());
 
     MyString string3;
     string3 += "LIFEPOINTS: ";
     string3 += itoa(100);
-    clearScreen(2, 15, string3.getLength(), stdscr, 0);
-    mvaddstr(2, 15, string3.get());
+    clearScreen(4, 15, string3.getLength(), stdscr, 0);
+    mvaddstr(4, 15, string3.get());
 
     MyString string4;
-    string4 += "POINTS GAINED: ";
+    string4 += "SCORE: ";
     string4 += itoa(0);
-    clearScreen(0, string.getLength()+18, string4.getLength(), stdscr, 0);
-    mvaddstr(0, string.getLength()+18, string4.get());
+    clearScreen(0, string.getLength() + 20, string4.getLength(), stdscr, 0);
+    mvaddstr(0, string.getLength() + 20, string4.get());
 
     // spawns protagonist
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
