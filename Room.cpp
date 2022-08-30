@@ -187,8 +187,8 @@ void Room::place_enemies(bool b)
         chtype p = ' ';
         while (flag == true)
         {
-            int enemyy = rand() % WIDTH + 1;
-            int enemyx = rand() % HEIGTH + 1;
+            int enemyy = rand() % 24+3;
+            int enemyx = rand() % 94+3;
             posEnemy.y = enemyy;
             posEnemy.x = enemyx;
             en.position.y = enemyy;
@@ -855,7 +855,7 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
             break;
         case 'ACS_STERLING':
             p.gainLife(7);
-            Room::removeArtifact(this->objects.artifacts, 'ACS_STERLING', newPos);
+            Room::removeArtifact(this->objects.artifacts, ACS_STERLING, newPos);
             break;
 
         default:
@@ -868,6 +868,10 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
         Room::openDoors(true);
+    }
+    else if (Room::getTile(newPos) == '-')
+    {
+        /* code */
     }
 }
 
@@ -1044,8 +1048,20 @@ void Room::oneMove(Protagonist p)
 }
 
 // da rivedere
-void Room::spawnEnBull(Enemy en, bullet b)
+void Room::spawnEnBull(Enemy en)
 {
+    bullet b;
+    switch (en.key)
+    {
+    case 1:
+        b.bullet_damage = 20;
+        break;
+    case 3:
+        b.bullet_damage = 30;
+        break;
+    default:
+        break;
+    }
     b.direction = rand() % 4;
     pos now = en.position;
     chtype c_next = checkNextPos(now, b.direction);

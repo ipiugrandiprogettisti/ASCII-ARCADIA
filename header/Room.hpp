@@ -237,7 +237,7 @@ public:
     void allABullMov(Protagonist p);
 
     // bulletes appear next to the enemy
-    void spawnEnBull(Enemy en, bullet b);
+    void spawnEnBull(Enemy en);
 
     // make enemies's bullet move
     void enBullet_move(bullet b, Protagonist p);
