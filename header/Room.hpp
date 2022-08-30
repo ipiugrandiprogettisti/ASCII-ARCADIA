@@ -197,6 +197,8 @@ public:
 
     // list functions
 
+    // artifacts head insert
+    p_artifactsList ArtifactHeadinsert(p_artifactsList head, Artifact a);
     // removes artifacts
     p_artifactsList removeArtifact(p_artifactsList head, chtype tag, pos position);
 

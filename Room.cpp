@@ -776,6 +776,18 @@ void Room::allABullMov(Protagonist p)
         tmp = tmp->next;
     }
 }
+
+// artifact head insert
+p_artifactsList Room::ArtifactHeadinsert(p_artifactsList head, Artifact a)
+{
+    p_artifactsList newart = new artifactsList;
+    newart->A = a;
+    newart->next = head;
+    head = newart;
+
+    return head;
+}
+
 // artifactslist remove
 p_artifactsList Room::removeArtifact(p_artifactsList head, chtype tag, pos position)
 {
