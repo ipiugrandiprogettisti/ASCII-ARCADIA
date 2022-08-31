@@ -12,7 +12,11 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     initscr();
+<<<<<<< Updated upstream
     nodelay(stdscr, TRUE);
+=======
+    
+>>>>>>> Stashed changes
     setlocale(LC_ALL, "");
 
     keypad(stdscr, TRUE); // sets arrow keys
@@ -47,6 +51,7 @@ int main(int argc, char *argv[])
         return 0;
         break;
     case 0: // PLAY
+        halfdelay(3);
         startGame(myWin);
         return 0;
         break;
