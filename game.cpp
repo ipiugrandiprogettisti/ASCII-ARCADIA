@@ -139,7 +139,7 @@ int getMenu(WINDOW *myWin)
 void printRoomKey(int key)
 {
     MyString str;
-    str += "Stanza: ";
+    str += "Room: ";
     str += itoa(key);
     clearScreen(0, 0, str.getLength(), stdscr, 0);
     mvaddstr(0, 0, str.get());
@@ -151,13 +151,37 @@ void printLife(int life)
     string += "CURRENT LIFE: ";
     for (int i = 0; i < life; i++)
     {
-
         string += "<3";
     }
-
-    // string += itoa(10);
     clearScreen(0, 15, string.getLength(), stdscr, 0);
     mvaddstr(0, 15, string.get());
+}
+
+void printHearts(int life)
+{
+    MyString string2;
+    string2 += "HEARTS: ";
+    string2 += itoa(life);
+    clearScreen(2, 15, string2.getLength(), stdscr, 0);
+    mvaddstr(2, 15, string2.get());
+}
+
+void printLifepoints(int life)
+{
+    MyString string3;
+    string3 += "LIFEPOINTS: ";
+    string3 += itoa(10 * life);
+    clearScreen(4, 15, string3.getLength(), stdscr, 0);
+    mvaddstr(4, 15, string3.get());
+}
+
+void printScore(int score)
+{
+    MyString string4;
+    string4 += "SCORE: ";
+    string4 += itoa(score);
+    clearScreen(0, 60, string4.getLength(), stdscr, 0);
+    mvaddstr(0, 80, string4.get());
 }
 
 void printDebug(int n)
@@ -231,7 +255,7 @@ void startGame(WINDOW *myWin)
     p_bulletlist headB = NULL;
 
     // creation of the protagonist (player)
-    Protagonist P(headB, 10, 10, 1, 1, 1, ACS_PI);
+    Protagonist P(0, headB, 10, 10, 1, 1, 1, ACS_PI);
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
@@ -240,24 +264,9 @@ void startGame(WINDOW *myWin)
 
     // spawns protagonist info
     printLife(P.getLife());
-
-    MyString string2;
-    string2 += "HEARTS: ";
-    string2 += itoa(10);
-    clearScreen(2, 15, string2.getLength(), stdscr, 0);
-    mvaddstr(2, 15, string2.get());
-
-    MyString string3;
-    string3 += "LIFEPOINTS: ";
-    string3 += itoa(100);
-    clearScreen(4, 15, string3.getLength(), stdscr, 0);
-    mvaddstr(4, 15, string3.get());
-
-    /*MyString string4;
-    string4 += "SCORE: ";
-    string4 += itoa(0);
-    clearScreen(0, string.getLength() + 20, string4.getLength(), stdscr, 0);
-    mvaddstr(0, string.getLength() + 20, string4.get());*/
+    printHearts(P.getLife());
+    printLifepoints(P.getLife());
+    printScore(P.getScore());
 
     // spawns protagonist
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);

@@ -4,7 +4,7 @@
 
 // ASCII symbol ACS_PI
 
-// lista dei proiettili sparati
+// bullet list
 typedef struct bulletlist
 {
     bullet B;
@@ -15,9 +15,12 @@ typedef struct bulletlist
 // pointer to protagonist's bullets list
 typedef bulletlist *p_bulletlist;
 
-// classe protagonista
+// class protagonist
 class Protagonist : public Character
 {
+protected:
+    int score;
+
 public:
     p_bulletlist headB;
 
@@ -25,7 +28,10 @@ public:
     Protagonist();
 
     // constructor
-    Protagonist(p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag);
+    Protagonist(int score, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag);
+
+    //returns score
+    int getScore();
 
     // print protagonist
     void printProtagonist(Protagonist P, WINDOW *w);
@@ -41,6 +47,7 @@ public:
 
     // increases life basing on the gained artifact
     void gainLife(int p);
+
     /*
     pos createBul(int direction);
     */

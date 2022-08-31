@@ -1,9 +1,11 @@
 #include "header/Protagonist.hpp"
 
+int score;
 p_bulletlist headB;
 
 Protagonist::Protagonist()
 {
+    score = 0;
     headB = NULL;
     current_life = 0;
     max_life = 0;
@@ -13,8 +15,9 @@ Protagonist::Protagonist()
     tag = 111;
 }
 
-Protagonist::Protagonist(p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
+Protagonist::Protagonist(int score, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
 {
+    this->score = score;
     this->headB = headB;
     this->current_life = current_life;
     this->max_life = max_life;
@@ -22,6 +25,11 @@ Protagonist::Protagonist(p_bulletlist headB, int current_life, int max_life, int
     this->position.y = y;
     this->position.x = x;
     this->tag = tag;
+}
+
+int Protagonist::getScore()
+{
+    return this->score;
 }
 
 void Protagonist::printProtagonist(Protagonist P, WINDOW *w)
