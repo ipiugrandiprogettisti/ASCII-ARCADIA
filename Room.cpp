@@ -198,9 +198,10 @@ void Room::place_enemies(bool b)
             {
                 this->placeObject(posEnemy, en.tag);
                 this->drawLook();
-                HeadInsert_enemy(objects.enemies, en);
+                this->HeadInsert_enemy(this->objects.enemies, en);
                 flag = false;
             }
+
         }
     }
 
@@ -963,7 +964,7 @@ pListEnemies Room::enemyRemove(pListEnemies head, Enemy en)
     return head;
 }
 
-void Room::enemy_movement(Enemy e, Protagonist P)
+void Room::enemy_movement(Enemy e, Protagonist &P)
 {
     int direction = rand() % 4; // 0 dwn, 1 sx , 2 up, 3 dx
     pos now = e.position;
@@ -975,7 +976,8 @@ void Room::enemy_movement(Enemy e, Protagonist P)
         placeObject(now, ' ');
         e.position = next;
     }
-    if (c_next == ACS_PI)
+    /* visto che il protagonista muore al contatto con un nemico bisogna semplicemnte mettere il menù di morte invece che sta roba
+    else if (c_next == ACS_PI)
     {
         int life_now = P.current_life;
         life_now -= e.atk_damage;
@@ -999,15 +1001,18 @@ void Room::enemy_movement(Enemy e, Protagonist P)
             e.position = next_2;
         }
     }
-    if (c_next == ACS_BULLET)
+    */
+    else if (c_next == ACS_BULLET)
     {
-        e.current_life -= 2; // qua andrà inserito il danno del bullet del protagonista;
+        //qui va aggiunto un controllo ma prima mi deve funzionare la parte dei proittili
+        e.current_life -= P.atk_damage;
         if (e.current_life <= 0)
         {
             placeObject(e.position, ' ');
-            enemyRemove(objects.enemies, e);
-            if (objects.enemies == NULL)
+            enemyRemove(this->objects.enemies, e);
+            if (this->objects.enemies == NULL)
             {
+                placePower(1);
                 // richiamare spwan artifact
                 // placeArtifacts(1);
                 // openDoors(true);
@@ -1016,10 +1021,10 @@ void Room::enemy_movement(Enemy e, Protagonist P)
     }
 }
 
-void Room::allEnemyMov(Protagonist p)
+void Room::allEnemyMov(Protagonist &p)
 {
     // prendi lista nemici
-    pListEnemies entmp = objects.enemies;
+    pListEnemies entmp = this->objects.enemies;
 
     // scorri lista nemici
     while (entmp != NULL)
@@ -1075,8 +1080,9 @@ void Room::spawnEnBull(Enemy en)
     }
 }
 
+
 // da rivedere
-void Room::enBullet_move(bullet b, Protagonist p)
+void Room::enBullet_move(bullet b, Protagonist &p)
 {
     pos now = b.bulletpos;
     pos next = nextPos(now, b.direction);
@@ -1215,7 +1221,7 @@ void Room::enBullet_move(bullet b, Protagonist p)
     }
 }
 
-void Room::allEnBullet_move(Protagonist p)
+void Room::allEnBullet_move(Protagonist &p)
 {
     p_bulletsEnemies enBulltmp = objects.bulletEnemies;
     while (enBulltmp != NULL)

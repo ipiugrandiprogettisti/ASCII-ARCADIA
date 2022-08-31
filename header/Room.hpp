@@ -221,9 +221,9 @@ public:
     void ProtagonistMovement(Protagonist &p, int direction);
 
     // one enemy movement
-    void enemy_movement(Enemy e, Protagonist P);
+    void enemy_movement(Enemy e, Protagonist &P);
 
-    void allEnemyMov(Protagonist p);
+    void allEnemyMov(Protagonist &p);
     // checks what's after a position in a certain direction
     chtype checkNextPos(pos p, int direction);
 
@@ -240,9 +240,9 @@ public:
     void spawnEnBull(Enemy en);
 
     // make enemies's bullet move
-    void enBullet_move(bullet b, Protagonist p);
+    void enBullet_move(bullet b, Protagonist &p);
 
-    void allEnBullet_move(Protagonist P);
+    void allEnBullet_move(Protagonist &P);
 
     // one function for all independent movements (enemy, enemybull, allybull)
     void oneMove(Protagonist p);
