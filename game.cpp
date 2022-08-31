@@ -145,6 +145,15 @@ void printRoomKey(int key)
     mvaddstr(0, 0, str.get());
 }
 
+void printDebug(int n)
+{
+    MyString str;
+    str += "Debug: ";
+    str += itoa(n);
+    clearScreen(10, 0, str.getLength(), stdscr, 1);
+    mvaddstr(10, 0, str.get());
+}
+
 // FIXME: a volte la stessa stanza è ripetuta 2 volte di fila
 Map crossRoom(int enteringSide, Map myMap)
 {
@@ -257,255 +266,246 @@ void startGame(WINDOW *myWin)
     MyString str;
     pos position;
     int ch; // pressed key
-
+    int n = 0;
     // KEYBOARD EVENT LISTENER
-    while (1)
+
+    while ((ch = getch()))
     {
-        int del = 1;
-        if (del > 0)
+
+        printDebug(n);
+        n++;
+        switch (ch)
         {
-            del *= CLOCKS_PER_SEC;
-            clock_t now = clock();
-            while (clock() - now < del)
+        case 'a':
+            // player enters left door
+
+            if (P.position.x == 0)
             {
-                while ((ch = getch()))
+                if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
                 {
-
-                    switch (ch)
-                    {
-                    case 'a':
-                        // player enters left door
-
-                        if (P.position.x == 0)
-                        {
-                            if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
-                            {
-                                myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                                P.position.x = 98;
-                                myMap = crossRoom(1, myMap);
-                                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                            }
-                        }
-
-                        // player's movement
-
-                        myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
-                        myMap.rooms->currentRoom.drawLook();
-                        refresh();
-                        wrefresh(myMap.rooms->currentRoom.getWindow());
-
-                        /*pos newPosLeft;
-                        newPosLeft.y = P.position.y;
-                        newPosLeft.x = P.position.x - 1;
-                        if (myMap.rooms->currentRoom.getTile(newPosLeft) == ' ')
-                        {
-                            myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                            P.setPosition(newPosLeft.y, newPosLeft.x);
-                            myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                            myMap.rooms->currentRoom.drawLook();
-                            refresh();
-                            wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }*/
-
-                        break;
-
-                    case 'd':
-                        // player enters right door
-                        if (P.position.x == 99)
-                        {
-                            if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
-                            {
-                                myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                                P.position.x = 1;
-                                myMap = crossRoom(3, myMap);
-                                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                            }
-                        }
-
-                        // player's movement
-
-                        myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
-                        myMap.rooms->currentRoom.drawLook();
-                        refresh();
-                        wrefresh(myMap.rooms->currentRoom.getWindow());
-
-                        /*
-                        pos newPosRight;
-                        newPosRight.y = P.position.y;
-                        newPosRight.x = P.position.x + 1;
-                        if (myMap.rooms->currentRoom.getTile(newPosRight) == ' ')
-                        {
-                            myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                            P.setPosition(newPosRight.y, newPosRight.x);
-                            myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                            myMap.rooms->currentRoom.drawLook();
-                            refresh();
-                            wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }*/
-                        break;
-
-                    case 'w':
-                        // player enters front door
-                        if (P.position.y == 0)
-                        {
-                            if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
-                            {
-                                myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                                P.position.y = 28;
-                                myMap = crossRoom(2, myMap);
-                                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                            }
-                        }
-
-                        // player's movement
-
-                        myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
-                        myMap.rooms->currentRoom.drawLook();
-                        refresh();
-                        wrefresh(myMap.rooms->currentRoom.getWindow());
-
-                        /*
-                        pos newPosUp;
-                        newPosUp.y = P.position.y - 1;
-                        newPosUp.x = P.position.x;
-                        if (myMap.rooms->currentRoom.getTile(newPosUp) == ' ')
-                        {
-                            myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                            P.setPosition(newPosUp.y, newPosUp.x);
-                            myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                            myMap.rooms->currentRoom.drawLook();
-                            refresh();
-                            wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }*/
-                        break;
-
-                    case 's':
-                        // player enters back door
-                        if (P.position.y == 29)
-                        {
-                            if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
-                            {
-                                myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                                P.position.y = 1;
-                                myMap = crossRoom(0, myMap);
-                                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                            }
-                        }
-
-                        // player's movement
-
-                        myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
-                        myMap.rooms->currentRoom.drawLook();
-                        refresh();
-                        wrefresh(myMap.rooms->currentRoom.getWindow());
-
-                        /*pos newPosDown;
-                        newPosDown.y = P.position.y + 1;
-                        newPosDown.x = P.position.x;
-                        if (myMap.rooms->currentRoom.getTile(newPosDown) == ' ')
-                        {
-                            myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                            P.setPosition(newPosDown.y, newPosDown.x);
-                            myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                            myMap.rooms->currentRoom.drawLook();
-                            refresh();
-                            wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }*/
-                        break;
-
-                    case KEY_LEFT:
-
-                        myMap.rooms->currentRoom.spawnAllyBullet(P, 1);
-                        /*myMap.rooms->currentRoom.drawLook();
-                        refresh();
-                        wrefresh(myMap.rooms->currentRoom.getWindow());*/
-
-                        /*pos bulletpos;
-                        bulletpos.y = P.position.y;
-                        bulletpos.x = P.position.x - 1;
-
-                        while (bulletpos.x > 0)
-                        {
-                            myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
-                            myMap.rooms->currentRoom.drawLook();
-                            usleep(15000);
-                            myMap.rooms->currentRoom.placeObject(bulletpos, ' ');
-                            bulletpos.x = bulletpos.x - 1;
-                            refresh();
-                            wrefresh(myMap.rooms->currentRoom.getWindow());
-                        }*/
-                        break;
-
-                    case KEY_RIGHT:
-
-                        myMap.rooms->currentRoom.spawnAllyBullet(P, 3);
-                        break;
-
-                    case KEY_UP:
-
-                        myMap.rooms->currentRoom.spawnAllyBullet(P, 2);
-                        break;
-
-                    case KEY_DOWN:
-                        myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
-                        break;
-
-                    case 'i':
-                        // DEBUGGING INFO
-                        clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                        clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                        clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-
-                        debugRoom(myMap);
-                        debugDoors(myMap, 0, 40);
-                        break;
-                    case 'c':
-                        clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                        clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                        clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                        clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                        break;
-
-                    case 'o': // opens all doors
-                        myMap.rooms->currentRoom.openDoors(true);
-
-                        /*str += "Cols: ";
-                        str += itoa(COLS);
-                        str += "Lines: ";
-                        str += itoa(LINES);
-                        mvaddstr(0, 0, str.get());*/
-                        break;
-
-                    case 'p': // closes all doors
-                        myMap.rooms->currentRoom.openDoors(false);
-                        break;
-
-                    // ESEMPIO .placeObject() senza struct
-                    case '1': // oggetto in alto a sinistra
-                        myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
-                        myMap.rooms->currentRoom.drawLook();
-                        refresh();
-                        wrefresh(myMap.rooms->currentRoom.getWindow());
-                        break;
-
-                    // ESEMPIO .placeObject() scon struct pos
-                    case '2': // oggetto in basso a destra
-                        position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
-                        position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;
-                        myMap.rooms->currentRoom.placeObject(position, ACS_BULLET);
-                        myMap.rooms->currentRoom.drawLook();
-                        refresh();
-                        wrefresh(myMap.rooms->currentRoom.getWindow());
-                        break;
-
-                    default:
-                        break;
-                    }
-
-                    str.reset();
+                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                    P.position.x = 98;
+                    myMap = crossRoom(1, myMap);
+                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                 }
             }
-            // myMap.rooms->currentRoom.allABullMov(P);
+
+            // player's movement
+
+            myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+
+            /*pos newPosLeft;
+            newPosLeft.y = P.position.y;
+            newPosLeft.x = P.position.x - 1;
+            if (myMap.rooms->currentRoom.getTile(newPosLeft) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                P.setPosition(newPosLeft.y, newPosLeft.x);
+                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }*/
+
+            break;
+
+        case 'd':
+            // player enters right door
+            if (P.position.x == 99)
+            {
+                if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                {
+                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                    P.position.x = 1;
+                    myMap = crossRoom(3, myMap);
+                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                }
+            }
+
+            // player's movement
+
+            myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+
+            /*
+            pos newPosRight;
+            newPosRight.y = P.position.y;
+            newPosRight.x = P.position.x + 1;
+            if (myMap.rooms->currentRoom.getTile(newPosRight) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                P.setPosition(newPosRight.y, newPosRight.x);
+                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }*/
+            break;
+
+        case 'w':
+            // player enters front door
+            if (P.position.y == 0)
+            {
+                if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                {
+                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                    P.position.y = 28;
+                    myMap = crossRoom(2, myMap);
+                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                }
+            }
+
+            // player's movement
+
+            myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+
+            /*
+            pos newPosUp;
+            newPosUp.y = P.position.y - 1;
+            newPosUp.x = P.position.x;
+            if (myMap.rooms->currentRoom.getTile(newPosUp) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                P.setPosition(newPosUp.y, newPosUp.x);
+                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }*/
+            break;
+
+        case 's':
+            // player enters back door
+            if (P.position.y == 29)
+            {
+                if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                {
+                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                    P.position.y = 1;
+                    myMap = crossRoom(0, myMap);
+                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                }
+            }
+
+            // player's movement
+
+            myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+
+            /*pos newPosDown;
+            newPosDown.y = P.position.y + 1;
+            newPosDown.x = P.position.x;
+            if (myMap.rooms->currentRoom.getTile(newPosDown) == ' ')
+            {
+                myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                P.setPosition(newPosDown.y, newPosDown.x);
+                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }*/
+            break;
+
+        case KEY_LEFT:
+
+            myMap.rooms->currentRoom.spawnAllyBullet(P, 1);
+            /*myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());*/
+
+            /*pos bulletpos;
+            bulletpos.y = P.position.y;
+            bulletpos.x = P.position.x - 1;
+
+            while (bulletpos.x > 0)
+            {
+                myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
+                myMap.rooms->currentRoom.drawLook();
+                usleep(15000);
+                myMap.rooms->currentRoom.placeObject(bulletpos, ' ');
+                bulletpos.x = bulletpos.x - 1;
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }*/
+            break;
+
+        case KEY_RIGHT:
+
+            myMap.rooms->currentRoom.spawnAllyBullet(P, 3);
+            break;
+
+        case KEY_UP:
+
+            myMap.rooms->currentRoom.spawnAllyBullet(P, 2);
+            break;
+
+        case KEY_DOWN:
+            myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
+            break;
+
+        case 'i':
+            // DEBUGGING INFO
+            clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+
+            debugRoom(myMap);
+            debugDoors(myMap, 0, 40);
+            break;
+        case 'c':
+            clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+            break;
+
+        case 'o': // opens all doors
+            myMap.rooms->currentRoom.openDoors(true);
+
+            /*str += "Cols: ";
+            str += itoa(COLS);
+            str += "Lines: ";
+            str += itoa(LINES);
+            mvaddstr(0, 0, str.get());*/
+            break;
+
+        case 'p': // closes all doors
+            myMap.rooms->currentRoom.openDoors(false);
+            break;
+
+        // ESEMPIO .placeObject() senza struct
+        case '1': // oggetto in alto a sinistra
+            myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+            break;
+
+        // ESEMPIO .placeObject() scon struct pos
+        case '2': // oggetto in basso a destra
+            position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
+            position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;
+            myMap.rooms->currentRoom.placeObject(position, ACS_BULLET);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+            break;
+
+        default:
+            break;
         }
+
+        str.reset();
     }
 }
+// myMap.rooms->currentRoom.allABullMov(P);
