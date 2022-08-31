@@ -187,8 +187,8 @@ void Room::place_enemies(bool b)
         chtype p = ' ';
         while (flag == true)
         {
-            int enemyy = rand() % 24+3;
-            int enemyx = rand() % 94+3;
+            int enemyy = rand() % 24 + 3;
+            int enemyx = rand() % 94 + 3;
             posEnemy.y = enemyy;
             posEnemy.x = enemyx;
             en.position.y = enemyy;
@@ -201,7 +201,6 @@ void Room::place_enemies(bool b)
                 this->HeadInsert_enemy(this->objects.enemies, en);
                 flag = false;
             }
-
         }
     }
 
@@ -623,7 +622,7 @@ pos Room::nextPos(pos p, int direction)
 void Room::aBullMov(Protagonist P, bullet b)
 {
     // controllo collisione proiettili alleati
-    p_bulletlist tmp = P.headB; // lista proiettili protagonista
+    p_bulletlist tmp = P.getHeadB(); // lista proiettili protagonista
 
     chtype empty = ' ';
     chtype nextP;
@@ -768,7 +767,7 @@ void Room::aBullMov(Protagonist P, bullet b)
 // scorre tutta la lista di proiettili alleati e li muove di 1 pos
 void Room::allABullMov(Protagonist p)
 {
-    p_bulletlist tmp = p.headB; // testa d'appoggio per scorrere
+    p_bulletlist tmp = p.getHeadB(); // testa d'appoggio per scorrere
 
     while (tmp != NULL)
     {
@@ -824,8 +823,9 @@ p_artifactsList Room::removeArtifact(p_artifactsList head, chtype tag, pos posit
 }
 
 // makes the player move
-void Room::ProtagonistMovement(Protagonist &p, int direction)
+int Room::ProtagonistMovement(Protagonist &p, int direction)
 {
+    int flag = 0;
     pos currentpos = p.getPosition();
     pos newPos = Room::nextPos(currentpos, direction);
 
@@ -835,7 +835,7 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
     }
-    else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == ACS_STERLING) // hits artifact
+    else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == ACS_STERLING) // hits artifact, the flag is set to 1
     {
         Room::placeObject(currentpos, ' ');
         p.setPosition(newPos.y, newPos.x);
@@ -862,18 +862,31 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         default:
             break;
         }
+        flag = 1;
     }
-    else if (Room::getTile(newPos) == 'P') // hits power
+    else if (Room::getTile(newPos) == 'P') // hits power, the flag is set to 2
     {
         Room::placeObject(p.getPosition(), ' ');
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
         Room::openDoors(true);
+        flag = 2;
     }
-    else if (Room::getTile(newPos) == '-')
+    /*else if (Room::getTile(newPos) == '-') // hits enemy bullet
     {
-        /* code */
-    }
+        p_bulletsEnemies tmp = this->objects.bulletEnemies;
+        while (tmp != NULL)
+        {
+            if (tmp->B.direction == direction && tmp->B.bulletpos.y == newPos.y && tmp->B.bullet_damage.x == newPos.x)
+            {
+
+            }
+
+            tmp = tmp->next;
+        }
+    }*/
+
+    return flag;
 }
 
 p_bulletsEnemies Room::enBullHeadInsert(p_bulletsEnemies head, bullet b)
@@ -1004,7 +1017,7 @@ void Room::enemy_movement(Enemy e, Protagonist &P)
     */
     else if (c_next == ACS_BULLET)
     {
-        //qui va aggiunto un controllo ma prima mi deve funzionare la parte dei proittili
+        // qui va aggiunto un controllo ma prima mi deve funzionare la parte dei proittili
         e.current_life -= P.atk_damage;
         if (e.current_life <= 0)
         {
@@ -1080,7 +1093,6 @@ void Room::spawnEnBull(Enemy en)
     }
 }
 
-
 // da rivedere
 void Room::enBullet_move(bullet b, Protagonist &p)
 {
@@ -1155,7 +1167,7 @@ void Room::enBullet_move(bullet b, Protagonist &p)
     if (c_next == ACS_BULLET)
     {
         p_bulletsEnemies tmpEn = objects.bulletEnemies;
-        p_bulletlist tmp = p.headB;
+        p_bulletlist tmp = p.getHeadB();
         bool flag = false;
         /*
         bisogna capire la direzione del proiettile nemico
@@ -1255,7 +1267,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
             b.bulletpos.y = p.getPosition().y + 1;
             b.bulletpos.x = p.getPosition().x;
             Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(p.headB, b);
+            p.bulletHeadInsert(p.getHeadB(), b);
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
@@ -1271,7 +1283,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
             b.bulletpos.y = p.getPosition().y;
             b.bulletpos.x = p.getPosition().x - 1;
             Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(p.headB, b);
+            p.bulletHeadInsert(p.getHeadB(), b);
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
@@ -1287,7 +1299,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
             b.bulletpos.y = p.getPosition().y - 1;
             b.bulletpos.x = p.getPosition().x;
             Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(p.headB, b);
+            p.bulletHeadInsert(p.getHeadB(), b);
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
@@ -1304,7 +1316,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
             b.bulletpos.y = p.getPosition().y;
             b.bulletpos.x = p.getPosition().x + 1;
             Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(p.headB, b);
+            p.bulletHeadInsert(p.getHeadB(), b);
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());

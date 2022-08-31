@@ -40,6 +40,12 @@ void Protagonist::printProtagonist(Protagonist P, WINDOW *w)
     mvwaddch(w, p_y, p_x, P.tag);
 }
 
+//returns head to list of ally bullets
+p_bulletlist Protagonist::getHeadB()
+{
+    return this->headB;
+}
+
 // head insert new bullet
 p_bulletlist Protagonist::bulletHeadInsert(p_bulletlist head, bullet b)
 {

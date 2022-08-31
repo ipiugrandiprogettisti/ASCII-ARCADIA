@@ -20,21 +20,23 @@ class Protagonist : public Character
 {
 protected:
     int score;
-
-public:
     p_bulletlist headB;
 
+public:
     // constructor
     Protagonist();
 
     // constructor
     Protagonist(int score, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag);
 
-    //returns score
+    // returns score
     int getScore();
 
     // print protagonist
     void printProtagonist(Protagonist P, WINDOW *w);
+
+    // returns head to list of ally bullets
+    p_bulletlist getHeadB();
 
     // head insert a new bullet
     p_bulletlist bulletHeadInsert(p_bulletlist head, bullet b);

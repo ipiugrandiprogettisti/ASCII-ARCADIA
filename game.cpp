@@ -285,7 +285,7 @@ void startGame(WINDOW *myWin)
     MyString str;
     pos position;
     int ch; // pressed key
-    int n = 0;
+
     // KEYBOARD EVENT LISTENER
 
     while ((ch = getch()))
