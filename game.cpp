@@ -145,12 +145,27 @@ void printRoomKey(int key)
     mvaddstr(0, 0, str.get());
 }
 
+void printLife(int life)
+{
+    MyString string;
+    string += "CURRENT LIFE: ";
+    for (int i = 0; i < life; i++)
+    {
+
+        string += "<3";
+    }
+
+    // string += itoa(10);
+    clearScreen(0, 15, string.getLength(), stdscr, 0);
+    mvaddstr(0, 15, string.get());
+}
+
 void printDebug(int n)
 {
     MyString str;
     str += "Debug: ";
     str += itoa(n);
-    clearScreen(10, 0, str.getLength(), stdscr, 1);
+    clearScreen(10, 0, str.getLength(), stdscr, 0);
     mvaddstr(10, 0, str.get());
 }
 
@@ -224,12 +239,7 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
 
     // spawns protagonist info
-    MyString string;
-    string += "CURRENT LIFE: ";
-    string += "<3 <3 <3 <3 <3 <3 <3 <3 <3 <3";
-    // string += itoa(10);
-    clearScreen(0, 15, string.getLength(), stdscr, 0);
-    mvaddstr(0, 15, string.get());
+    printLife(P.getLife());
 
     MyString string2;
     string2 += "HEARTS: ";
@@ -243,11 +253,11 @@ void startGame(WINDOW *myWin)
     clearScreen(4, 15, string3.getLength(), stdscr, 0);
     mvaddstr(4, 15, string3.get());
 
-    MyString string4;
+    /*MyString string4;
     string4 += "SCORE: ";
     string4 += itoa(0);
     clearScreen(0, string.getLength() + 20, string4.getLength(), stdscr, 0);
-    mvaddstr(0, string.getLength() + 20, string4.get());
+    mvaddstr(0, string.getLength() + 20, string4.get());*/
 
     // spawns protagonist
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
@@ -272,8 +282,6 @@ void startGame(WINDOW *myWin)
     while ((ch = getch()))
     {
 
-        printDebug(n);
-        n++;
         switch (ch)
         {
         case 'a':
