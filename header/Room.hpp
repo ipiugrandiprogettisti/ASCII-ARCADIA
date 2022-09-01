@@ -194,8 +194,15 @@ public:
 
     // list functions
 
+    // powers head insert
+    void powerHeadinsert(Power p);
+
+    //powers remove
+    void removePower(chtype tag, pos position);
+
     // artifacts head insert
     void ArtifactHeadinsert(Artifact a);
+    
     // removes artifacts
     void removeArtifact(chtype tag, pos position);
 

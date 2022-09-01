@@ -91,6 +91,7 @@ bool Room::checkTilesAround(pos position, pos previousPosition)
 // places 1 power to open door
 void Room::placePower(bool b)
 {
+    //qui ci va un if che li fa apparire solo dopp che la lista di nemici si è svuotata, ovvero sono tutti morti
     Power p;
     p.tag = 'P';
     chtype rar = p.tag;
@@ -105,6 +106,7 @@ void Room::placePower(bool b)
         var = getTile(posPow);
     } while (var != ' ' || posPow.y > (WIDTH - 3) || posPow.y < 3 || posPow.x > (HEIGTH - 3) || posPow.x < 3);
     this->placeObject(posPow, rar);
+    powerHeadinsert(p);
 };
 
 // places artifacts
@@ -153,6 +155,7 @@ void Room::placeArtifacts()
         }
 
         placeObject(a.position, a.tag);
+        ArtifactHeadinsert(a);
     }
 }
 // places random enemies
@@ -630,7 +633,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
         placeObject(now, empty); // rimuove bullet da posizione attuale
         P.bulletRemove(tmp, b);  // rimuove bullet dalla lista
     }
-    else if (nextP == 'C' || nextP == 'R' || nextP == '$' || nextP == ACS_STERLING) // PROIETTILE -> ARTEF
+    else if (nextP == 'C' || nextP == 'R' || nextP == '$' || nextP == '%') // PROIETTILE -> ARTEF
     {
         chtype nextA = checkNextPos(posNextP, dir);                           // chtype dopo artefatto //due posti dopo bull
         pos posNextA = nextPos(posNextP, dir);                                // posizione dopo Artefatto
@@ -723,7 +726,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
         chtype nextA = checkNextPos(posNextP, b.direction); // chtype dopo potere //due posti dopo bull
         pos posNextA = nextPos(posNextP, b.direction);      // posizione dopo potere
 
-        if (nextA == 'C' || nextA == 'R' || nextA == '$' || nextA == ACS_STERLING)
+        if (nextA == 'C' || nextA == 'R' || nextA == '$' || nextA == '%')
         {                                                                         // PROIETTILE -> POTERE -> ARTEFATTO
             chtype nextB = checkNextPos(posNextA, b.direction);                   // chtype dopo artefatto
             pos posNextB = nextPos(posNextA, b.direction);                        // pos dopo artef, tre posti dopo bull
@@ -774,6 +777,48 @@ void Room::allABullMov(Protagonist &p)
     {
         aBullMov(p, tmp->B);
         tmp = tmp->next;
+    }
+}
+
+//power head insert
+void Room::powerHeadinsert(Power p)
+{
+    p_powersList newpow = new powersList;
+    newpow->P = p;
+    newpow->next = this->objects.powers;
+    this->objects.powers = newpow;
+}
+
+// powers remove
+void Room::removePower(chtype tag, pos position)
+{
+    p_powersList x;
+    p_powersList tmp;
+    bool found = false;
+    if (this->objects.powers == NULL)
+    {
+        this->objects.powers = this->objects.powers;
+    }
+    else if (this->objects.powers->P.tag == tag && this->objects.powers->P.getPosition().x == position.x && this->objects.powers->P.getPosition().x == position.y)
+    {
+        tmp = this->objects.powers;
+        this->objects.powers = this->objects.powers->next;
+        delete tmp;
+    }
+    else
+    {
+        x = this->objects.powers;
+        while (!found && (x != NULL) && (x->next != NULL))
+        {
+            if (x->next->P.tag == tag && x->next->P.getPosition().x == position.x && x->next->P.getPosition().y == position.y)
+            {
+                tmp = x->next;
+                x->next = x->next->next;
+                delete tmp;
+                found = true;
+            }
+            x = x->next;
+        }
     }
 }
 
@@ -832,7 +877,7 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
     }
-    else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == ACS_STERLING) // hits artifact, the flag is set to 1
+    else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == '%') // hits artifact, the flag is set to 1
     {
         flag = 1;
 
@@ -850,9 +895,9 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
             p.gainLife(5);
             Room::removeArtifact('$', newPos);
             break;
-        case 'ACS_STERLING':
+        case '%':
             p.gainLife(7);
-            Room::removeArtifact(ACS_STERLING, newPos);
+            Room::removeArtifact('%', newPos);
             break;
 
         default:
@@ -865,6 +910,7 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
     }
     else if (Room::getTile(newPos) == 'P') // hits power, the flag is set to 2
     {
+        removePower('P', newPos);
         Room::placeObject(p.getPosition(), ' ');
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
