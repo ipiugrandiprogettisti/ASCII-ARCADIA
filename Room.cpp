@@ -631,7 +631,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
     if (nextP == ACS_VLINE || nextP == ACS_HLINE || nextP == ACS_CKBOARD) // PROIETTILE -> MURO
     {
         placeObject(now, empty); // rimuove bullet da posizione attuale
-        P.bulletRemove(tmp, b);  // rimuove bullet dalla lista
+        P.bulletRemove(tmp, b);  // rimuove bullet dalla lista (anna io qui ci passerei P.getHeadB(), non tmp)
     }
     else if (nextP == 'C' || nextP == 'R' || nextP == '$' || nextP == '%') // PROIETTILE -> ARTEF
     {
@@ -640,7 +640,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
         if (nextA == ACS_VLINE || nextA == ACS_HLINE || nextA == ACS_CKBOARD) // PROIETTILE -> ARTEF -> MURO
         {                                                                     // dopo proiettile e dopo artefatto c'è muro, faccio sparire proiettile
             placeObject(now, empty);                                          // rimuove bullet da posizione attuale
-            P.bulletRemove(tmp, b);                                           // rimuove bullet dalla lista
+            P.bulletRemove(tmp, b);                                           // rimuove bullet dalla lista (anna io qui ci passerei P.getHeadB(), non tmp)
         }
         else if (nextA == empty) // PROIETTILE -> ARTEF -> SPAZIO VUOTO
         {
