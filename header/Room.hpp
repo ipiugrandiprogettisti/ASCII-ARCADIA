@@ -152,9 +152,6 @@ public:
     // returns the WINDOW of the room
     WINDOW *getWindow();
 
-    // returns the bool drawn
-    bool getDrawn();
-
     // returns the object list of the room
     objContainer getObjectList();
 
@@ -198,9 +195,9 @@ public:
     // list functions
 
     // artifacts head insert
-    p_artifactsList ArtifactHeadinsert(p_artifactsList head, Artifact a);
+    void ArtifactHeadinsert(Artifact a);
     // removes artifacts
-    p_artifactsList removeArtifact(p_artifactsList head, chtype tag, pos position);
+    void removeArtifact(chtype tag, pos position);
 
     // head insert new bullet for enemy
     void enBullHeadInsert(bullet b);
@@ -221,7 +218,7 @@ public:
     int ProtagonistMovement(Protagonist &p, int direction);
 
     // one enemy movement
-    //void enemy_movement(Enemy e, Protagonist &P);
+    // void enemy_movement(Enemy e, Protagonist &P);
 
     void allEnemyMov(Protagonist &p);
     // checks what's after a position in a certain direction

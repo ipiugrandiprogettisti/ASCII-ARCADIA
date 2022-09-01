@@ -272,16 +272,16 @@ void startGame(WINDOW *myWin)
     while ((ch = getch()))
     {
         myMap.rooms->currentRoom.allEnemyMov(P);
-        //myMap.rooms->currentRoom.spawnEnBull();
+        // myMap.rooms->currentRoom.spawnEnBull();
         myMap.rooms->currentRoom.drawLook();
         refresh();
         wrefresh(myMap.rooms->currentRoom.getWindow());
-        //myMap.rooms->currentRoom.allEnBullet_move(P);
+        // myMap.rooms->currentRoom.allEnBullet_move(P);
         switch (ch)
         {
         case 'a':
-            // player enters left door
 
+            // player enters left door
             if (P.position.x == 0)
             {
                 if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
@@ -294,7 +294,6 @@ void startGame(WINDOW *myWin)
             }
 
             // player's movement
-
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
             if (move == 1)
             {
@@ -307,6 +306,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'd':
+
             // player enters right door
             if (P.position.x == 99)
             {
@@ -320,7 +320,6 @@ void startGame(WINDOW *myWin)
             }
 
             // player's movement
-
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
             if (move == 1)
             {
@@ -333,6 +332,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'w':
+
             // player enters front door
             if (P.position.y == 0)
             {
@@ -346,7 +346,6 @@ void startGame(WINDOW *myWin)
             }
 
             // player's movement
-
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
             if (move == 1)
             {
@@ -359,6 +358,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 's':
+
             // player enters back door
             if (P.position.y == 29)
             {
@@ -372,7 +372,6 @@ void startGame(WINDOW *myWin)
             }
 
             // player's movement
-
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
             if (move == 1)
             {
@@ -387,7 +386,6 @@ void startGame(WINDOW *myWin)
         case KEY_LEFT:
 
             myMap.rooms->currentRoom.spawnAllyBullet(P, 1);
-
             break;
 
         case KEY_RIGHT:

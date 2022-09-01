@@ -161,7 +161,6 @@ void Room::place_enemies(bool b)
 
     Enemy en(0, 5, 5, 2, 0, 0, ' ');
 
-
     int n = rand() % 3 + 1;
 
     for (int i = 0; i < n; i++)
@@ -189,8 +188,8 @@ void Room::place_enemies(bool b)
         while (flag == true)
         {
             posEnemy.y = rand() % 24 + 3;
-            posEnemy.x= rand() % 94 + 3;
-            
+            posEnemy.x = rand() % 94 + 3;
+
             en.position = posEnemy;
             p = this->getTile(en.position);
             if (p == ' ')
@@ -323,12 +322,6 @@ int Room::getKey()
 WINDOW *Room::getWindow()
 {
     return win;
-}
-
-// returns the bool drawn
-bool Room::getDrawn()
-{
-    return drawn;
 }
 
 // returns the object list of the room
@@ -785,35 +778,33 @@ void Room::allABullMov(Protagonist &p)
 }
 
 // artifact head insert
-p_artifactsList Room::ArtifactHeadinsert(p_artifactsList head, Artifact a)
+void Room::ArtifactHeadinsert(Artifact a)
 {
     p_artifactsList newart = new artifactsList;
     newart->A = a;
-    newart->next = head;
-    head = newart;
-
-    return head;
+    newart->next = this->objects.artifacts;
+    this->objects.artifacts = newart;
 }
 
 // artifactslist remove
-p_artifactsList Room::removeArtifact(p_artifactsList head, chtype tag, pos position)
+void Room::removeArtifact(chtype tag, pos position)
 {
     p_artifactsList x;
     p_artifactsList tmp;
     bool found = false;
-    if (head == NULL)
+    if (this->objects.artifacts == NULL)
     {
-        head = head;
+        this->objects.artifacts = this->objects.artifacts;
     }
-    else if (head->A.tag == tag && head->A.getPosition().x == position.x && head->A.getPosition().x == position.y)
+    else if (this->objects.artifacts->A.tag == tag && this->objects.artifacts->A.getPosition().x == position.x && this->objects.artifacts->A.getPosition().x == position.y)
     {
-        tmp = head;
-        head = head->next;
+        tmp = this->objects.artifacts;
+        this->objects.artifacts = this->objects.artifacts->next;
         delete tmp;
     }
     else
     {
-        x = head;
+        x = this->objects.artifacts;
         while (!found && (x != NULL) && (x->next != NULL))
         {
             if (x->next->A.tag == tag && x->next->A.getPosition().x == position.x && x->next->A.getPosition().y == position.y)
@@ -826,7 +817,6 @@ p_artifactsList Room::removeArtifact(p_artifactsList head, chtype tag, pos posit
             x = x->next;
         }
     }
-    return head;
 }
 
 // makes the player move
@@ -850,25 +840,25 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         {
         case 'C':
             p.gainLife(1);
-            Room::removeArtifact(this->objects.artifacts, 'C', newPos);
+            Room::removeArtifact('C', newPos);
             break;
         case 'R':
             p.gainLife(3);
-            Room::removeArtifact(this->objects.artifacts, 'R', newPos);
+            Room::removeArtifact('R', newPos);
             break;
         case '$':
             p.gainLife(5);
-            Room::removeArtifact(this->objects.artifacts, '$', newPos);
+            Room::removeArtifact('$', newPos);
             break;
         case 'ACS_STERLING':
             p.gainLife(7);
-            Room::removeArtifact(this->objects.artifacts, ACS_STERLING, newPos);
+            Room::removeArtifact(ACS_STERLING, newPos);
             break;
 
         default:
             break;
         }
-        
+
         Room::placeObject(currentpos, ' ');
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
@@ -980,54 +970,51 @@ void Room::enemyRemove(Enemy en)
     }
 }
 
-
-
-    /* visto che il protagonista muore al contatto con un nemico bisogna semplicemnte mettere il menù di morte invece che sta roba
-    else if (c_next == ACS_PI)
+/* visto che il protagonista muore al contatto con un nemico bisogna semplicemnte mettere il menù di morte invece che sta roba
+else if (c_next == ACS_PI)
+{
+    int life_now = P.current_life;
+    life_now -= e.atk_damage;
+    if (life_now <= 0)
     {
-        int life_now = P.current_life;
-        life_now -= e.atk_damage;
-        if (life_now <= 0)
-        {
-            // DA INSERIRE MENU' DI MORTE
-        }
-        if (life_now > 0)
-        {
-            chtype c_next2;
-            pos next_2;
-            do
-            {
-                int new_dir = rand() % 4;
-                c_next2 = checkNextPos(next, new_dir);
-                next_2 = nextPos(next, new_dir);
-            } while (c_next2 != ' ');
-
-            placeObject(next_2, e.tag);
-            placeObject(next, ' ');
-            e.position = next_2;
-        }
+        // DA INSERIRE MENU' DI MORTE
     }
-    */
-   /*
-    else if (c_next == ACS_BULLET)
+    if (life_now > 0)
     {
-        // qui va aggiunto un controllo ma prima mi deve funzionare la parte dei proittili
-        e.current_life -= P.atk_damage;
-        if (e.current_life <= 0)
+        chtype c_next2;
+        pos next_2;
+        do
         {
-            placeObject(e.position, ' ');
-            enemyRemove(e);
-            if (this->objects.enemies == NULL)
-            {
-                placePower(1);
-                // richiamare spwan artifact
-                // placeArtifacts(1);
-                // openDoors(true);
-            }
-        }
-    }
-    */
+            int new_dir = rand() % 4;
+            c_next2 = checkNextPos(next, new_dir);
+            next_2 = nextPos(next, new_dir);
+        } while (c_next2 != ' ');
 
+        placeObject(next_2, e.tag);
+        placeObject(next, ' ');
+        e.position = next_2;
+    }
+}
+*/
+/*
+ else if (c_next == ACS_BULLET)
+ {
+     // qui va aggiunto un controllo ma prima mi deve funzionare la parte dei proittili
+     e.current_life -= P.atk_damage;
+     if (e.current_life <= 0)
+     {
+         placeObject(e.position, ' ');
+         enemyRemove(e);
+         if (this->objects.enemies == NULL)
+         {
+             placePower(1);
+             // richiamare spwan artifact
+             // placeArtifacts(1);
+             // openDoors(true);
+         }
+     }
+ }
+ */
 
 void Room::allEnemyMov(Protagonist &p)
 {
@@ -1038,7 +1025,7 @@ void Room::allEnemyMov(Protagonist &p)
     while (entmp != NULL)
     {
         int direction = rand() % 4;
-        
+
         if (entmp->e.key != 1)
         {
             pos now = entmp->e.position;
@@ -1046,10 +1033,10 @@ void Room::allEnemyMov(Protagonist &p)
             pos next = nextPos(now, direction);
             if (c_next == ' ')
             {
-            placeObject(next, entmp->e.tag);
-            placeObject(now, ' ');
-            entmp->e.position = next;
-        } 
+                placeObject(next, entmp->e.tag);
+                placeObject(now, ' ');
+                entmp->e.position = next;
+            }
         }
 
         entmp = entmp->next;
@@ -1101,7 +1088,6 @@ void Room::spawnEnBull()
 
         en_tmp = en_tmp->next;
     }
-
 }
 
 // da rivedere
