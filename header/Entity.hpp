@@ -12,8 +12,7 @@ class Entity
 public:
     pos position;
     chtype tag; // entity's character's type
-
-public:
+    
     // constructor
     Entity();
 

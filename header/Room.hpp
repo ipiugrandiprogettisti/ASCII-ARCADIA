@@ -221,7 +221,7 @@ public:
     int ProtagonistMovement(Protagonist &p, int direction);
 
     // one enemy movement
-    void enemy_movement(Enemy e, Protagonist &P);
+    //void enemy_movement(Enemy e, Protagonist &P);
 
     void allEnemyMov(Protagonist &p);
     // checks what's after a position in a certain direction

@@ -161,6 +161,7 @@ void Room::place_enemies(bool b)
 
     Enemy en(0, 5, 5, 2, 0, 0, ' ');
 
+
     int n = rand() % 3 + 1;
 
     for (int i = 0; i < n; i++)
@@ -187,16 +188,14 @@ void Room::place_enemies(bool b)
         chtype p = ' ';
         while (flag == true)
         {
-            int enemyy = rand() % 24 + 3;
-            int enemyx = rand() % 94 + 3;
-            posEnemy.y = enemyy;
-            posEnemy.x = enemyx;
-            en.position.y = enemyy;
-            en.position.x = enemyx;
-            p = getTile(posEnemy);
+            posEnemy.y = rand() % 24 + 3;
+            posEnemy.x= rand() % 94 + 3;
+            
+            en.position = posEnemy;
+            p = this->getTile(en.position);
             if (p == ' ')
             {
-                this->placeObject(posEnemy, en.tag);
+                this->placeObject(en.position, en.tag);
                 this->drawLook();
                 this->HeadInsert_enemy(en);
                 flag = false;
@@ -981,18 +980,8 @@ void Room::enemyRemove(Enemy en)
     }
 }
 
-void Room::enemy_movement(Enemy e, Protagonist &P)
-{
-    int direction = rand() % 4; // 0 dwn, 1 sx , 2 up, 3 dx
-    pos now = e.position;
-    chtype c_next = checkNextPos(now, direction);
-    pos next = nextPos(now, direction);
-    if (c_next == ' ')
-    {
-        placeObject(next, e.tag);
-        placeObject(now, ' ');
-        e.position = next;
-    }
+
+
     /* visto che il protagonista muore al contatto con un nemico bisogna semplicemnte mettere il menù di morte invece che sta roba
     else if (c_next == ACS_PI)
     {
@@ -1019,6 +1008,7 @@ void Room::enemy_movement(Enemy e, Protagonist &P)
         }
     }
     */
+   /*
     else if (c_next == ACS_BULLET)
     {
         // qui va aggiunto un controllo ma prima mi deve funzionare la parte dei proittili
@@ -1036,7 +1026,8 @@ void Room::enemy_movement(Enemy e, Protagonist &P)
             }
         }
     }
-}
+    */
+
 
 void Room::allEnemyMov(Protagonist &p)
 {
@@ -1046,11 +1037,19 @@ void Room::allEnemyMov(Protagonist &p)
     // scorri lista nemici
     while (entmp != NULL)
     {
-        Enemy ee = entmp->e;
-
-        if (ee.key != 1)
+        int direction = rand() % 4;
+        
+        if (entmp->e.key != 1)
         {
-            enemy_movement(ee, p);
+            pos now = entmp->e.position;
+            chtype c_next = checkNextPos(now, direction);
+            pos next = nextPos(now, direction);
+            if (c_next == ' ')
+            {
+            placeObject(next, entmp->e.tag);
+            placeObject(now, ' ');
+            entmp->e.position = next;
+        } 
         }
 
         entmp = entmp->next;

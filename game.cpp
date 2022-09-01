@@ -271,7 +271,7 @@ void startGame(WINDOW *myWin)
 
     while ((ch = getch()))
     {
-        //myMap.rooms->currentRoom.allEnemyMov(P);
+        myMap.rooms->currentRoom.allEnemyMov(P);
         //myMap.rooms->currentRoom.allEnBullet_move(P);
         switch (ch)
         {

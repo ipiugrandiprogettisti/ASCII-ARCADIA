@@ -19,7 +19,7 @@ Entity::Entity(int x, int y, chtype tag)
 // returns entity's current position
 pos Entity::getPosition()
 {
-    return position;
+    return this->position;
 }
 
 // sets Entity's new position
