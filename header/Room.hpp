@@ -203,16 +203,16 @@ public:
     p_artifactsList removeArtifact(p_artifactsList head, chtype tag, pos position);
 
     // head insert new bullet for enemy
-    p_bulletsEnemies enBullHeadInsert(p_bulletsEnemies head, bullet b);
+    void enBullHeadInsert(bullet b);
 
     // head insert new enemy
-    pListEnemies HeadInsert_enemy(pListEnemies head, Enemy en);
+    void HeadInsert_enemy(Enemy en);
 
     // removes enemy bullet given as a parameter
-    p_bulletsEnemies bullet_enemyRemove(p_bulletsEnemies head, bullet b);
+    void bullet_enemyRemove(bullet b);
 
     // removes enemy given
-    pListEnemies enemyRemove(pListEnemies head, Enemy en);
+    void enemyRemove(Enemy en);
 
     // movement/collision functions
     // 0 basso, 1 sx, 2 alto, 3 dx

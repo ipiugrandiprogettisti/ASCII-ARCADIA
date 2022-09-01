@@ -39,7 +39,7 @@ public:
     p_bulletlist getHeadB();
 
     // head insert a new bullet
-    p_bulletlist bulletHeadInsert(p_bulletlist head, bullet b);
+    void bulletHeadInsert( bullet b);
 
     // tail insert a new bullet
     p_bulletlist bulletTailInsert(p_bulletlist head, bullet b);

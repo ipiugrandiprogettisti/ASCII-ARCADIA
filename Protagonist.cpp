@@ -12,7 +12,7 @@ Protagonist::Protagonist()
     atk_damage = 0;
     position.y = 0;
     position.x = 0;
-    tag = 111;
+    tag = ' ';
 }
 
 Protagonist::Protagonist(int score, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
@@ -40,21 +40,19 @@ void Protagonist::printProtagonist(Protagonist P, WINDOW *w)
     mvwaddch(w, p_y, p_x, P.tag);
 }
 
-//returns head to list of ally bullets
+// returns head to list of ally bullets
 p_bulletlist Protagonist::getHeadB()
 {
     return this->headB;
 }
 
 // head insert new bullet
-p_bulletlist Protagonist::bulletHeadInsert(p_bulletlist head, bullet b)
+void Protagonist::bulletHeadInsert( bullet b)
 {
     p_bulletlist newbullet = new bulletlist;
     newbullet->B = b;
-    newbullet->next = head;
-    head = newbullet;
-
-    return head;
+    newbullet->next = this->headB;
+    this->headB = newbullet;
 }
 
 // tail insert a new bullet
@@ -116,9 +114,7 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
 // add life
 void Protagonist::gainLife(int p)
 {
-    int actual = this->current_life;
-    int heal = p;
-    this->current_life = actual + heal;
+    this->current_life += p;
 }
 
 // spawn bullet at sx

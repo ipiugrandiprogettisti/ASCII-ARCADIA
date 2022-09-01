@@ -28,7 +28,7 @@ Character::Character(int current_life, int max_life, int atk_damage, int y, int 
 // returns current life
 int Character::getLife()
 {
-    return current_life;
+    return this->current_life;
 }
 
 // updates life according to the damage received

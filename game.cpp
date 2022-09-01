@@ -145,43 +145,26 @@ void printRoomKey(int key)
     mvaddstr(0, 0, str.get());
 }
 
-void printLife(int life)
+void printInfo(int life, int score)
 {
+    clearScreen(0, 15, 204, stdscr, 0);
     MyString string;
-    string += "CURRENT LIFE: ";
-    for (int i = 0; i < life; i++)
-    {
-        string += "<3";
-    }
-    clearScreen(0, 15, string.getLength(), stdscr, 0);
-    mvaddstr(0, 15, string.get());
-}
+    string += "HEARTS: ";
+    string += itoa(life);
 
-void printHearts(int life)
-{
+    mvaddstr(0, 30, string.get());
+
     MyString string2;
-    string2 += "HEARTS: ";
-    string2 += itoa(life);
-    clearScreen(2, 15, string2.getLength(), stdscr, 0);
-    mvaddstr(2, 15, string2.get());
-}
+    string2 += "LIFEPOINTS: ";
+    string2 += itoa(10 * life);
 
-void printLifepoints(int life)
-{
+    mvaddstr(0, 80, string2.get());
+
     MyString string3;
-    string3 += "LIFEPOINTS: ";
-    string3 += itoa(10 * life);
-    clearScreen(4, 15, string3.getLength(), stdscr, 0);
-    mvaddstr(4, 15, string3.get());
-}
+    string3 += "SCORE: ";
+    string3 += itoa(score);
 
-void printScore(int score)
-{
-    MyString string4;
-    string4 += "SCORE: ";
-    string4 += itoa(score);
-    clearScreen(0, 60, string4.getLength(), stdscr, 0);
-    mvaddstr(0, 80, string4.get());
+    mvaddstr(0, 120, string3.get());
 }
 
 void printDebug(int n)
@@ -263,10 +246,7 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
 
     // spawns protagonist info
-    printLife(P.getLife());
-    printHearts(P.getLife());
-    printLifepoints(P.getLife());
-    printScore(P.getScore());
+    printInfo(P.getLife(), P.getScore());
 
     // spawns protagonist
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
@@ -285,12 +265,14 @@ void startGame(WINDOW *myWin)
     MyString str;
     pos position;
     int ch; // pressed key
+    int move;
 
     // KEYBOARD EVENT LISTENER
 
     while ((ch = getch()))
     {
-
+        //myMap.rooms->currentRoom.allEnemyMov(P);
+        //myMap.rooms->currentRoom.allEnBullet_move(P);
         switch (ch)
         {
         case 'a':
@@ -309,23 +291,14 @@ void startGame(WINDOW *myWin)
 
             // player's movement
 
-            myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
+            move = myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
+            if (move == 1)
+            {
+                printInfo(P.getLife(), P.getScore());
+            }
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
-
-            /*pos newPosLeft;
-            newPosLeft.y = P.position.y;
-            newPosLeft.x = P.position.x - 1;
-            if (myMap.rooms->currentRoom.getTile(newPosLeft) == ' ')
-            {
-                myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                P.setPosition(newPosLeft.y, newPosLeft.x);
-                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-            }*/
 
             break;
 
@@ -344,24 +317,15 @@ void startGame(WINDOW *myWin)
 
             // player's movement
 
-            myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
+            move = myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
+            if (move == 1)
+            {
+                printInfo(P.getLife(), P.getScore());
+            }
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
 
-            /*
-            pos newPosRight;
-            newPosRight.y = P.position.y;
-            newPosRight.x = P.position.x + 1;
-            if (myMap.rooms->currentRoom.getTile(newPosRight) == ' ')
-            {
-                myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                P.setPosition(newPosRight.y, newPosRight.x);
-                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-            }*/
             break;
 
         case 'w':
@@ -379,24 +343,15 @@ void startGame(WINDOW *myWin)
 
             // player's movement
 
-            myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
+            move = myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
+            if (move == 1)
+            {
+                printInfo(P.getLife(), P.getScore());
+            }
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
 
-            /*
-            pos newPosUp;
-            newPosUp.y = P.position.y - 1;
-            newPosUp.x = P.position.x;
-            if (myMap.rooms->currentRoom.getTile(newPosUp) == ' ')
-            {
-                myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                P.setPosition(newPosUp.y, newPosUp.x);
-                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-            }*/
             break;
 
         case 's':
@@ -414,46 +369,21 @@ void startGame(WINDOW *myWin)
 
             // player's movement
 
-            myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
+            move = myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
+            if (move == 1)
+            {
+                printInfo(P.getLife(), P.getScore());
+            }
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
 
-            /*pos newPosDown;
-            newPosDown.y = P.position.y + 1;
-            newPosDown.x = P.position.x;
-            if (myMap.rooms->currentRoom.getTile(newPosDown) == ' ')
-            {
-                myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                P.setPosition(newPosDown.y, newPosDown.x);
-                myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-            }*/
             break;
 
         case KEY_LEFT:
 
             myMap.rooms->currentRoom.spawnAllyBullet(P, 1);
-            /*myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());*/
 
-            /*pos bulletpos;
-            bulletpos.y = P.position.y;
-            bulletpos.x = P.position.x - 1;
-
-            while (bulletpos.x > 0)
-            {
-                myMap.rooms->currentRoom.placeObject(bulletpos, ACS_BULLET);
-                myMap.rooms->currentRoom.drawLook();
-                usleep(15000);
-                myMap.rooms->currentRoom.placeObject(bulletpos, ' ');
-                bulletpos.x = bulletpos.x - 1;
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-            }*/
             break;
 
         case KEY_RIGHT:
@@ -521,8 +451,8 @@ void startGame(WINDOW *myWin)
         default:
             break;
         }
+        myMap.rooms->currentRoom.allABullMov(P);
 
         str.reset();
     }
 }
-// myMap.rooms->currentRoom.allABullMov(P);

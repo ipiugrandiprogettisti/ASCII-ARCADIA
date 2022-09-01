@@ -198,7 +198,7 @@ void Room::place_enemies(bool b)
             {
                 this->placeObject(posEnemy, en.tag);
                 this->drawLook();
-                this->HeadInsert_enemy(this->objects.enemies, en);
+                this->HeadInsert_enemy(en);
                 flag = false;
             }
         }
@@ -766,10 +766,6 @@ void Room::aBullMov(Protagonist &P, bullet &b)
         placeObject(now, empty);
         placeObject(posNextP, ACS_BULLET);
         b.bulletpos = posNextP;
-        pos bug;
-        bug.y = 2;
-        bug.x = 2;
-        placeObject(bug, 'L');
         Room::drawLook();
         wrefresh(Room::getWindow());
         refresh();
@@ -784,8 +780,7 @@ void Room::allABullMov(Protagonist &p)
 
     while (tmp != NULL)
     {
-        bullet b = tmp->B;
-        aBullMov(p, b);
+        aBullMov(p, tmp->B);
         tmp = tmp->next;
     }
 }
@@ -850,9 +845,8 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
     }
     else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == ACS_STERLING) // hits artifact, the flag is set to 1
     {
-        Room::placeObject(currentpos, ' ');
-        p.setPosition(newPos.y, newPos.x);
-        Room::placeObject(p.getPosition(), p.tag);
+        flag = 1;
+
         switch (Room::getTile(newPos))
         {
         case 'C':
@@ -875,7 +869,10 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         default:
             break;
         }
-        flag = 1;
+        
+        Room::placeObject(currentpos, ' ');
+        p.setPosition(newPos.y, newPos.x);
+        Room::placeObject(p.getPosition(), p.tag);
     }
     else if (Room::getTile(newPos) == 'P') // hits power, the flag is set to 2
     {
@@ -902,46 +899,42 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
     return flag;
 }
 
-p_bulletsEnemies Room::enBullHeadInsert(p_bulletsEnemies head, bullet b)
+void Room::enBullHeadInsert(bullet b)
 {
 
     p_bulletsEnemies newbullet = new bulletsEnemies;
     newbullet->B = b;
-    newbullet->next = head;
-    head = newbullet;
-
-    return head;
+    newbullet->next = this->objects.bulletEnemies;
+    this->objects.bulletEnemies = newbullet;
 }
 
-pListEnemies Room::HeadInsert_enemy(pListEnemies head, Enemy en)
+void Room::HeadInsert_enemy(Enemy en)
 {
 
     pListEnemies newEnemy = new listEnemies;
     newEnemy->e = en;
-    newEnemy->next = head;
-    head = newEnemy;
-
-    return head;
+    newEnemy->next = this->objects.enemies;
+    this->objects.enemies = newEnemy;
 }
 
-p_bulletsEnemies Room::bullet_enemyRemove(p_bulletsEnemies head, bullet b)
+void Room::bullet_enemyRemove(bullet b)
 {
     p_bulletsEnemies x;
     p_bulletsEnemies tmp;
     bool found = false;
-    if (head == NULL)
+    if (this->objects.bulletEnemies == NULL)
     {
-        head = head;
+        this->objects.bulletEnemies = this->objects.bulletEnemies;
     }
-    else if (head->B.bullet_damage == b.bullet_damage && head->B.bullet_tag == b.bullet_tag && head->B.bulletpos.x == b.bulletpos.x && head->B.bulletpos.y == b.bulletpos.y && head->B.direction == b.direction)
+    else if (this->objects.bulletEnemies->B.bullet_damage == b.bullet_damage && this->objects.bulletEnemies->B.bullet_tag == b.bullet_tag && this->objects.bulletEnemies->B.bulletpos.x == b.bulletpos.x && this->objects.bulletEnemies->B.bulletpos.y == b.bulletpos.y && this->objects.bulletEnemies->B.direction == b.direction)
     {
-        tmp = head;
-        head = head->next;
+        tmp = this->objects.bulletEnemies;
+        this->objects.bulletEnemies = this->objects.bulletEnemies->next;
         delete tmp;
     }
     else
     {
-        x = head;
+        x = this->objects.bulletEnemies;
         while (!found && (x != NULL) && (x->next != NULL))
         {
             if (x->next->B.bullet_damage == b.bullet_damage && x->next->B.bullet_tag == b.bullet_tag && x->next->B.bulletpos.x == b.bulletpos.x && x->next->B.bulletpos.y == b.bulletpos.y && x->next->B.direction == b.direction)
@@ -954,27 +947,26 @@ p_bulletsEnemies Room::bullet_enemyRemove(p_bulletsEnemies head, bullet b)
             x = x->next;
         }
     }
-    return head;
 }
 
-pListEnemies Room::enemyRemove(pListEnemies head, Enemy en)
+void Room::enemyRemove(Enemy en)
 {
     pListEnemies x;
     pListEnemies tmp;
     bool found = false;
-    if (head == NULL)
+    if (this->objects.enemies == NULL)
     {
-        head = head;
+        this->objects.enemies = this->objects.enemies;
     }
-    else if (head->e.key == en.key && head->e.current_life == en.current_life && head->e.max_life == en.max_life && head->e.atk_damage == en.atk_damage && head->e.position.y == en.position.y && head->e.position.x == en.position.x && head->e.tag == en.tag)
+    else if (this->objects.enemies->e.key == en.key && this->objects.enemies->e.current_life == en.current_life && this->objects.enemies->e.max_life == en.max_life && this->objects.enemies->e.atk_damage == en.atk_damage && this->objects.enemies->e.position.y == en.position.y && this->objects.enemies->e.position.x == en.position.x && this->objects.enemies->e.tag == en.tag)
     {
-        tmp = head;
-        head = head->next;
+        tmp = this->objects.enemies;
+        this->objects.enemies = this->objects.enemies->next;
         delete tmp;
     }
     else
     {
-        x = head;
+        x = this->objects.enemies;
         while (!found && (x != NULL) && (x->next != NULL))
         {
             if (x->next->e.key == en.key && x->next->e.current_life == en.current_life && x->next->e.max_life == en.max_life && x->next->e.atk_damage == en.atk_damage && x->next->e.position.y == en.position.y && x->next->e.position.x == en.position.x && x->next->e.tag == en.tag)
@@ -987,7 +979,6 @@ pListEnemies Room::enemyRemove(pListEnemies head, Enemy en)
             x = x->next;
         }
     }
-    return head;
 }
 
 void Room::enemy_movement(Enemy e, Protagonist &P)
@@ -1035,7 +1026,7 @@ void Room::enemy_movement(Enemy e, Protagonist &P)
         if (e.current_life <= 0)
         {
             placeObject(e.position, ' ');
-            enemyRemove(this->objects.enemies, e);
+            enemyRemove(e);
             if (this->objects.enemies == NULL)
             {
                 placePower(1);
@@ -1102,7 +1093,7 @@ void Room::spawnEnBull(Enemy en)
         b.bulletpos = next; // non so se va bene metterlo qui o se devo metterlo al posto di next = ecc.
         // ceh non so se devo salvarmi comunque la posizione anche se non posso stamparlo
         placeObject(b.bulletpos, b.bullet_tag);
-        enBullHeadInsert(objects.bulletEnemies, b);
+        enBullHeadInsert(b);
     }
 }
 
@@ -1127,13 +1118,13 @@ void Room::enBullet_move(bullet b, Protagonist &p)
             // DA INSERIRE MENU' DI MORTE
         }
         placeObject(now, ' ');
-        bullet_enemyRemove(objects.bulletEnemies, b);
+        bullet_enemyRemove(b);
     }
     if (c_next == ACS_VLINE || c_next == ACS_HLINE || c_next == ACS_CKBOARD) // COLLISIONI PROIETTILE-MURO
     {
         // cancello il proiettile e lo rimuovo dalla lista
         placeObject(now, ' ');
-        bullet_enemyRemove(objects.bulletEnemies, b);
+        bullet_enemyRemove(b);
     }
     // non ci sono collisioni tra i proiettili del nemico e gli artefatti
 
@@ -1151,7 +1142,7 @@ void Room::enBullet_move(bullet b, Protagonist &p)
         else if (c_nextP == ACS_VLINE || c_nextP == ACS_HLINE || c_nextP == ACS_CKBOARD) // dopo il potere c'è un muro
         {
             placeObject(now, ' ');
-            bullet_enemyRemove(objects.bulletEnemies, b);
+            bullet_enemyRemove(b);
         }
         else if (c_nextP == ACS_PI)
         {
@@ -1161,19 +1152,19 @@ void Room::enBullet_move(bullet b, Protagonist &p)
                 // MENU' di MORTE
             }
             placeObject(now, ' ');
-            bullet_enemyRemove(objects.bulletEnemies, b);
+            bullet_enemyRemove(b);
         }
         else if (c_nextP == ACS_BLOCK || c_nextP == ACS_NEQUAL || c_nextP == '@')
         {
             placeObject(now, ' ');
-            bullet_enemyRemove(objects.bulletEnemies, b);
+            bullet_enemyRemove(b);
         }
     }
     if (c_next == ACS_BLOCK || c_next == ACS_NEQUAL || c_next == '@') // COLLISIONE PRIOETTILE NEMICO
     {
         // cancello il proiettile e lo rimuovo dalla lista
         placeObject(now, ' ');
-        bullet_enemyRemove(objects.bulletEnemies, b);
+        bullet_enemyRemove(b);
     }
     // COLLISIONE PROIETTILE - PROIETTILE
     // da rivedere
@@ -1237,8 +1228,8 @@ void Room::enBullet_move(bullet b, Protagonist &p)
                 {
                     placeObject(next, ' ');
                     placeObject(now, ' ');
-                    bullet_enemyRemove(objects.bulletEnemies, b);
-                    bullet_enemyRemove(objects.bulletEnemies, tmpEn->B);
+                    bullet_enemyRemove(b);
+                    bullet_enemyRemove(tmpEn->B);
                 }
                 tmpEn = tmpEn->next;
             }
@@ -1280,7 +1271,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
             b.bulletpos.y = p.getPosition().y + 1;
             b.bulletpos.x = p.getPosition().x;
             Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(p.getHeadB(), b);
+            p.bulletHeadInsert(b);
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
@@ -1296,7 +1287,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
             b.bulletpos.y = p.getPosition().y;
             b.bulletpos.x = p.getPosition().x - 1;
             Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(p.getHeadB(), b);
+            p.bulletHeadInsert(b);
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
@@ -1312,7 +1303,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
             b.bulletpos.y = p.getPosition().y - 1;
             b.bulletpos.x = p.getPosition().x;
             Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(p.getHeadB(), b);
+            p.bulletHeadInsert(b);
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
@@ -1329,7 +1320,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
             b.bulletpos.y = p.getPosition().y;
             b.bulletpos.x = p.getPosition().x + 1;
             Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(p.getHeadB(), b);
+            p.bulletHeadInsert(b);
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
