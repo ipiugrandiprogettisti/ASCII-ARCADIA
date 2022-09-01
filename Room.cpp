@@ -1069,31 +1069,39 @@ void Room::oneMove(Protagonist p)
 }
 
 // da rivedere
-void Room::spawnEnBull(Enemy en)
+void Room::spawnEnBull()
 {
+    pListEnemies en_tmp = objects.enemies;
     bullet b;
-    switch (en.key)
-    {
-    case 1:
-        b.bullet_damage = 20;
-        break;
-    case 3:
-        b.bullet_damage = 30;
-        break;
-    default:
-        break;
-    }
     b.direction = rand() % 4;
-    pos now = en.position;
-    chtype c_next = checkNextPos(now, b.direction);
-    pos next = nextPos(now, b.direction);
-    if (c_next == ' ')
+
+    while (en_tmp != NULL)
     {
-        b.bulletpos = next; // non so se va bene metterlo qui o se devo metterlo al posto di next = ecc.
-        // ceh non so se devo salvarmi comunque la posizione anche se non posso stamparlo
-        placeObject(b.bulletpos, b.bullet_tag);
-        enBullHeadInsert(b);
+        switch (en_tmp->e.key)
+        {
+        case 1:
+            b.bullet_damage = 20;
+            break;
+        case 3:
+            b.bullet_damage = 30;
+            break;
+        default:
+            break;
+        }
+
+        pos now = en_tmp->e.position;
+        chtype c_next = checkNextPos(now, b.direction);
+        pos next = nextPos(now, b.direction);
+        if (c_next == ' ')
+        {
+            b.bulletpos = next;
+            this->placeObject(b.bulletpos, b.bullet_tag);
+            this->enBullHeadInsert(b);
+        }
+
+        en_tmp = en_tmp->next;
     }
+
 }
 
 // da rivedere

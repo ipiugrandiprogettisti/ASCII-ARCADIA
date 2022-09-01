@@ -272,6 +272,7 @@ void startGame(WINDOW *myWin)
     while ((ch = getch()))
     {
         myMap.rooms->currentRoom.allEnemyMov(P);
+        //myMap.rooms->currentRoom.spawnEnBull();
         myMap.rooms->currentRoom.drawLook();
         refresh();
         wrefresh(myMap.rooms->currentRoom.getWindow());
