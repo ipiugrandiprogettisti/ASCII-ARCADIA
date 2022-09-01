@@ -272,6 +272,9 @@ void startGame(WINDOW *myWin)
     while ((ch = getch()))
     {
         myMap.rooms->currentRoom.allEnemyMov(P);
+        myMap.rooms->currentRoom.drawLook();
+        refresh();
+        wrefresh(myMap.rooms->currentRoom.getWindow());
         //myMap.rooms->currentRoom.allEnBullet_move(P);
         switch (ch)
         {
