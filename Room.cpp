@@ -619,17 +619,20 @@ pos Room::nextPos(pos p, int direction)
 }
 
 // manages one ally bullet collision and movement
-void Room::aBullMov(Protagonist P, bullet b)
+void Room::aBullMov(Protagonist &P, bullet &b)
 {
     // controllo collisione proiettili alleati
     p_bulletlist tmp = P.getHeadB(); // lista proiettili protagonista
 
     chtype empty = ' ';
-    chtype nextP;
+    chtype nextP; // char in next position
+    int dir = b.direction;
 
-    pos now = b.bulletpos;                                                // salvo posizione attuale
-    nextP = checkNextPos(now, b.direction);                               // char in pos futura
-    pos posNextP = nextPos(now, b.direction);                             // pos futura
+    pos now = b.bulletpos; // salvo posizione attuale
+    // nextP = checkNextPos(now, b.direction);   // char in pos futura
+    pos posNextP = nextPos(now, dir); // pos futura
+
+    nextP = Room::getTile(posNextP);
     if (nextP == ACS_VLINE || nextP == ACS_HLINE || nextP == ACS_CKBOARD) // PROIETTILE -> MURO
     {
         placeObject(now, empty); // rimuove bullet da posizione attuale
@@ -637,8 +640,8 @@ void Room::aBullMov(Protagonist P, bullet b)
     }
     else if (nextP == 'C' || nextP == 'R' || nextP == '$' || nextP == ACS_STERLING) // PROIETTILE -> ARTEF
     {
-        chtype nextA = checkNextPos(posNextP, b.direction);                   // chtype dopo artefatto //due posti dopo bull
-        pos posNextA = nextPos(posNextP, b.direction);                        // posizione dopo Artefatto
+        chtype nextA = checkNextPos(posNextP, dir);                           // chtype dopo artefatto //due posti dopo bull
+        pos posNextA = nextPos(posNextP, dir);                                // posizione dopo Artefatto
         if (nextA == ACS_VLINE || nextA == ACS_HLINE || nextA == ACS_CKBOARD) // PROIETTILE -> ARTEF -> MURO
         {                                                                     // dopo proiettile e dopo artefatto c'è muro, faccio sparire proiettile
             placeObject(now, empty);                                          // rimuove bullet da posizione attuale
@@ -668,7 +671,9 @@ void Room::aBullMov(Protagonist P, bullet b)
                 b.bulletpos = posNextB;            // aggiorno posizione sulla lista
             }
         }
-
+        Room::drawLook();
+        refresh();
+        wrefresh(this->getWindow());
         // NON CI SONO ALTRE COLLISIONI DELLA SERIE PROIETT -> ARTEF -> ALTRO PERCHè GLI ARTEFATTI SPAWNANO SOLO DOPO CHE I NEMICI SONO MORTI
     }
     else if (nextP == '@' || nextP == ACS_NEQUAL || nextP == ACS_BLOCK) // PROIETTILE -> NEMICO
@@ -684,7 +689,7 @@ void Room::aBullMov(Protagonist P, bullet b)
     {
         // manca ancora lista proiettili nemici, ho usato lista proiett all, da cambiare
         int dirNem = 0;
-        int dirAll = b.direction;
+        int dirAll = dir;
         p_bulletsEnemies tmpnem;
         /*
         bisogna capire la direzione del proiettile nemico
@@ -757,15 +762,23 @@ void Room::aBullMov(Protagonist P, bullet b)
     }
     else if (nextP == empty)
     { // se prossima pos è vuota aggiorno pos proiettile e lo piazzo
-        b.bulletpos = posNextP;
+
         placeObject(now, empty);
         placeObject(posNextP, ACS_BULLET);
+        b.bulletpos = posNextP;
+        pos bug;
+        bug.y = 2;
+        bug.x = 2;
+        placeObject(bug, 'L');
+        Room::drawLook();
+        wrefresh(Room::getWindow());
+        refresh();
     }
 }
 
 // manages all ally bullets
 // scorre tutta la lista di proiettili alleati e li muove di 1 pos
-void Room::allABullMov(Protagonist p)
+void Room::allABullMov(Protagonist &p)
 {
     p_bulletlist tmp = p.getHeadB(); // testa d'appoggio per scorrere
 

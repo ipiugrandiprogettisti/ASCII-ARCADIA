@@ -231,10 +231,10 @@ public:
     pos nextPos(pos p, int direction);
 
     // manages one ally bullet collisions and movement
-    void aBullMov(Protagonist p, bullet b);
+    void aBullMov(Protagonist &p, bullet &b);
 
     // manages all ally bullets
-    void allABullMov(Protagonist p);
+    void allABullMov(Protagonist &p);
 
     // bulletes appear next to the enemy
     void spawnEnBull(Enemy en);
