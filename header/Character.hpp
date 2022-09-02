@@ -32,5 +32,5 @@ public:
     int getLife();
 
     // prende in input il danno ricevuto e aggiorna la vita sottraendoglielo
-    void takeDamage(int);
+    bool takeDamage(int);
 };

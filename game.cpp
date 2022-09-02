@@ -295,7 +295,7 @@ void startGame(WINDOW *myWin)
 
             // player's movement
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
-            if (move == 1)
+            if (move == 1 || move == 3)
             {
                 printInfo(P.getLife(), P.getScore());
             }
@@ -321,7 +321,7 @@ void startGame(WINDOW *myWin)
 
             // player's movement
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
-            if (move == 1)
+            if (move == 1 || move == 3)
             {
                 printInfo(P.getLife(), P.getScore());
             }
@@ -347,7 +347,7 @@ void startGame(WINDOW *myWin)
 
             // player's movement
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
-            if (move == 1)
+            if (move == 1 || move == 3)
             {
                 printInfo(P.getLife(), P.getScore());
             }
@@ -373,7 +373,7 @@ void startGame(WINDOW *myWin)
 
             // player's movement
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
-            if (move == 1)
+            if (move == 1 || move == 3)
             {
                 printInfo(P.getLife(), P.getScore());
             }

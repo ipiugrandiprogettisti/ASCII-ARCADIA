@@ -11,7 +11,7 @@ Character::Character()
     atk_damage = 0;
     position.y = 0;
     position.x = 0;
-    tag = 111;
+    tag = ' ';
 }
 // constructor
 Character::Character(int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Entity(y, x, tag)
@@ -22,7 +22,7 @@ Character::Character(int current_life, int max_life, int atk_damage, int y, int 
     this->atk_damage = atk_damage;
     this->position.y = y;
     this->position.x = x;
-    this->tag = 111;
+    this->tag = ' ';
 }
 
 // returns current life
@@ -32,8 +32,9 @@ int Character::getLife()
 }
 
 // updates life according to the damage received
-void Character::takeDamage(int damage_received)
+bool Character::takeDamage(int damage_received)
 {
+    bool dead = false;
     int curr_life = getLife();
     if ((curr_life - damage_received) >= 0)
     {
@@ -42,5 +43,7 @@ void Character::takeDamage(int damage_received)
     else
     {
         this->current_life = 0;
+        dead = true;
     }
+    return dead;
 }

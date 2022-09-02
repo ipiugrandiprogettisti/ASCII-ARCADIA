@@ -934,19 +934,40 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         Room::openDoors(true);
         flag = 2;
     }
-    /*else if (Room::getTile(newPos) == '-') // hits enemy bullet
+    else if (Room::getTile(newPos) == ACS_BULLET) // hits a bullet, the flag is set to 3
     {
-        p_bulletsEnemies tmp = this->objects.bulletEnemies;
-        while (tmp != NULL)
+        p_bulletsEnemies tmp1 = this->objects.bulletEnemies;
+        // p_bulletlist tmp2 = p.getHeadB();
+        bool found = false;
+        while (tmp1 != NULL && !found)
         {
-            if (tmp->B.direction == direction && tmp->B.bulletpos.y == newPos.y && tmp->B.bullet_damage.x == newPos.x)
+            if (tmp1->B.direction == direction && tmp1->B.bulletpos.y == newPos.y && tmp1->B.bulletpos.x == newPos.x)
             {
+                flag = 3;
 
+                Room::placeObject(tmp1->B.bulletpos, ' ');
+                bool dead = p.takeDamage(tmp1->B.bullet_damage);
+                if (dead == true)
+                {
+                    Room::placeObject(p.getPosition(), ' ');
+                    // menu morte
+                }
+                else
+                {
+
+                    bullet_enemyRemove(tmp1->B);
+                }
+                found = true;
             }
 
-            tmp = tmp->next;
+            tmp1 = tmp1->next;
         }
-    }*/
+    }
+    else if (Room::getTile(newPos) == ACS_NEQUAL || Room::getTile(newPos) == ACS_BLOCK || Room::getTile(newPos) == '@') //HITS ENEMY, THE FLAG IS SET TO 4
+    {
+        Room::placeObject(p.getPosition(), ' ');
+        //menu morte
+    }
 
     return flag;
 }
@@ -1093,19 +1114,19 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         placeObject(now, ' ');
         e.position = next;
     }
-    else if(c_next == ACS_PI)
+    else if (c_next == ACS_PI)
     {
         placeObject(now, ' ');
         placeObject(next, e.tag);
         e.position = next;
-        //MENU' DI MORTE
+        // MENU' DI MORTE
     }
     else if (c_next == ACS_BULLET)
     {
         p_bulletlist tmp = P.getHeadB();
         p_bulletsEnemies tmp_en = this->objects.bulletEnemies;
         bool flag = false;
-        while (tmp != NULL)
+        while (tmp != NULL && !flag)
         {
             if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.x == next.x)
             {
@@ -1115,16 +1136,21 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
                 placeObject(next, ' ');
                 flag = true;
             }
-
+            tmp = tmp->next;
         }
-        if(flag == false)
+        if (flag == false)
         {
-            while(tmp_en->B.bulletpos.x == next.x && tmp_en->B.bulletpos.y == next.y)
+            while (tmp_en != NULL && !flag)
             {
-                bullet_enemyRemove(tmp_en->B);
-                placeObject(now, ' ');
-                placeObject(next, e.tag);
-                e.position =  next;
+                if (tmp_en->B.bulletpos.x == next.x && tmp_en->B.bulletpos.y == next.y)
+                {
+                    bullet_enemyRemove(tmp_en->B);
+                    placeObject(now, ' ');
+                    placeObject(next, e.tag);
+                    e.position = next;
+                    flag = true;
+                }
+                tmp_en = tmp_en->next;
             }
         }
     }
