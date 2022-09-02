@@ -222,7 +222,7 @@ public:
     // 0 basso, 1 sx, 2 alto, 3 dx
 
     // protagonist movement
-    int ProtagonistMovement(Protagonist &p, int direction);
+    void ProtagonistMovement(Protagonist &p, int direction);
 
     // one enemy movement
 
