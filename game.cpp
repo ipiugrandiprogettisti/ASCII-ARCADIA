@@ -284,7 +284,7 @@ void startGame(WINDOW *myWin)
         myMap.rooms->currentRoom.spawnEnBull();
         myMap.rooms->currentRoom.allEnBullet_move(P);
 
-        printInfo(P.getLife(), P.getScore());
+        //printInfo(P.getLife(), P.getScore());
 
         myMap.rooms->currentRoom.drawLook();
         refresh();
@@ -310,10 +310,7 @@ void startGame(WINDOW *myWin)
 
             // player's movement
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
-            if (move == 1 || move == 3)
-            {
-                printInfo(P.getLife(), P.getScore());
-            }
+            //printInfo(P.getLife(), P.getScore());
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -338,10 +335,8 @@ void startGame(WINDOW *myWin)
 
             // player's movement
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
-            if (move == 1 || move == 3)
-            {
-                printInfo(P.getLife(), P.getScore());
-            }
+            //printInfo(P.getLife(), P.getScore());
+
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -366,10 +361,7 @@ void startGame(WINDOW *myWin)
 
             // player's movement
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
-            if (move == 1 || move == 3)
-            {
-                printInfo(P.getLife(), P.getScore());
-            }
+            //printInfo(P.getLife(), P.getScore());
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -394,10 +386,9 @@ void startGame(WINDOW *myWin)
 
             // player's movement
             move = myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
-            if (move == 1 || move == 3)
-            {
-                printInfo(P.getLife(), P.getScore());
-            }
+
+            //printInfo(P.getLife(), P.getScore());
+
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -475,6 +466,7 @@ void startGame(WINDOW *myWin)
             break;
         }
         myMap.rooms->currentRoom.allABullMov(P);
+        printInfo(P.getLife(), P.getScore());
 
         str.reset();
     }

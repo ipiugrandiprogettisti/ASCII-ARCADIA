@@ -922,7 +922,7 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         Room::placeArtifacts();
         flag = 2;
     }
-    else if (Room::getTile(newPos) == ACS_DEGREE) // hits a bullet, the flag is set to 3
+    else if (Room::getTile(newPos) == ACS_DEGREE) // hits enemy bullet, the flag is set to 3
     {
         p_bulletsEnemies tmp1 = this->objects.bulletEnemies;
         // p_bulletlist tmp2 = p.getHeadB();
@@ -949,8 +949,13 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         }
         flag = 3;
     }
-    else if (Room::getTile(newPos) == ACS_NEQUAL || Room::getTile(newPos) == ACS_BLOCK || Room::getTile(newPos) == '@') // HITS ENEMY, THE FLAG IS SET TO 4
+    else if (Room::getTile(newPos) == ACS_BULLET) // hits ally bullet
     {
+        p_bulletlist tmp2 = p.getHeadB();
+    }
+    else if (Room::getTile(newPos) == ACS_NEQUAL || Room::getTile(newPos) == ACS_BLOCK || Room::getTile(newPos) == '@') // hits enemy, the flag is set to 4
+    {
+        p.takeDamage(p.getLife());
         Room::placeObject(p.getPosition(), ' ');
         // menu morte
     }
