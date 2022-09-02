@@ -113,7 +113,7 @@ void Room::placePower(bool b)
 void Room::placeArtifacts()
 {
     Artifact a(0, 0, 2, 2, ' ');
-    int nArt = rand() % 3;
+    int nArt = rand() % 2;
     for (int i = 0; i < nArt; i++)
     {
         chtype chflag;
@@ -164,7 +164,7 @@ void Room::place_enemies(bool b)
 
     Enemy en(0, 5, 5, 2, 0, 0, ' ');
 
-    int n = rand() % 3 + 1;
+    int n = rand() % 4;
 
     for (int i = 0; i < n; i++)
     {
@@ -518,7 +518,7 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 
     place_enemies(1);
     placeArtifacts();
-    placePower(1);
+    // placePower(1);
     drawn = true;
 
     return drawn;
@@ -849,7 +849,7 @@ void Room::ArtifactHeadinsert(Artifact a)
 }
 
 // artifactslist remove
-void Room::removeArtifact(chtype tag, pos position)
+void Room::removeArtifact(Artifact a)
 {
     p_artifactsList x;
     p_artifactsList tmp;
@@ -858,7 +858,7 @@ void Room::removeArtifact(chtype tag, pos position)
     {
         this->objects.artifacts = this->objects.artifacts;
     }
-    else if (this->objects.artifacts->A.tag == tag && this->objects.artifacts->A.getPosition().x == position.x && this->objects.artifacts->A.getPosition().x == position.y)
+    else if (this->objects.artifacts->A.tag == a.tag && this->objects.artifacts->A.getPosition().x == a.getPosition().x && this->objects.artifacts->A.getPosition().x == a.getPosition().y)
     {
         tmp = this->objects.artifacts;
         this->objects.artifacts = this->objects.artifacts->next;
@@ -869,7 +869,7 @@ void Room::removeArtifact(chtype tag, pos position)
         x = this->objects.artifacts;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->A.tag == tag && x->next->A.getPosition().x == position.x && x->next->A.getPosition().y == position.y)
+            if (x->next->A.tag == a.tag && x->next->A.getPosition().x == a.getPosition().x && x->next->A.getPosition().y == a.getPosition().y)
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -897,28 +897,15 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
     else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == '%') // hits artifact, the flag is set to 1
     {
         flag = 1;
-
-        switch (Room::getTile(newPos))
+        p_artifactsList tmp = this->objects.artifacts;
+        while (tmp != NULL)
         {
-        case 'C':
-            p.gainLife(1);
-            Room::removeArtifact('C', newPos);
-            break;
-        case 'R':
-            p.gainLife(3);
-            Room::removeArtifact('R', newPos);
-            break;
-        case '$':
-            p.gainLife(5);
-            Room::removeArtifact('$', newPos);
-            break;
-        case '%':
-            p.gainLife(7);
-            Room::removeArtifact('%', newPos);
-            break;
-
-        default:
-            break;
+            if (tmp->A.getPosition().y == newPos.y && tmp->A.getPosition().x == newPos.x)
+            {
+                p.gainLife(tmp->A.getArtLifepoints());
+                Room::removeArtifact(tmp->A);
+            }
+            tmp = tmp->next;
         }
 
         Room::placeObject(currentpos, ' ');
@@ -932,6 +919,7 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         p.setPosition(newPos.y, newPos.x);
         Room::placeObject(p.getPosition(), p.tag);
         Room::openDoors(true);
+        Room::placeArtifacts();
         flag = 2;
     }
     else if (Room::getTile(newPos) == ACS_BULLET) // hits a bullet, the flag is set to 3
@@ -963,10 +951,10 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
             tmp1 = tmp1->next;
         }
     }
-    else if (Room::getTile(newPos) == ACS_NEQUAL || Room::getTile(newPos) == ACS_BLOCK || Room::getTile(newPos) == '@') //HITS ENEMY, THE FLAG IS SET TO 4
+    else if (Room::getTile(newPos) == ACS_NEQUAL || Room::getTile(newPos) == ACS_BLOCK || Room::getTile(newPos) == '@') // HITS ENEMY, THE FLAG IS SET TO 4
     {
         Room::placeObject(p.getPosition(), ' ');
-        //menu morte
+        // menu morte
     }
 
     return flag;

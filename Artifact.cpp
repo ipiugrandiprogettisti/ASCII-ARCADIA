@@ -27,58 +27,6 @@ Artifact ::Artifact(int rarity, int lifepoints, int posy, int posx, chtype tag) 
 // returns lifepoints
 int Artifact ::getArtLifepoints()
 {
-    int lifep = 0;
-    switch (tag)
-    {
-    case 'C':
-        lifep = 1;
-    case 'R':
-        lifep = 3;
-    case '$':
-        lifep = 5;
-    case '%':
-        lifep = 7;
-    };
-
-    return lifep;
+    return this->lifepoints;
 }
 
-chtype Artifact ::getArtTile()
-{
-    chtype r = ' ';
-    switch (rarity)
-    {
-    case '1':
-        r = 'C';
-    case '2':
-        r = 'R';
-    case '3':
-        r = '$';
-    case '4':
-        r = '%';
-    }
-    return r;
-}
-
-// sets artifact lifepoints and tag based on rarity
-/*
-void Artifact ::setArtifact(int r)
-{
-    switch (r)
-    {
-    case '1':
-        lifepoints = 1;
-        tag = ACS_DARROW;
-    case '2':
-        lifepoints = 3;
-        tag = ACS_LANTERN;
-    case '3':
-        lifepoints = 5;
-        tag = '$';
-    case '4':
-        lifepoints = 7;
-        tag = ACS_DIAMOND;
-    }
-    rarity = r;
-}
-*/

@@ -266,11 +266,20 @@ void startGame(WINDOW *myWin)
     pos position;
     int ch; // pressed key
     int move;
+    bool flag = false;
 
     // KEYBOARD EVENT LISTENER
 
     while ((ch = getch()))
     {
+        if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL)
+        {
+            myMap.rooms->currentRoom.placePower(true);
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+            flag = true;
+        }
         myMap.rooms->currentRoom.allEnemyMov(P);
         // myMap.rooms->currentRoom.spawnEnBull();
         myMap.rooms->currentRoom.drawLook();
@@ -290,6 +299,7 @@ void startGame(WINDOW *myWin)
                     P.position.x = 98;
                     myMap = crossRoom(1, myMap);
                     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                    flag = false;
                 }
             }
 
@@ -316,6 +326,7 @@ void startGame(WINDOW *myWin)
                     P.position.x = 1;
                     myMap = crossRoom(3, myMap);
                     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                    flag = false;
                 }
             }
 
@@ -342,6 +353,7 @@ void startGame(WINDOW *myWin)
                     P.position.y = 28;
                     myMap = crossRoom(2, myMap);
                     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                    flag = false;
                 }
             }
 
@@ -368,6 +380,7 @@ void startGame(WINDOW *myWin)
                     P.position.y = 1;
                     myMap = crossRoom(0, myMap);
                     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                    flag = false;
                 }
             }
 

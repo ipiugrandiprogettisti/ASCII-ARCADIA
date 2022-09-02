@@ -2,23 +2,21 @@
 #include "Entity.hpp"
 #pragma once
 
-// struttura proiettile
+// struct bullet
 typedef struct bullet
 {
     chtype bullet_tag = ACS_BULLET;
     int bullet_damage;
     pos bulletpos;
-    int direction;   //0 indica che va verso il basso, 1 che va verso sinistra, 2 verso l'alto e 3 verso destra
+    int direction; // 0 indica che va verso il basso, 1 che va verso sinistra, 2 verso l'alto e 3 verso destra
 
-}bullet;
+} bullet;
 
-// classe personaggio generale
+// class character
 class Character : public Entity
 {
 
-
 public:
-
     int current_life; // in termini di cuori posseduti al momento
     int max_life;     // cuori  massimi=10
     int atk_damage;   // danno che produce in attacco

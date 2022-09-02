@@ -204,7 +204,7 @@ public:
     void ArtifactHeadinsert(Artifact a);
 
     // removes artifacts
-    void removeArtifact(chtype tag, pos position);
+    void removeArtifact(Artifact a);
 
     // head insert new bullet for enemy
     void enBullHeadInsert(bullet b);

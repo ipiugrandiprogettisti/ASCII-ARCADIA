@@ -32,17 +32,11 @@ public:
     // returns score
     int getScore();
 
-    // print protagonist
-    void printProtagonist(Protagonist P, WINDOW *w);
-
     // returns head to list of ally bullets
     p_bulletlist getHeadB();
 
     // head insert a new bullet
     void bulletHeadInsert(bullet b);
-
-    // tail insert a new bullet
-    p_bulletlist bulletTailInsert(p_bulletlist head, bullet b);
 
     // removes whatever bullet is given as parameter
     void bulletRemove(bullet b);
@@ -50,7 +44,4 @@ public:
     // increases life basing on the gained artifact
     void gainLife(int p);
 
-    /*
-    pos createBul(int direction);
-    */
 };

@@ -22,7 +22,7 @@ Character::Character(int current_life, int max_life, int atk_damage, int y, int 
     this->atk_damage = atk_damage;
     this->position.y = y;
     this->position.x = x;
-    this->tag = ' ';
+    this->tag = tag;
 }
 
 // returns current life

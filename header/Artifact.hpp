@@ -21,10 +21,4 @@ public:
 
     // returns artifact life points
     int getArtLifepoints();
-
-    // return chtype
-    chtype getArtTile();
-
-    // sets artifact lifepoints and tag based on rarity
-    // void setArtifact(int r);
 };

@@ -32,14 +32,6 @@ int Protagonist::getScore()
     return this->score;
 }
 
-void Protagonist::printProtagonist(Protagonist P, WINDOW *w)
-{
-    int p_y = P.position.y;
-    int p_x = P.position.x;
-
-    mvwaddch(w, p_y, p_x, P.tag);
-}
-
 // returns head to list of ally bullets
 p_bulletlist Protagonist::getHeadB()
 {
@@ -53,28 +45,6 @@ void Protagonist::bulletHeadInsert(bullet b)
     newbullet->B = b;
     newbullet->next = this->headB;
     this->headB = newbullet;
-}
-
-// tail insert a new bullet
-p_bulletlist Protagonist::bulletTailInsert(p_bulletlist head, bullet b)
-{
-    p_bulletlist tmp;
-    if (head == NULL)
-    {
-        head = new bulletlist;
-        head->B = b;
-        head->next = NULL;
-    }
-    else
-    {
-        for (tmp = head; tmp->next != NULL; tmp = tmp->next)
-        {
-        }
-        tmp->next = new bulletlist;
-        tmp->next->B = b;
-        tmp->next->next = NULL;
-    }
-    return head;
 }
 
 // removes whatever bullet given as a parameter
@@ -115,26 +85,3 @@ void Protagonist::gainLife(int p)
 {
     this->current_life += p;
 }
-
-// spawn bullet at sx
-/*
-pos Protagonist ::createBul(int direction)
-{
-    pos bpos;
-    switch(direction){
-        case 0:
-            bpos.y = position.y++;
-            bpos.x = position.x;
-        case 1:
-        etc..
-    }
-
-    bullet bl;
-    bl.bulletpos = bpos;
-    bl.bullet_tag = ACS_BULLET;
-    bl.bullet_damage = 10; // <-- messo a caso
-    bl.direction = 1;
-
-    this->bulletHeadInsert(headB, bl);
-}
-*/
