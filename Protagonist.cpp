@@ -47,7 +47,7 @@ p_bulletlist Protagonist::getHeadB()
 }
 
 // head insert new bullet
-void Protagonist::bulletHeadInsert( bullet b)
+void Protagonist::bulletHeadInsert(bullet b)
 {
     p_bulletlist newbullet = new bulletlist;
     newbullet->B = b;
@@ -78,27 +78,27 @@ p_bulletlist Protagonist::bulletTailInsert(p_bulletlist head, bullet b)
 }
 
 // removes whatever bullet given as a parameter
-p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
+void Protagonist::bulletRemove(bullet b)
 {
     p_bulletlist x;
     p_bulletlist tmp;
     bool found = false;
-    if (head == NULL)
+    if (this->headB == NULL)
     {
-        head = head;
+        this->headB = this->headB;
     }
-    else if (head->B.bullet_damage == b.bullet_damage && head->B.bullet_tag == b.bullet_tag && head->B.bulletpos.x == b.bulletpos.x && head->B.bulletpos.y == b.bulletpos.y && head->B.direction == b.direction)
+    else if (this->headB->B.bullet_tag == b.bullet_tag && this->headB->B.bulletpos.x == b.bulletpos.x && this->headB->B.bulletpos.y == b.bulletpos.y && this->headB->B.direction == b.direction)
     {
-        tmp = head;
-        head = head->next;
+        tmp = this->headB;
+        this->headB = this->headB->next;
         delete tmp;
     }
     else
     {
-        x = head;
+        x = this->headB;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->B.bullet_damage == b.bullet_damage && x->next->B.bullet_tag == b.bullet_tag && x->next->B.bulletpos.x == b.bulletpos.x && x->next->B.bulletpos.y == b.bulletpos.y && x->next->B.direction == b.direction)
+            if (x->next->B.bullet_tag == b.bullet_tag && x->next->B.bulletpos.x == b.bulletpos.x && x->next->B.bulletpos.y == b.bulletpos.y && x->next->B.direction == b.direction)
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -108,7 +108,6 @@ p_bulletlist Protagonist::bulletRemove(p_bulletlist head, bullet b)
             x = x->next;
         }
     }
-    return head;
 }
 
 // add life

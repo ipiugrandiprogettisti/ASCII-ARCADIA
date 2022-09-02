@@ -91,7 +91,7 @@ bool Room::checkTilesAround(pos position, pos previousPosition)
 // places 1 power to open door
 void Room::placePower(bool b)
 {
-    //qui ci va un if che li fa apparire solo dopp che la lista di nemici si è svuotata, ovvero sono tutti morti
+    // qui ci va un if che li fa apparire solo dopp che la lista di nemici si è svuotata, ovvero sono tutti morti
     Power p;
     p.tag = 'P';
     chtype rar = p.tag;
@@ -631,7 +631,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
     if (nextP == ACS_VLINE || nextP == ACS_HLINE || nextP == ACS_CKBOARD) // PROIETTILE -> MURO
     {
         placeObject(now, empty); // rimuove bullet da posizione attuale
-        P.bulletRemove(tmp, b);  // rimuove bullet dalla lista (anna io qui ci passerei P.getHeadB(), non tmp)
+        P.bulletRemove(b);       // rimuove bullet dalla lista (anna io qui ci passerei P.getHeadB(), non tmp)
     }
     else if (nextP == 'C' || nextP == 'R' || nextP == '$' || nextP == '%') // PROIETTILE -> ARTEF
     {
@@ -640,7 +640,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
         if (nextA == ACS_VLINE || nextA == ACS_HLINE || nextA == ACS_CKBOARD) // PROIETTILE -> ARTEF -> MURO
         {                                                                     // dopo proiettile e dopo artefatto c'è muro, faccio sparire proiettile
             placeObject(now, empty);                                          // rimuove bullet da posizione attuale
-            P.bulletRemove(tmp, b);                                           // rimuove bullet dalla lista (anna io qui ci passerei P.getHeadB(), non tmp)
+            P.bulletRemove(b);                                                // rimuove bullet dalla lista (anna io qui ci passerei P.getHeadB(), non tmp)
         }
         else if (nextA == empty) // PROIETTILE -> ARTEF -> SPAZIO VUOTO
         {
@@ -657,7 +657,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
             {
 
                 placeObject(now, empty); // rimuove bullet da posizione attuale
-                P.bulletRemove(tmp, b);  // rimuove bullet dalla lista
+                P.bulletRemove(b);       // rimuove bullet dalla lista
             }
             else if (nextB == empty) // PROIETTILE -> ARTEF -> POTERE -> SPAZIO VUOTO
             {
@@ -666,13 +666,29 @@ void Room::aBullMov(Protagonist &P, bullet &b)
                 b.bulletpos = posNextB;            // aggiorno posizione sulla lista
             }
         }
-        Room::drawLook();
+        this->drawLook();
         refresh();
         wrefresh(this->getWindow());
         // NON CI SONO ALTRE COLLISIONI DELLA SERIE PROIETT -> ARTEF -> ALTRO PERCHè GLI ARTEFATTI SPAWNANO SOLO DOPO CHE I NEMICI SONO MORTI
     }
     else if (nextP == '@' || nextP == ACS_NEQUAL || nextP == ACS_BLOCK) // PROIETTILE -> NEMICO
     {
+
+        pListEnemies enList = this->objects.enemies; // lista dappoggio per scorrere
+        while (enList != NULL)
+        { // cerco nemico in posizione pos
+            if (posNextP.x == enList->e.position.x && posNextP.y == enList->e.position.y)
+            {
+                // trovato nemico, me lo salvo
+                Enemy workEn = enList->e;
+
+                this->enemyRemove(workEn);
+                this->placeObject(posNextP, ' '); // rimuovo en da mappa
+                this->placeObject(now, ' ');      // rimuovo proiettile da mappa
+            }
+            enList = enList->next;
+        }
+
         // proiettili alleato tolgono solo parte della vita
         /*
         scorri lista nemici, trovi il nemico in pos nextP,
@@ -734,7 +750,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
             {
                 // salvo proiettile del nodo attuale
                 placeObject(now, empty); // rimuove bullet da posizione attuale
-                P.bulletRemove(tmp, b);  // rimuove bullet dalla lista
+                P.bulletRemove(b);       // rimuove bullet dalla lista
             }
             else if (nextB == empty) // PROIETTILE -> POTERE -> ARTEFATTO -> SPAZIO VUOTO
             {
@@ -752,7 +768,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
         else if (nextA == ACS_VLINE || nextA == ACS_HLINE || nextA == ACS_CKBOARD) // PROIETTILE -> POTERE -> MURO
         {                                                                          // dopo proiettile e dopo potere c'è muro, faccio sparire proiettile
             placeObject(now, empty);                                               // rimuove bullet da posizione attuale
-            P.bulletRemove(tmp, b);                                                // rimuove bullet dalla lista
+            P.bulletRemove(b);                                                     // rimuove bullet dalla lista
         }
     }
     else if (nextP == empty)
@@ -780,7 +796,7 @@ void Room::allABullMov(Protagonist &p)
     }
 }
 
-//power head insert
+// power head insert
 void Room::powerHeadinsert(Power p)
 {
     p_powersList newpow = new powersList;
@@ -1247,12 +1263,15 @@ void Room::enBullet_move(bullet b, Protagonist &p)
                         placeObject(now, ' ');
                     }
                     // manca il controllo con il potere
-                    else
+                    /*else
                     {
                         // rimuovo il proiettile alleato perchè ha fatto  collisione
-                        placeObject(now, ' ');
-                        p.bulletRemove(tmp, tmp->B);
+                        // placeObject(now, ' ');
+                        // p.bulletRemove(tmp, tmp->B); // perchè? basta far muovere prima il proiettile alleato e dopo quello nemico
+                        // non cancelliamo proiettili alleati a caso
+                        //guarda come ho fatto dallo schema su one note
                     }
+                    */
                 }
                 tmp = tmp->next;
             }

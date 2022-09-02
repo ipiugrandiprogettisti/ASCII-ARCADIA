@@ -39,13 +39,13 @@ public:
     p_bulletlist getHeadB();
 
     // head insert a new bullet
-    void bulletHeadInsert( bullet b);
+    void bulletHeadInsert(bullet b);
 
     // tail insert a new bullet
     p_bulletlist bulletTailInsert(p_bulletlist head, bullet b);
 
     // removes whatever bullet is given as parameter
-    p_bulletlist bulletRemove(p_bulletlist head, bullet b);
+    void bulletRemove(bullet b);
 
     // increases life basing on the gained artifact
     void gainLife(int p);
