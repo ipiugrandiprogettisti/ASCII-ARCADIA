@@ -697,7 +697,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
         cancelli proiettile, cancelli nemico se finisce la vita
         */
     }
-    else if (nextP == ACS_BULLET) // PROIETTILE -> PROETTILE NEMICO
+    else if (nextP == ACS_DEGREE) // PROIETTILE -> PROETTILE NEMICO
     {
         // manca ancora lista proiettili nemici, ho usato lista proiett all, da cambiare
         int dirNem = 0;
@@ -1291,6 +1291,7 @@ void Room::spawnSXBul(Protagonist p)
 void Room::spawnAllyBullet(Protagonist &p, int dir)
 {
     bullet b;
+    b.bullet_tag = ACS_BULLET;
     b.direction = dir;
     pos newpos;
     switch (b.direction)
