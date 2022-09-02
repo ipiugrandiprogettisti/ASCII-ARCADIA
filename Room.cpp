@@ -1129,38 +1129,43 @@ void Room::oneMove(Protagonist p)
 // da rivedere
 void Room::spawnEnBull()
 {
-    pListEnemies en_tmp = objects.enemies;
-    bullet b;
-    b.direction = rand() % 4;
-    b.bullet_tag = ACS_DEGREE;
-
-    while (en_tmp != NULL)
+    int n = rand() % 4;
+    if(n == 1 || n == 3)
     {
-        if(en_tmp->e.key != 2)
+        pListEnemies en_tmp = objects.enemies;
+        bullet b;
+        b.direction = rand() % 4;
+        b.bullet_tag = ACS_DEGREE;
+
+        while (en_tmp != NULL)
         {
-           switch (en_tmp->e.key)
+            if(en_tmp->e.key != 2)
             {
-            case 1:
-                b.bullet_damage = 20;
-                break;
-            case 3:
-                b.bullet_damage = 30;
-                break;
-            default:
-                break;
+            switch (en_tmp->e.key)
+                {
+                case 1:
+                    b.bullet_damage = 2;
+                    break;
+                case 3:
+                    b.bullet_damage = 3;
+                    break;
+                default:
+                    break;
+                }
+                pos now = en_tmp->e.position;
+                chtype c_next = checkNextPos(now, b.direction);
+                pos next = nextPos(now, b.direction);
+                if (c_next == ' ')
+                {
+                    b.bulletpos = next;
+                    placeObject(b.bulletpos, b.bullet_tag);
+                    enBullHeadInsert(b);
+                }
             }
-            pos now = en_tmp->e.position;
-            chtype c_next = checkNextPos(now, b.direction);
-            pos next = nextPos(now, b.direction);
-            if (c_next == ' ')
-            {
-                b.bulletpos = next;
-                placeObject(b.bulletpos, b.bullet_tag);
-                enBullHeadInsert(b);
-            }
+            en_tmp = en_tmp->next;
         }
-        en_tmp = en_tmp->next;
     }
+    
 }
 
 // da rivedere
