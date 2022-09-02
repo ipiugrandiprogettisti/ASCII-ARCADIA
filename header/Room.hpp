@@ -245,7 +245,7 @@ public:
     void spawnEnBull();
 
     // make enemies's bullet move
-    void enBullet_move(bullet b, Protagonist &p);
+    void enBullet_move(bullet &b, Protagonist &p);
 
     void allEnBullet_move(Protagonist &P);
 

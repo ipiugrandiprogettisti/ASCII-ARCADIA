@@ -281,11 +281,11 @@ void startGame(WINDOW *myWin)
             flag = true;
         }
         myMap.rooms->currentRoom.allEnemyMov(P);
-        // myMap.rooms->currentRoom.spawnEnBull();
+        myMap.rooms->currentRoom.spawnEnBull();
+        myMap.rooms->currentRoom.allEnBullet_move(P);
         myMap.rooms->currentRoom.drawLook();
         refresh();
         wrefresh(myMap.rooms->currentRoom.getWindow());
-        // myMap.rooms->currentRoom.allEnBullet_move(P);
         switch (ch)
         {
         case 'a':

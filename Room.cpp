@@ -1042,54 +1042,6 @@ void Room::enemyRemove(Enemy en)
     }
 }
 
-/* visto che il protagonista muore al contatto con un nemico bisogna semplicemnte mettere il menù di morte invece che sta roba
-else if (c_next == ACS_PI)
-{
-    int life_now = P.current_life;
-    life_now -= e.atk_damage;
-    if (life_now <= 0)
-    {
-        // DA INSERIRE MENU' DI MORTE
-    }
-    if (life_now > 0)
-    {
-        chtype c_next2;
-        pos next_2;
-        do
-        {
-            int new_dir = rand() % 4;
-            c_next2 = checkNextPos(next, new_dir);
-            next_2 = nextPos(next, new_dir);
-        } while (c_next2 != ' ');
-
-        placeObject(next_2, e.tag);
-        placeObject(next, ' ');
-        e.position = next_2;
-    }
-}
-*/
-/*
- else if (c_next == ACS_BULLET)
- {
-     // qui va aggiunto un controllo ma prima mi deve funzionare la parte dei proittili
-     e.current_life -= P.atk_damage;
-     if (e.current_life <= 0)
-     {
-         placeObject(e.position, ' ');
-         enemyRemove(e);
-         if (this->objects.enemies == NULL)
-         {
-             placePower(1);
-             // richiamare spwan artifact
-             // placeArtifacts(1);
-             // openDoors(true);
-         }
-     }
- }
- */
-
-// prova anna per collisioni proiettili
-// fra puoi andare avanti da qui se vuoi o rifalra da capo, comunque mancano ancora molte collisioni
 
 void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
 {
@@ -1181,54 +1133,56 @@ void Room::spawnEnBull()
     pListEnemies en_tmp = objects.enemies;
     bullet b;
     b.direction = rand() % 4;
+    //b.bullet_tag = ACS_DEGREE;
 
     while (en_tmp != NULL)
     {
-        switch (en_tmp->e.key)
+        if(en_tmp->e.key != 2)
         {
-        case 1:
-            b.bullet_damage = 20;
-            break;
-        case 3:
-            b.bullet_damage = 30;
-            break;
-        default:
-            break;
+           switch (en_tmp->e.key)
+            {
+            case 1:
+                b.bullet_damage = 20;
+                break;
+            case 3:
+                b.bullet_damage = 30;
+                break;
+            default:
+                break;
+            }
+            pos now = en_tmp->e.position;
+            chtype c_next = checkNextPos(now, b.direction);
+            pos next = nextPos(now, b.direction);
+            if (c_next == ' ')
+            {
+                b.bulletpos = next;
+                placeObject(b.bulletpos, b.bullet_tag);
+                enBullHeadInsert(b);
+            }
         }
-
-        pos now = en_tmp->e.position;
-        chtype c_next = checkNextPos(now, b.direction);
-        pos next = nextPos(now, b.direction);
-        if (c_next == ' ')
-        {
-            b.bulletpos = next;
-            this->placeObject(b.bulletpos, b.bullet_tag);
-            this->enBullHeadInsert(b);
-        }
-
         en_tmp = en_tmp->next;
     }
 }
 
 // da rivedere
-void Room::enBullet_move(bullet b, Protagonist &p)
+void Room::enBullet_move(bullet &b, Protagonist &p)
 {
     pos now = b.bulletpos;
     pos next = nextPos(now, b.direction);
     chtype c_next = checkNextPos(now, b.direction);
     if (c_next == ' ')
     {
-        placeObject(next, b.bullet_tag);
         placeObject(now, ' ');
+        placeObject(next, b.bullet_tag);
         b.bulletpos = next;
     }
     if (c_next == ACS_PI) // se il proiettile incontra un nemico il priettile viene cancellato e il nemico perde i danni
     {
-        int life_now = p.current_life;
-        life_now -= b.bullet_damage;
-        if (life_now <= 0)
+        p.current_life -= b.bullet_damage;
+        if (p.current_life <= 0)
         {
-            // DA INSERIRE MENU' DI MORTE
+            placeObject(next, ' ');
+            //MENU' MORTE
         }
         placeObject(now, ' ');
         bullet_enemyRemove(b);
@@ -1239,39 +1193,12 @@ void Room::enBullet_move(bullet b, Protagonist &p)
         placeObject(now, ' ');
         bullet_enemyRemove(b);
     }
-    // non ci sono collisioni tra i proiettili del nemico e gli artefatti
+    // non ci sono collisioni tra i proiettili del nemico e i poteri
 
-    if (c_next == 'P') // COLLISIONE PROIETTILE-POTERE
+    if (c_next == 'C' || c_next == 'R' || c_next == '$' || c_next == '%') // COLLISIONE PROIETTILE-ARTEFATTO
     {
-        pos next_P = nextPos(next, b.direction); // posizione dopo il potere
-        chtype c_nextP = checkNextPos(next, b.direction);
-
-        if (c_nextP == ' ') // dopo il potere c'è uno spazio vuoto
-        {
-            placeObject(now, ' ');
-            placeObject(next_P, ACS_BULLET);
-            b.bulletpos = next_P;
-        }
-        else if (c_nextP == ACS_VLINE || c_nextP == ACS_HLINE || c_nextP == ACS_CKBOARD) // dopo il potere c'è un muro
-        {
-            placeObject(now, ' ');
-            bullet_enemyRemove(b);
-        }
-        else if (c_nextP == ACS_PI)
-        {
-            p.current_life -= b.bullet_damage;
-            if (p.current_life <= 0)
-            {
-                // MENU' di MORTE
-            }
-            placeObject(now, ' ');
-            bullet_enemyRemove(b);
-        }
-        else if (c_nextP == ACS_BLOCK || c_nextP == ACS_NEQUAL || c_nextP == '@')
-        {
-            placeObject(now, ' ');
-            bullet_enemyRemove(b);
-        }
+        placeObject(now, ' ');
+        bullet_enemyRemove(b);
     }
     if (c_next == ACS_BLOCK || c_next == ACS_NEQUAL || c_next == '@') // COLLISIONE PRIOETTILE NEMICO
     {
@@ -1301,7 +1228,6 @@ void Room::enBullet_move(bullet b, Protagonist &p)
 
             if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.y == next.y)
             {
-                flag = true;
                 if (tmp->B.direction == b.direction + 2 || tmp->B.direction == b.direction - 2)
                 {
                     // direzione sulla stessa retta, stanno per scontrarsi frontalmente, scambio pos
@@ -1313,24 +1239,15 @@ void Room::enBullet_move(bullet b, Protagonist &p)
                     pos allyPos_next = nextPos(next, tmp->B.direction);
                     chtype c_allyPos = checkNextPos(next, tmp->B.direction);
 
-                    if (c_allyPos == ' ')
-                    {
-                        tmp->B.bulletpos = allyPos_next;
-                        b.bulletpos = next;
-                        placeObject(allyPos_next, ACS_BULLET);
-                        placeObject(now, ' ');
-                    }
-                    // manca il controllo con il potere
-                    /*else
-                    {
-                        // rimuovo il proiettile alleato perchè ha fatto  collisione
-                        // placeObject(now, ' ');
-                        // p.bulletRemove(tmp, tmp->B); // perchè? basta far muovere prima il proiettile alleato e dopo quello nemico
-                        // non cancelliamo proiettili alleati a caso
-                        //guarda come ho fatto dallo schema su one note
-                    }
-                    */
+                    //if (c_allyPos == ' ')
+                    //{
+                    tmp->B.bulletpos = allyPos_next;
+                    b.bulletpos = next;
+                    placeObject(allyPos_next, ACS_BULLET);
+                    placeObject(now, ' ');
+                    //}
                 }
+                flag = true;
                 tmp = tmp->next;
             }
         }
@@ -1358,8 +1275,7 @@ void Room::allEnBullet_move(Protagonist &p)
     p_bulletsEnemies enBulltmp = objects.bulletEnemies;
     while (enBulltmp != NULL)
     {
-        bullet enB = enBulltmp->B;
-        enBullet_move(enB, p);
+        enBullet_move(enBulltmp->B, p);
         enBulltmp = enBulltmp->next;
     }
 }
@@ -1445,3 +1361,35 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
         break;
     }
 }
+/*
+       pos next_P = nextPos(next, b.direction); // posizione dopo il ARTEFATTO
+        chtype c_nextP = checkNextPos(next, b.direction);
+
+        if (c_nextP == ' ') // dopo l' ARTEFATTO c'è uno spazio vuoto
+        {
+            placeObject(now, ' ');
+            placeObject(next_P, ACS_BULLET);
+            b.bulletpos = next_P;
+        }
+        else if (c_nextP == ACS_VLINE || c_nextP == ACS_HLINE || c_nextP == ACS_CKBOARD) // dopo l' ARTEFATTO c'è un muro
+        {
+            placeObject(now, ' ');
+            bullet_enemyRemove(b);
+        }
+        else if (c_nextP == ACS_PI)
+        {
+            p.current_life -= b.bullet_damage;
+            if (p.current_life <= 0)
+            {
+                placeObject(next, ' ');
+                //MENU' MORTE
+            }
+            placeObject(now, ' ');
+            bullet_enemyRemove(b);
+        }
+        else if (c_nextP == ACS_BLOCK || c_nextP == ACS_NEQUAL || c_nextP == '@')
+        {
+            placeObject(now, ' ');
+            bullet_enemyRemove(b);
+        }
+*/
