@@ -922,7 +922,7 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         Room::placeArtifacts();
         flag = 2;
     }
-    else if (Room::getTile(newPos) == '*') // hits a bullet, the flag is set to 3
+    else if (Room::getTile(newPos) == ACS_DEGREE) // hits a bullet, the flag is set to 3
     {
         p_bulletsEnemies tmp1 = this->objects.bulletEnemies;
         // p_bulletlist tmp2 = p.getHeadB();
@@ -1076,7 +1076,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         }
     }
  
-    else if(c_next == '*')
+    else if(c_next == ACS_DEGREE)
     {
         p_bulletsEnemies tmp_en = this->objects.bulletEnemies;
         while (tmp_en != NULL)
@@ -1132,7 +1132,7 @@ void Room::spawnEnBull()
     pListEnemies en_tmp = objects.enemies;
     bullet b;
     b.direction = rand() % 4;
-    b.bullet_tag = '*';
+    b.bullet_tag = ACS_DEGREE;
 
     while (en_tmp != NULL)
     {
@@ -1186,7 +1186,6 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
         }
         else
         {
-
             bullet_enemyRemove(b);
         }
     }
