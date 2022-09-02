@@ -1095,7 +1095,9 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
     }
     else if(c_next == ACS_PI)
     {
+        placeObject(now, ' ');
         placeObject(next, e.tag);
+        e.position = next;
         //MENU' DI MORTE
     }
     else if (c_next == ACS_BULLET)
@@ -1122,6 +1124,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
                 bullet_enemyRemove(tmp_en->B);
                 placeObject(now, ' ');
                 placeObject(next, e.tag);
+                e.position =  next;
             }
         }
     }
