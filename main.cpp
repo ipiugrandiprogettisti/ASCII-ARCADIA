@@ -12,7 +12,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     initscr();
-    halfdelay(1);
+    halfdelay(2);
     nodelay(stdscr, TRUE);
     setlocale(LC_ALL, "");
 

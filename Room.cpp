@@ -922,12 +922,11 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         Room::placeArtifacts();
         flag = 2;
     }
-    else if (Room::getTile(newPos) == ACS_BULLET) // hits a bullet, the flag is set to 3
+    else if (Room::getTile(newPos) == '*') // hits a bullet, the flag is set to 3
     {
         p_bulletsEnemies tmp1 = this->objects.bulletEnemies;
         // p_bulletlist tmp2 = p.getHeadB();
-        bool found = false;
-        while (tmp1 != NULL && !found)
+        while (tmp1 != NULL)
         {
             if (tmp1->B.direction == direction && tmp1->B.bulletpos.y == newPos.y && tmp1->B.bulletpos.x == newPos.x)
             {
@@ -945,7 +944,6 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
 
                     bullet_enemyRemove(tmp1->B);
                 }
-                found = true;
             }
 
             tmp1 = tmp1->next;
@@ -1064,9 +1062,8 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
     else if (c_next == ACS_BULLET)
     {
         p_bulletlist tmp = P.getHeadB();
-        p_bulletsEnemies tmp_en = this->objects.bulletEnemies;
-        bool flag = false;
-        while (tmp != NULL && !flag)
+
+        while (tmp != NULL)
         {
             if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.x == next.x)
             {
@@ -1074,25 +1071,27 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
                 enemyRemove(e);
                 placeObject(now, ' ');
                 placeObject(next, ' ');
-                flag = true;
             }
             tmp = tmp->next;
         }
-        if (flag == false)
+    }
+ 
+    else if(c_next == '*')
+    {
+        p_bulletsEnemies tmp_en = this->objects.bulletEnemies;
+        while (tmp_en != NULL)
         {
-            while (tmp_en != NULL && !flag)
+            if (tmp_en->B.bulletpos.x == next.x && tmp_en->B.bulletpos.y == next.y)
             {
-                if (tmp_en->B.bulletpos.x == next.x && tmp_en->B.bulletpos.y == next.y)
-                {
-                    bullet_enemyRemove(tmp_en->B);
-                    placeObject(now, ' ');
-                    placeObject(next, e.tag);
-                    e.position = next;
-                    flag = true;
-                }
-                tmp_en = tmp_en->next;
+                bullet_enemyRemove(tmp_en->B);
+                placeObject(now, ' ');
+                placeObject(next, e.tag);
+                e.position = next;
+                    
             }
+            tmp_en = tmp_en->next;
         }
+        
     }
 };
 
@@ -1133,7 +1132,7 @@ void Room::spawnEnBull()
     pListEnemies en_tmp = objects.enemies;
     bullet b;
     b.direction = rand() % 4;
-    //b.bullet_tag = ACS_DEGREE;
+    b.bullet_tag = '*';
 
     while (en_tmp != NULL)
     {
@@ -1176,18 +1175,22 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
         placeObject(next, b.bullet_tag);
         b.bulletpos = next;
     }
-    if (c_next == ACS_PI) // se il proiettile incontra un nemico il priettile viene cancellato e il nemico perde i danni
+    else if (c_next == ACS_PI) // se il proiettile incontra un nemico il priettile viene cancellato e il nemico perde i danni
     {
-        p.current_life -= b.bullet_damage;
-        if (p.current_life <= 0)
-        {
-            placeObject(next, ' ');
-            //MENU' MORTE
-        }
         placeObject(now, ' ');
-        bullet_enemyRemove(b);
+        bool dead = p.takeDamage(b.bullet_damage);
+        if (dead == true)
+        {
+            placeObject(p.getPosition(), ' ');
+            
+        }
+        else
+        {
+
+            bullet_enemyRemove(b);
+        }
     }
-    if (c_next == ACS_VLINE || c_next == ACS_HLINE || c_next == ACS_CKBOARD) // COLLISIONI PROIETTILE-MURO
+    else if (c_next == ACS_VLINE || c_next == ACS_HLINE || c_next == ACS_CKBOARD) // COLLISIONI PROIETTILE-MURO
     {
         // cancello il proiettile e lo rimuovo dalla lista
         placeObject(now, ' ');
@@ -1195,12 +1198,12 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
     }
     // non ci sono collisioni tra i proiettili del nemico e i poteri
 
-    if (c_next == 'C' || c_next == 'R' || c_next == '$' || c_next == '%') // COLLISIONE PROIETTILE-ARTEFATTO
+    else if (c_next == 'C' || c_next == 'R' || c_next == '$' || c_next == '%') // COLLISIONE PROIETTILE-ARTEFATTO
     {
         placeObject(now, ' ');
         bullet_enemyRemove(b);
     }
-    if (c_next == ACS_BLOCK || c_next == ACS_NEQUAL || c_next == '@') // COLLISIONE PRIOETTILE NEMICO
+    else if (c_next == ACS_BLOCK || c_next == ACS_NEQUAL || c_next == '@') // COLLISIONE PRIOETTILE NEMICO
     {
         // cancello il proiettile e lo rimuovo dalla lista
         placeObject(now, ' ');
@@ -1208,22 +1211,13 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
     }
     // COLLISIONE PROIETTILE - PROIETTILE
     // da rivedere
-    if (c_next == ACS_BULLET)
+    
+    else if (c_next == ACS_BULLET)
     {
-        p_bulletsEnemies tmpEn = objects.bulletEnemies;
         p_bulletlist tmp = p.getHeadB();
         bool flag = false;
-        /*
-        bisogna capire la direzione del proiettile nemico
-        se sono perpendicolari basta muovere di una posizione proiettile nemico
-        e poi posizionare proiettile all
 
-        se sono direzionati nella stessa retta sono diretti uno contro l'altro,
-        non possono avere la stessa direzione
-        in questo caso basta scambiarli di posizione
-        */
-        // scorro lista proiettili nemici per capire quale proiettile è in quella pos, e mi salvo la direzione
-        while (tmp != NULL)
+        while (tmp != NULL && !flag)
         {
 
             if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.y == next.y)
@@ -1251,23 +1245,25 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
                 tmp = tmp->next;
             }
         }
-        if (flag == false) // vuol dire che il proiettile che ha incontrato era un altro proiettile nemico
-        {
-            // scambio anche nel caso di collisione PROIETTILE NEMICO-PROIETTILE NEMICO(?)
-            // adesso ho messo di no poi al massimo si cambia
-            while (tmpEn != NULL)
-            {
-                if (tmpEn->B.bulletpos.x == next.x && tmpEn->B.bulletpos.y == next.y)
-                {
-                    placeObject(next, ' ');
-                    placeObject(now, ' ');
-                    bullet_enemyRemove(b);
-                    bullet_enemyRemove(tmpEn->B);
-                }
-                tmpEn = tmpEn->next;
-            }
-        }
     }
+    /*
+    else if(c_next == ACS_DEGREE) // collisione col proiettile nemico
+    {
+        p_bulletsEnemies tmpEn = this->objects.bulletEnemies;
+        while (tmpEn != NULL)
+        {
+            if (tmpEn->B.bulletpos.x == next.x && tmpEn->B.bulletpos.y == next.y)
+            {
+                placeObject(next, ' ');
+                placeObject(now, ' ');
+                bullet_enemyRemove(b);
+                bullet_enemyRemove(tmpEn->B);
+            }
+            tmpEn = tmpEn->next;
+        }      
+        
+    }
+    */
 }
 
 void Room::allEnBullet_move(Protagonist &p)
@@ -1361,6 +1357,8 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
         break;
     }
 }
+
+//non toglietele per ora
 /*
        pos next_P = nextPos(next, b.direction); // posizione dopo il ARTEFATTO
         chtype c_nextP = checkNextPos(next, b.direction);
@@ -1391,5 +1389,24 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
         {
             placeObject(now, ' ');
             bullet_enemyRemove(b);
+        }
+*/
+
+/*
+if (flag == false) // vuol dire che il proiettile che ha incontrato era un altro proiettile nemico
+        {
+            // scambio anche nel caso di collisione PROIETTILE NEMICO-PROIETTILE NEMICO(?)
+            // adesso ho messo di no poi al massimo si cambia
+            while (tmpEn != NULL)
+            {
+                if (tmpEn->B.bulletpos.x == next.x && tmpEn->B.bulletpos.y == next.y)
+                {
+                    placeObject(next, ' ');
+                    placeObject(now, ' ');
+                    bullet_enemyRemove(b);
+                    bullet_enemyRemove(tmpEn->B);
+                }
+                tmpEn = tmpEn->next;
+            }
         }
 */
