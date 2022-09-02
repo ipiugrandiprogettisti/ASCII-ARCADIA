@@ -283,12 +283,17 @@ void startGame(WINDOW *myWin)
         myMap.rooms->currentRoom.allEnemyMov(P);
         myMap.rooms->currentRoom.spawnEnBull();
         myMap.rooms->currentRoom.allEnBullet_move(P);
+
+        printInfo(P.getLife(), P.getScore());
+
         myMap.rooms->currentRoom.drawLook();
         refresh();
         wrefresh(myMap.rooms->currentRoom.getWindow());
+
         switch (ch)
         {
         case 'a':
+        case 'A':
 
             // player enters left door
             if (P.position.x == 0)
@@ -316,6 +321,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'd':
+        case 'D':
 
             // player enters right door
             if (P.position.x == 99)
@@ -343,6 +349,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'w':
+        case 'W':
 
             // player enters front door
             if (P.position.y == 0)
@@ -370,6 +377,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 's':
+        case 'S':
 
             // player enters back door
             if (P.position.y == 29)

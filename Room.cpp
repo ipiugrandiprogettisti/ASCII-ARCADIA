@@ -930,7 +930,6 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
         {
             if (tmp1->B.direction == direction && tmp1->B.bulletpos.y == newPos.y && tmp1->B.bulletpos.x == newPos.x)
             {
-                flag = 3;
 
                 Room::placeObject(tmp1->B.bulletpos, ' ');
                 bool dead = p.takeDamage(tmp1->B.bullet_damage);
@@ -948,6 +947,7 @@ int Room::ProtagonistMovement(Protagonist &p, int direction)
 
             tmp1 = tmp1->next;
         }
+        flag = 3;
     }
     else if (Room::getTile(newPos) == ACS_NEQUAL || Room::getTile(newPos) == ACS_BLOCK || Room::getTile(newPos) == '@') // HITS ENEMY, THE FLAG IS SET TO 4
     {
@@ -1040,7 +1040,6 @@ void Room::enemyRemove(Enemy en)
     }
 }
 
-
 void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
 {
     pos now = e.position;
@@ -1075,8 +1074,8 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
             tmp = tmp->next;
         }
     }
- 
-    else if(c_next == ACS_DEGREE)
+
+    else if (c_next == ACS_DEGREE)
     {
         p_bulletsEnemies tmp_en = this->objects.bulletEnemies;
         while (tmp_en != NULL)
@@ -1087,11 +1086,9 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
                 placeObject(now, ' ');
                 placeObject(next, e.tag);
                 e.position = next;
-                    
             }
             tmp_en = tmp_en->next;
         }
-        
     }
 };
 
@@ -1130,7 +1127,7 @@ void Room::oneMove(Protagonist p)
 void Room::spawnEnBull()
 {
     int n = rand() % 4;
-    if(n == 1 || n == 3)
+    if (n == 1 || n == 3)
     {
         pListEnemies en_tmp = objects.enemies;
         bullet b;
@@ -1139,9 +1136,9 @@ void Room::spawnEnBull()
 
         while (en_tmp != NULL)
         {
-            if(en_tmp->e.key != 2)
+            if (en_tmp->e.key != 2)
             {
-            switch (en_tmp->e.key)
+                switch (en_tmp->e.key)
                 {
                 case 1:
                     b.bullet_damage = 2;
@@ -1165,12 +1162,12 @@ void Room::spawnEnBull()
             en_tmp = en_tmp->next;
         }
     }
-    
 }
 
 // da rivedere
 void Room::enBullet_move(bullet &b, Protagonist &p)
 {
+
     pos now = b.bulletpos;
     pos next = nextPos(now, b.direction);
     chtype c_next = checkNextPos(now, b.direction);
@@ -1180,14 +1177,14 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
         placeObject(next, b.bullet_tag);
         b.bulletpos = next;
     }
-    else if (c_next == ACS_PI) // se il proiettile incontra un nemico il priettile viene cancellato e il nemico perde i danni
+    else if (c_next == ACS_PI) // il proiettile incontra il player
     {
         placeObject(now, ' ');
         bool dead = p.takeDamage(b.bullet_damage);
         if (dead == true)
         {
             placeObject(p.getPosition(), ' ');
-            
+            // menu morte
         }
         else
         {
@@ -1215,7 +1212,7 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
     }
     // COLLISIONE PROIETTILE - PROIETTILE
     // da rivedere
-    
+
     else if (c_next == ACS_BULLET)
     {
         p_bulletlist tmp = p.getHeadB();
@@ -1237,7 +1234,7 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
                     pos allyPos_next = nextPos(next, tmp->B.direction);
                     chtype c_allyPos = checkNextPos(next, tmp->B.direction);
 
-                    //if (c_allyPos == ' ')
+                    // if (c_allyPos == ' ')
                     //{
                     tmp->B.bulletpos = allyPos_next;
                     b.bulletpos = next;
@@ -1264,14 +1261,15 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
                 bullet_enemyRemove(tmpEn->B);
             }
             tmpEn = tmpEn->next;
-        }      
-        
+        }
+
     }
     */
 }
 
 void Room::allEnBullet_move(Protagonist &p)
 {
+
     p_bulletsEnemies enBulltmp = objects.bulletEnemies;
     while (enBulltmp != NULL)
     {
@@ -1363,7 +1361,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
     }
 }
 
-//non toglietele per ora
+// non toglietele per ora
 /*
        pos next_P = nextPos(next, b.direction); // posizione dopo il ARTEFATTO
         chtype c_nextP = checkNextPos(next, b.direction);

@@ -35,8 +35,8 @@ int Character::getLife()
 bool Character::takeDamage(int damage_received)
 {
     bool dead = false;
-    int curr_life = getLife();
-    if ((curr_life - damage_received) >= 0)
+    int curr_life = Character::getLife();
+    if ((curr_life - damage_received) > 0)
     {
         this->current_life = (curr_life - damage_received);
     }
