@@ -36,7 +36,7 @@ int Artifact ::getArtLifepoints()
         lifep = 3;
     case '$':
         lifep = 5;
-    case 'ACS_DIAMOND':
+    case '%':
         lifep = 7;
     };
 
@@ -55,7 +55,7 @@ chtype Artifact ::getArtTile()
     case '3':
         r = '$';
     case '4':
-        r = ACS_DIAMOND;
+        r = '%';
     }
     return r;
 }

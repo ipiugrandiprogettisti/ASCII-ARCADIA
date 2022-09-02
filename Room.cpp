@@ -1093,22 +1093,40 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         placeObject(now, ' ');
         e.position = next;
     }
+    else if(c_next == ACS_PI)
+    {
+        placeObject(next, e.tag);
+        //MENU' DI MORTE
+    }
     else if (c_next == ACS_BULLET)
     {
-        // cerco bullet in lista protagonist
         p_bulletlist tmp = P.getHeadB();
+        p_bulletsEnemies tmp_en = this->objects.bulletEnemies;
+        bool flag = false;
         while (tmp != NULL)
         {
             if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.x == next.x)
             {
                 P.bulletRemove(tmp->B);
-                this->enemyRemove(e);
-                this->placeObject(now, ' ');
-                this->placeObject(next, ' ');
+                enemyRemove(e);
+                placeObject(now, ' ');
+                placeObject(next, ' ');
+                flag = true;
+            }
+
+        }
+        if(flag == false)
+        {
+            while(tmp_en->B.bulletpos.x == next.x && tmp_en->B.bulletpos.y == next.y)
+            {
+                bullet_enemyRemove(tmp_en->B);
+                placeObject(now, ' ');
+                placeObject(next, e.tag);
             }
         }
     }
 };
+
 void Room::allEnemyMov(Protagonist &p)
 {
     // prendi lista nemici
