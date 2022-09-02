@@ -683,6 +683,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
                 Enemy workEn = enList->e;
 
                 this->enemyRemove(workEn);
+                P.bulletRemove(b);
                 this->placeObject(posNextP, ' '); // rimuovo en da mappa
                 this->placeObject(now, ' ');      // rimuovo proiettile da mappa
             }
@@ -1078,6 +1079,36 @@ else if (c_next == ACS_PI)
  }
  */
 
+// prova anna per collisioni proiettili
+// fra puoi andare avanti da qui se vuoi o rifalra da capo, comunque mancano ancora molte collisioni
+
+void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
+{
+    pos now = e.position;
+    chtype c_next = checkNextPos(now, dir);
+    pos next = nextPos(now, dir);
+    if (c_next == ' ')
+    {
+        placeObject(next, e.tag);
+        placeObject(now, ' ');
+        e.position = next;
+    }
+    else if (c_next == ACS_BULLET)
+    {
+        // cerco bullet in lista protagonist
+        p_bulletlist tmp = P.getHeadB();
+        while (tmp != NULL)
+        {
+            if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.x == next.x)
+            {
+                P.bulletRemove(tmp->B);
+                this->enemyRemove(e);
+                this->placeObject(now, ' ');
+                this->placeObject(next, ' ');
+            }
+        }
+    }
+};
 void Room::allEnemyMov(Protagonist &p)
 {
     // prendi lista nemici
@@ -1090,15 +1121,7 @@ void Room::allEnemyMov(Protagonist &p)
 
         if (entmp->e.key != 1)
         {
-            pos now = entmp->e.position;
-            chtype c_next = checkNextPos(now, direction);
-            pos next = nextPos(now, direction);
-            if (c_next == ' ')
-            {
-                placeObject(next, entmp->e.tag);
-                placeObject(now, ' ');
-                entmp->e.position = next;
-            }
+            enemy_movement(p, entmp->e, direction);
         }
 
         entmp = entmp->next;

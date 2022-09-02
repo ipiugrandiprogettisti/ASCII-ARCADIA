@@ -197,12 +197,12 @@ public:
     // powers head insert
     void powerHeadinsert(Power p);
 
-    //powers remove
+    // powers remove
     void removePower(chtype tag, pos position);
 
     // artifacts head insert
     void ArtifactHeadinsert(Artifact a);
-    
+
     // removes artifacts
     void removeArtifact(chtype tag, pos position);
 
@@ -225,7 +225,8 @@ public:
     int ProtagonistMovement(Protagonist &p, int direction);
 
     // one enemy movement
-    // void enemy_movement(Enemy e, Protagonist &P);
+
+    void enemy_movement(Protagonist &P, Enemy &e, int dir);
 
     void allEnemyMov(Protagonist &p);
     // checks what's after a position in a certain direction
