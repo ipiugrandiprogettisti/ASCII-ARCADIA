@@ -1,5 +1,9 @@
 #include "header/Character.hpp"
 
+int current_life;
+int max_life;
+int atk_damage;
+int score;
 
 Character::Character()
 {
@@ -49,10 +53,7 @@ bool Character::takeDamage(int damage_received)
 
 int Character::get_score()
 {
-    return this->score;   
+    return this->score;
 }
 
-void Character::set_score(int c)
-{
-    this->score += c;
-}
+

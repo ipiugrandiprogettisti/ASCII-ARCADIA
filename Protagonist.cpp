@@ -1,6 +1,5 @@
 #include "header/Protagonist.hpp"
 
-int score;
 p_bulletlist headB;
 
 Protagonist::Protagonist()
@@ -80,4 +79,10 @@ void Protagonist::bulletRemove(bullet b)
 void Protagonist::gainLife(int p)
 {
     this->current_life += p;
+}
+
+//sets protagonist's score
+void Protagonist::set_score(int newscore)
+{
+    this->score += newscore;
 }

@@ -156,7 +156,7 @@ void Room::placeArtifacts()
 void Room::place_enemies(bool b)
 {
 
-    Enemy en(0, 0, 5, 5, 2, 0, 0, ' ');
+    Enemy en(0, 5, 5, 2, 0, 0, 0, ' ');
 
     int n = rand() % 4;
 
@@ -168,15 +168,12 @@ void Room::place_enemies(bool b)
             en.tag = ACS_BLOCK;
             en.key = 1;
             en.set_score(20);
-            
-    
         }
         else if (n_type <= 80 && n_type > 40)
         {
             en.tag = ACS_NEQUAL;
             en.key = 2;
             en.set_score(30);
-      
         }
         else if (n_type <= 100 && n_type > 80)
         {
@@ -648,12 +645,13 @@ void Room::aBullMov(Protagonist &P, bullet &b)
             {
                 // trovato nemico, me lo salvo
                 Enemy workEn = enList->e;
-                
+
                 P.set_score(workEn.get_score());
+
                 this->enemyRemove(workEn);
-                P.bulletRemove(b);
                 this->placeObject(next, ' '); // rimuovo en da mappa
-                this->placeObject(now, ' ');  // rimuovo proiettile da mappa
+                P.bulletRemove(b);
+                this->placeObject(now, ' '); // rimuovo proiettile da mappa
             }
             enList = enList->next;
         }
@@ -1025,21 +1023,21 @@ void Room::enemyRemove(Enemy en)
 
 void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
 {
-    pos now = e.position;
+    pos now = e.getPosition();
     chtype c_next = checkNextPos(now, dir);
     pos next = nextPos(now, dir);
     if (c_next == ' ')
     {
-        placeObject(next, e.tag);
-        placeObject(now, ' ');
-        e.position = next;
+        Room::placeObject(next, e.tag);
+        Room::placeObject(now, ' ');
+        e.setPosition(next.y, next.x);
     }
     else if (c_next == ACS_PI)
     {
         P.takeDamage(P.getLife());
-        placeObject(now, ' ');
-        placeObject(next, e.tag);
-        e.position = next;
+        Room::placeObject(now, ' ');
+        Room::placeObject(next, e.tag);
+        e.setPosition(next.y, next.x);
         // MENU' DI MORTE
     }
     else if (c_next == ACS_BULLET)
@@ -1050,10 +1048,11 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         {
             if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.x == next.x)
             {
+                P.set_score(e.get_score());
                 P.bulletRemove(tmp->B);
-                enemyRemove(e);
-                placeObject(now, ' ');
-                placeObject(next, ' ');
+                Room::enemyRemove(e);
+                Room::placeObject(now, ' ');
+                Room::placeObject(next, ' ');
             }
             tmp = tmp->next;
         }
@@ -1069,7 +1068,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
                 bullet_enemyRemove(tmp_en->B);
                 placeObject(now, ' ');
                 placeObject(next, e.tag);
-                e.position = next;
+                e.setPosition(next.y, next.x);
             }
             tmp_en = tmp_en->next;
         }

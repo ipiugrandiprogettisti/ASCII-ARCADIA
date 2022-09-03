@@ -41,4 +41,7 @@ public:
     // increases life basing on the gained artifact
     void gainLife(int p);
 
+    //sets protagonist's score;
+    void set_score(int newscore);
+
 };
