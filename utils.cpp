@@ -2,7 +2,6 @@
 #include <ctime>
 
 // custom itoa, converts int to const char *
-// FIXME problema append, a volte viene stampato garbage... problemi con \0 finale DA TESTARE ANCHE QUI SE C'È PROBLEMA
 MyString itoa(int num)
 {
     MyString str;
@@ -14,19 +13,16 @@ MyString itoa(int num)
     }
 
     if (num == 0)
-        // str.append('0');
         str += '0';
 
     for (int i = 0; num > 0; i++)
     {
         char c = '0' + num % 10;
-        // str.append(c);
         str += c;
         num = num / 10;
     }
 
     if (isNeg)
-        // str.append('-');
         str += '-';
 
     str.reverse();
@@ -63,10 +59,7 @@ void checkColors()
     }
 }
 
-// listRooms functions
-// head insert
-
-// clear the screen with " "
+// clear the screen with " " in int delay seconds
 void clearScreen(int y, int x, int length, WINDOW *win, int delay)
 {
     if (delay > 0)

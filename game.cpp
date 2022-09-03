@@ -124,7 +124,7 @@ int getMenu(WINDOW *myWin)
             clrtoeol();
             wrefresh(myWin);
             if (selectedItem - 1 < MIN_ITEMS)
-                selectedItem = MAX_ITEMS - 1; // reset selectedItem to MAX_ITEMS (2) //Forse, fixare
+                selectedItem = MAX_ITEMS - 1; // reset selectedItem to MAX_ITEMS (2)
             else
                 selectedItem--;
             printMenu(selectedItem, MAX_ITEMS, menuItems);
@@ -176,7 +176,7 @@ void printDebug(int n)
     mvaddstr(10, 0, str.get());
 }
 
-// FIXME: a volte la stessa stanza è ripetuta 2 volte di fila
+// enters new room
 Map crossRoom(int enteringSide, Map myMap)
 {
     MyString str;
@@ -188,7 +188,7 @@ Map crossRoom(int enteringSide, Map myMap)
         refresh();
         wrefresh(myMap.rooms->currentRoom.getWindow());
 
-        if (myMap.changeRoom(1)) // changeroom ritorna true se si è cambiata stanza
+        if (myMap.changeRoom(1)) // changeroom returns true if room has changed
         {
             myMap.rooms->currentRoom.drawLook();
             printRoomKey(myMap.rooms->currentRoom.getKey());
@@ -212,18 +212,7 @@ Map crossRoom(int enteringSide, Map myMap)
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
     }
-    else
-    {
-        /*str += "Non esite (o è chiusa) nessuna stanza in ";
-        str += itoa(enteringSide);
-        str += " SIDE";
-        mvaddstr(0, 56, str.get());
-        refresh();
-        wrefresh(myMap.rooms->currentRoom.getWindow());
-        clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
-        str.reset();*/
-    }
-
+    
     str.reset();
 
     return myMap;
@@ -256,11 +245,6 @@ void startGame(WINDOW *myWin)
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
-    // DEBUG INFO
-    // myMap.createRooms(-1, NULL); // first room
-    // debugDoors(myMap, 0, 40);
-    // debugRoom(myMap);
-    // debugDoors(myMap, 0, 40);
 
     MyString str;
     pos position;
@@ -268,7 +252,6 @@ void startGame(WINDOW *myWin)
     bool flag = false;
 
     // KEYBOARD EVENT LISTENER
-
     while ((ch = getch()))
     {
         if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL)
@@ -430,13 +413,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'o': // opens all doors
-            myMap.rooms->currentRoom.openDoors(true);
-
-            /*str += "Cols: ";
-            str += itoa(COLS);
-            str += "Lines: ";
-            str += itoa(LINES);
-            mvaddstr(0, 0, str.get());*/
+            myMap.rooms->currentRoom.openDoors(true);           
             break;
 
         case 'p': // closes all doors

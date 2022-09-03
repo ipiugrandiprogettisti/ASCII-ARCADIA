@@ -82,10 +82,9 @@ void placeDoor(WINDOW *win, door doorInfo);
 class Room
 {
 protected:
-    int seed = 0; // FIXME TOGLIERE; FIXATO!->1652101842 da stanza bloccata (tile bloccato) con 15 walls
     int key;      // unique
     WINDOW *win;
-    struct door doorInfo[MAXDOORS]; // these are the door information. doorInfo[0] = previous door, [1] = next door
+    struct door doorInfo[MAXDOORS]; // these are the doors information. doorInfo[0] = previous door, [1] = next door
     objContainer objects;
     bool drawn = false; // specifies whether room has already been drawn or not
     // this is what the room looks like by default; default is only bordered, no walls. Max length of the room is WIDTH and HEIGTH
@@ -158,8 +157,8 @@ public:
     // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
     struct door getDoor(int isNextRoom);
 
-    // sets up the room if myDoor doesnt exist (-1), then it is the first room being set up
-    bool setUp(int maxCols, int maxLines, struct door doorInfo);
+    // sets up the room if myDoor doesnt exist (-1), then it is the first room being set up. myDoor is previous door of the new room, empty if first room
+    bool setUp(int maxCols, int maxLines, struct door myDoor);
 
     // draws the room
     void drawLook();

@@ -1,5 +1,4 @@
 #include "header/myWindow.hpp"
-// TODO: creare classe MyWindow e implementare print
 
 // return new window
 WINDOW *newWindow(int height, int width, int starty, int startx)

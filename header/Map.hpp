@@ -15,9 +15,6 @@ struct listRooms
 typedef listRooms *pListRooms;
 
 // listRooms functions
-// head insert
-pListRooms insertHead(pListRooms, int val);
-
 // tail insert
 pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey);
 
@@ -28,7 +25,6 @@ private:
 
 protected:
     WINDOW *mainWin; // main window (terminal)
-    int totalRooms;  // number of total rooms
 
 public:
     pListRooms rooms; // list of rooms

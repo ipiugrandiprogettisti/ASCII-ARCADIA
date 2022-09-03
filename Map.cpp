@@ -5,7 +5,6 @@
 Map::Map(WINDOW *win)
 {
     mainWin = win;
-    // totalRooms = 1; // game starts with only 1 room
     this->freeKey = 0;
 
     rooms = new listRooms;
@@ -36,15 +35,6 @@ WINDOW *Map::getRoomWindow(int key)
     return rooms->currentRoom.getWindow();
 }
 
-// head insert
-pListRooms insertHead(pListRooms myListRoom, Room roomInfo)
-{
-    pListRooms newListRooms = new listRooms;
-    newListRooms->currentRoom = roomInfo;
-    newListRooms->nextRoom = myListRoom;
-
-    return newListRooms;
-}
 
 // tail insert
 pListRooms insertTail(pListRooms myListRoom, Room roomInfo, door previousDoor)
@@ -81,22 +71,18 @@ pListRooms insertTail(pListRooms myListRoom, Room roomInfo, door previousDoor)
     return myListRoom;
 }
 
-// funzione che va avanti di un nodo
+// go to next node
 pListRooms goNextRoom(pListRooms myListRooms, WINDOW *win)
 {
     if (myListRooms->nextRoom != NULL)
     {
         myListRooms = myListRooms->nextRoom;
     }
-    /*else
-    {
-        // cout << "Sei arrivato alla fine della lista";
-    }*/
 
     return myListRooms;
 }
 
-// funzione che va indietro di un nodo
+// go to previous node
 pListRooms goPreviousRoom(pListRooms myListRooms)
 {
     
@@ -106,16 +92,12 @@ pListRooms goPreviousRoom(pListRooms myListRooms)
     {
         tmpList = tmpList->previousRoom;
     }
-    /*else
-    {
-        // cout << "Sei in cima alla lista";
-    }*/
     myListRooms = tmpList;
 
     return myListRooms;
 }
 
-// changes room, 1 = next room, 0 = previous room. La funzione ritorna true se si è cambiata stanza
+// changes room, 1 = next room, 0 = previous room. returns true if succeeds
 bool Map::changeRoom(int isNextRoom)
 {
     bool success = false;
@@ -138,7 +120,7 @@ bool Map::changeRoom(int isNextRoom)
     return success;
 }
 
-// Create next room. If already exists next room returns false
+// Creates next room. If already exists next room returns false
 bool Map::createRoom(door previousDoor)
 {
     bool success = false;
@@ -155,7 +137,7 @@ bool Map::createRoom(door previousDoor)
     return success;
 }
 
-// enters new room. return true if succeeds. isNextRoom = 0 previous room, = 1 next room
+// enters new room. returns true if succeeds. isNextRoom = 0 previous room, = 1 next room
 bool Map::enterRoom(int isNextRoom)
 {
     bool entered = false;

@@ -30,8 +30,6 @@ int main(int argc, char *argv[])
 
     WINDOW *myWin = newwin(maxY, maxX, offY, offX);
     int choice = getMenu(myWin); // draw main menu and get user choice: 0: Play, 1: Credits, 2: Exit
-    MyString choiceString = itoa(choice);
-    mvaddstr(0, 0, choiceString.get()); // FIXME stampa??????
     wclear(myWin);
     wrefresh(myWin);
 

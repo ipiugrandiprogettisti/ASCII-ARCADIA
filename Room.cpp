@@ -23,16 +23,12 @@ void Room::placeDoor(door doorInfo)
     {
     case 0: // bottom side
     case 2: // top side
-        // this->look[doorInfo.y][doorInfo.x - 1] = ACS_RTEE;
         this->placeObject(doorInfo.y, doorInfo.x - 1, ACS_RTEE);
-        // this->look[doorInfo.y][doorInfo.x + 1] = ACS_LTEE;
         this->placeObject(doorInfo.y, doorInfo.x + 1, ACS_LTEE);
         break;
     case 1: // left side
     case 3: // rigth side
-        // this->look[doorInfo.y - 1][doorInfo.x] = ACS_BTEE;
         this->placeObject(doorInfo.y - 1, doorInfo.x, ACS_BTEE);
-        // this->look[doorInfo.y + 1][doorInfo.x] = ACS_TTEE;
         this->placeObject(doorInfo.y + 1, doorInfo.x, ACS_TTEE);
         break;
     default:
@@ -40,10 +36,8 @@ void Room::placeDoor(door doorInfo)
     }
 
     if (doorInfo.isOpen == false)
-        // this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.close;
         this->placeObject(doorInfo.y, doorInfo.x, doorInfo.tile.close);
     else
-        // this->look[doorInfo.y][doorInfo.x] = doorInfo.tile.open;
         this->placeObject(doorInfo.y, doorInfo.x, doorInfo.tile.open);
 }
 
@@ -91,7 +85,7 @@ bool Room::checkTilesAround(pos position, pos previousPosition)
 // places 1 power to open door
 void Room::placePower(bool b)
 {
-    // qui ci va un if che li fa apparire solo dopp che la lista di nemici si è svuotata, ovvero sono tutti morti
+    // FIXME: qui ci va un if che li fa apparire solo dopp che la lista di nemici si è svuotata, ovvero sono tutti morti
     Power p;
     p.tag = 'P';
     chtype rar = p.tag;
@@ -205,7 +199,7 @@ void Room::place_enemies(bool b)
         }
     }
 
-    // qui va funzione per aggiungere enemy en alla lista
+    //FIXME: qui va funzione per aggiungere enemy en alla lista
 }
 
 // random path generator
@@ -248,40 +242,12 @@ void Room::randomPathWall(pos position, int h, int w)
         }
         if (free)
         {
-            // this->look[tmp.y][tmp.x] = ACS_CKBOARD;
             this->placeObject(tmp, ACS_CKBOARD);
             previousPosition = tmp;
         }
     }
 }
 
-// aux function to place walls
-/*void Room::createWall(int width, int heigth, int posY, int posX)
-{
-    for (int i = 0; i < heigth; i++)
-    {
-        for (int k = 0; k < width; k++)
-        {
-            pos position;
-            position.y = i + posY, position.x = k + posX;
-
-            // if (tileIsFree(position))
-            //{
-            placeObject(position, ACS_CKBOARD);
-            freeRowCol(position);
-            //}
-            //else FIXME finire freeRowCol
-          //  {
-           //     freeRowCol(position);
-           // }
-
-            //if ((i == 0 || k == 0 || i == heigth - 1 || k == width - 1) || tileIsFree(position))
-            //{
-            //    placeObject(position, ACS_CKBOARD);
-            //}
-        }
-    }
-}*/
 
 // Constructor
 Room ::Room()
@@ -333,15 +299,11 @@ struct objContainer Room::getObjectList()
     return objects;
 }
 
-// returns the given room's door information; if door doesn't exist returns a "-1" door (check struct door)
-// isNextRoom= 1 se è la porta alla stanza successiva, =0 se dà sulla stanza precedente
+// returns the given room's door information; if door doesn't exist returns a "-1" door (check struct door). 1 next room, 0 previous room
 struct door Room::getDoor(int isNextRoom)
 {
     struct door myDoor;
     myDoor = doorInfo[isNextRoom];
-
-    /*if (doorInfo[isNextRoom].x > -1 || doorInfo[isNextRoom].y > -1)
-        myDoor = doorInfo[isNextRoom];*/
 
     return myDoor;
 }
@@ -388,8 +350,6 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
     int offY = (maxLines - WIDTH) / 2, offX = (maxCols - HEIGTH) / 2; // offset; useful to center box
 
     win = newwin(WIDTH, HEIGTH, offY, offX); // create a CENTERED box
-    // this->look[2][2] = (char)key + 48;       // debug info, prints room key
-    // this->placeObject(2, 2, (char)key + 48); // debug info, prints room key
 
     // PLACING DOORS
     if (previousRoomExists) // checking where the previous door was in order to place it on the opposite side after
@@ -426,14 +386,13 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         doorInfo[0] = tmpDoor;
     }
 
-    // now we have to draw 1 to (4-1) doors (previous one is already placed)
+    // now we have to draw 1 to (2-1) doors (previous one is already placed)
 
     int prevDoorsNumber = 0;
     if (previousRoomExists)
         prevDoorsNumber = 1;
 
-    // srand(4); // FIXME: seed casuale
-    srand(time(0)); // seed is 0
+    srand(time(0)); // random seed
 
     int i = 0;
 
@@ -498,16 +457,12 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         int h = (rand() % (MAXWALLHEIGTH)) + 1; // random number of walls
         int w = (rand() % (MAXWALLWIDTH)) + 1;  // random number of walls
 
-        /*createWall(1, 1, offsetTOPBOTTOM, offsetSXDX);
-        createWall(1, 1, 26, offsetSXDX);
-        createWall(1, 1, offsetTOPBOTTOM, 93);
-        createWall(1, 1, 26, 93);*/
+        
         pos pos1;
         pos1.x = posX;
         pos1.y = posY;
 
         randomPathWall(pos1, h, w);
-        // createWall(w, h, posY, posX);
     }
 
     // place artifacts
