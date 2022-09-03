@@ -673,9 +673,11 @@ void Room::aBullMov(Protagonist &P, bullet &b)
                 P.bulletRemove(b);
                 this->placeObject(next, empty);
                 this->bullet_enemyRemove(tmpnem->B);
+                /*
                 this->drawLook();
                 wrefresh(this->getWindow());
                 refresh();
+                */
             }
             tmpnem = tmpnem->next;
         }
@@ -1175,7 +1177,7 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
     }
     // COLLISIONE PROIETTILE - PROIETTILE
     // da rivedere
-
+    /*
     else if (c_next == ACS_BULLET)
     {
         p_bulletlist tmp = p.getHeadB();
@@ -1190,12 +1192,15 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
                 this->bullet_enemyRemove(b);
                 this->placeObject(next, ' ');
                 p.bulletRemove(tmp->B);
-                this->drawLook();
-                wrefresh(this->getWindow());
-                refresh();
+                
+                //his->drawLook();
+                //wrefresh(this->getWindow());
+                //refresh();
+                
             }
         }
     }
+    */
     else if (c_next == ACS_DEGREE) // collisione col proiettile nemico
     {
         p_bulletsEnemies tmpEn = this->objects.bulletEnemies;
