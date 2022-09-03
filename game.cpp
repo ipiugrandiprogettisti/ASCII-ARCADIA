@@ -257,13 +257,14 @@ void startGame(WINDOW *myWin)
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
     {
-        if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL)
+        if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL && myMap.rooms->currentRoom.getDrawnPower() == 0)
         {
             myMap.rooms->currentRoom.placePower(true);
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
             flag = true;
+            myMap.rooms->currentRoom.setDrawnPower(1);
         }
         myMap.rooms->currentRoom.allEnemyMov(P);
         myMap.rooms->currentRoom.spawnEnBull();

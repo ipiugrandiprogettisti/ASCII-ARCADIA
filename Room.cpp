@@ -199,7 +199,7 @@ void Room::place_enemies(bool b)
         }
     }
 
-    //FIXME: qui va funzione per aggiungere enemy en alla lista
+    // FIXME: qui va funzione per aggiungere enemy en alla lista
 }
 
 // random path generator
@@ -247,7 +247,6 @@ void Room::randomPathWall(pos position, int h, int w)
         }
     }
 }
-
 
 // Constructor
 Room ::Room()
@@ -326,6 +325,14 @@ void Room::drawLook()
     }
 }
 
+bool Room::getDrawnPower()
+{
+    return this->drawnPower;
+}
+void Room::setDrawnPower(bool b)
+{
+    this->drawnPower = b;
+}
 // sets up the room if myDoor doesnt exist (-1), then it is the first room being set up. myDoor is previous door of the new room, empty if first room
 bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 {
@@ -457,7 +464,6 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         int h = (rand() % (MAXWALLHEIGTH)) + 1; // random number of walls
         int w = (rand() % (MAXWALLWIDTH)) + 1;  // random number of walls
 
-        
         pos pos1;
         pos1.x = posX;
         pos1.y = posY;
@@ -663,9 +669,9 @@ void Room::aBullMov(Protagonist &P, bullet &b)
             if (tmpnem->B.bulletpos.y == next.y && tmpnem->B.bulletpos.x == next.x)
             {
                 flag = true;
-                this->placeObject(now, ' ');
+                this->placeObject(now, empty);
                 P.bulletRemove(b);
-                this->placeObject(next, ' ');
+                this->placeObject(next, empty);
                 this->bullet_enemyRemove(tmpnem->B);
                 this->drawLook();
                 wrefresh(this->getWindow());
@@ -673,6 +679,12 @@ void Room::aBullMov(Protagonist &P, bullet &b)
             }
             tmpnem = tmpnem->next;
         }
+    }
+    else if (nextP == ACS_BULLET)
+    {
+
+        this->placeObject(now, empty);
+        P.bulletRemove(b);
     }
     else if (nextP == 'P') // PROIETTILE -> POTERE
     {
