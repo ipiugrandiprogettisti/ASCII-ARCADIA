@@ -1102,7 +1102,7 @@ void Room::oneMove(Protagonist p)
 // da rivedere
 void Room::spawnEnBull()
 {
-    int n = rand() % 4;
+    int n = rand() % 3;
     if (n == 1)
     {
         pListEnemies en_tmp = objects.enemies;

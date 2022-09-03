@@ -290,7 +290,7 @@ void startGame(WINDOW *myWin)
             count = 0;
         }
 
-        if ((count % 10 == 1))
+        if ((count == 1))
         {
             if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL && myMap.rooms->currentRoom.getDrawnPower() == 0)
             {
