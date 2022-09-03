@@ -184,7 +184,7 @@ void startGame(WINDOW *myWin)
     p_bulletlist headB = NULL;
 
     // creation of the protagonist (player)
-    Protagonist P(0, headB, 10, 10, 1, 1, 1, ACS_PI);
+    Protagonist P(headB, 10, 10, 1, 0, 1, 1, ACS_PI);
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
@@ -192,7 +192,7 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
 
     // spawns protagonist info
-    printInfo(P.getLife(), P.getScore());
+    printInfo(P.getLife(), P.get_score());
 
     // spawns protagonist
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
@@ -232,7 +232,7 @@ void startGame(WINDOW *myWin)
             myMap.rooms->currentRoom.spawnEnBull();
             myMap.rooms->currentRoom.allEnBullet_move(P);
             myMap.rooms->currentRoom.allABullMov(P);
-            printInfo(P.getLife(), P.getScore());
+            printInfo(P.getLife(), P.get_score());
 
             myMap.rooms->currentRoom.drawLook();
             refresh();

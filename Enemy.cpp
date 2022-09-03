@@ -3,6 +3,7 @@
 //constructor
 Enemy::Enemy()
 {
+    score = 0;
     key = 0;
     current_life = 0;
     max_life = 0;
@@ -13,8 +14,9 @@ Enemy::Enemy()
 }
 
 //constructor
-Enemy::Enemy(int key, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, y, x, tag)
+Enemy::Enemy(int score, int key, int current_life, int max_life, int atk_damage, int y, int x, chtype tag) : Character(current_life, max_life, atk_damage, score, y, x, tag)
 {
+    this->score = score;
     this->key = key;
     this->current_life = current_life;
     this->max_life = max_life;
@@ -24,19 +26,3 @@ Enemy::Enemy(int key, int current_life, int max_life, int atk_damage, int y, int
     this->tag = tag;
 }
 
-
-// control when the enemy are alive
-//door open when enemy are deaths
-
-//window da 0 29  altezza , 0 100 larghezza
-
-// casella vuota ' '
-
-//sets random coordintes
-void random_position(int random_y, int random_x){
-
-    srand(time(NULL));
-    random_y = rand()%30;
-    random_x = rand()%100;
-       
-};

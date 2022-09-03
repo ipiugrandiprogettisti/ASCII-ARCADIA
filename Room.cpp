@@ -156,7 +156,7 @@ void Room::placeArtifacts()
 void Room::place_enemies(bool b)
 {
 
-    Enemy en(0, 5, 5, 2, 0, 0, ' ');
+    Enemy en(0, 0, 5, 5, 2, 0, 0, ' ');
 
     int n = rand() % 4;
 
@@ -167,16 +167,22 @@ void Room::place_enemies(bool b)
         {
             en.tag = ACS_BLOCK;
             en.key = 1;
+            en.set_score(20);
+            
+    
         }
-        else if (n_type <= 80 && n_type >= 40)
+        else if (n_type <= 80 && n_type > 40)
         {
             en.tag = ACS_NEQUAL;
             en.key = 2;
+            en.set_score(30);
+      
         }
-        else if (n_type <= 100 && n_type >= 80)
+        else if (n_type <= 100 && n_type > 80)
         {
             en.tag = '@';
             en.key = 3;
+            en.set_score(50);
         }
 
         bool flag = true;
@@ -642,7 +648,8 @@ void Room::aBullMov(Protagonist &P, bullet &b)
             {
                 // trovato nemico, me lo salvo
                 Enemy workEn = enList->e;
-
+                
+                P.set_score(workEn.get_score());
                 this->enemyRemove(workEn);
                 P.bulletRemove(b);
                 this->placeObject(next, ' '); // rimuovo en da mappa

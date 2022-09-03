@@ -19,7 +19,7 @@ typedef bulletlist *p_bulletlist;
 class Protagonist : public Character
 {
 protected:
-    int score;
+
     p_bulletlist headB;
 
 public:
@@ -27,10 +27,7 @@ public:
     Protagonist();
 
     // constructor
-    Protagonist(int score, p_bulletlist headB, int current_life, int max_life, int atk_damage, int y, int x, chtype tag);
-
-    // returns score
-    int getScore();
+    Protagonist(p_bulletlist headB, int current_life, int max_life, int atk_damage, int score, int y, int x, chtype tag);
 
     // returns head to list of ally bullets
     p_bulletlist getHeadB();
