@@ -682,12 +682,23 @@ void Room::aBullMov(Protagonist &P, bullet &b)
             tmpnem = tmpnem->next;
         }
     }
-    else if (nextP == ACS_BULLET)
+    /*else if (nextP == ACS_BULLET)
     {
-
-        this->placeObject(now, empty);
-        P.bulletRemove(b);
-    }
+        p_bulletlist tmpall = P.getHeadB();
+        bool flag = false;
+        while (tmpall)
+        {
+            if (next.x == tmpall->B.bulletpos.x && next.y == tmpall->B.bulletpos.y)
+            {
+                flag = true;
+                //this->placeObject(now, empty);
+                this->placeObject(next, empty);
+                P.bulletRemove(b);
+                P.bulletRemove(tmpall->B);
+            }
+            tmpall = tmpall->next;
+        }
+    }*/
     else if (nextP == 'P') // PROIETTILE -> POTERE
     {
         chtype nextA = checkNextPos(next, b.direction); // chtype dopo potere //due posti dopo bull
