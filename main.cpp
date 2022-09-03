@@ -34,29 +34,29 @@ int main(int argc, char *argv[])
     wrefresh(myWin);
 
     switch (choice) // handle choice
-    {
-    case 2: // EXIT
-        endwin();
-        cout << "You chose to exit\n";
-        return 0;
-        break;
-    case 1: // CREDITS
-        endwin();
-        cout << "You chose to see the credits\n";
-        return 0;
-        break;
-    case 0: // PLAY
-        startGame(myWin);
-        return 0;
-        break;
-    default:
-        endwin();
-        cout << "ERROR:\nWrong choice!\n";
-        exit(1);
-        break;
-    }
-
-    endwin(); // End curses mode
-
+{
+case 2: // EXIT
+    endwin();
+    cout << "You chose to exit\n";
     return 0;
+    break;
+case 1: // CREDITS
+    endwin();
+    cout << "You chose to see the credits\n";
+    return 0;
+    break;
+case 0: // PLAY
+    startGame(myWin);
+    return 0;
+    break;
+default:
+    endwin();
+    cout << "ERROR:\nWrong choice!\n";
+    exit(1);
+    break;
+}
+
+endwin(); // End curses mode
+
+return 0;
 }

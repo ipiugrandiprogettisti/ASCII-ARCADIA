@@ -44,6 +44,7 @@ void debugDoors(Map myMap, int y, int x)
     wrefresh(myMap.rooms->currentRoom.getWindow());
 }
 
+
 // print main menu, sel is selected item to highlight
 void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
 {
@@ -92,6 +93,9 @@ int getMenu(WINDOW *myWin)
     init_pair(2, COLOR_BLACK, COLOR_YELLOW); // color for selected item
     wbkgd(myWin, COLOR_PAIR(1));             // sets all window attribute
     wrefresh(myWin);
+
+   
+
     printMenu(selectedItem, MAX_ITEMS, menuItems);
 
     int ch; // pressed key
@@ -212,7 +216,7 @@ Map crossRoom(int enteringSide, Map myMap)
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
     }
-    
+
     str.reset();
 
     return myMap;
@@ -244,7 +248,6 @@ void startGame(WINDOW *myWin)
     printRoomKey(myMap.rooms->currentRoom.getKey());
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
-
 
     MyString str;
     pos position;
@@ -413,7 +416,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'o': // opens all doors
-            myMap.rooms->currentRoom.openDoors(true);           
+            myMap.rooms->currentRoom.openDoors(true);
             break;
 
         case 'p': // closes all doors
