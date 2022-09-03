@@ -44,6 +44,32 @@ void debugDoors(Map myMap, int y, int x)
     wrefresh(myMap.rooms->currentRoom.getWindow());
 }
 
+// prints ascii art
+void printAscii()
+{
+    int halfY = LINES / 2 - 2;
+    int halfX = COLS / 2 - 2;
+    FILE *asciiArt = fopen("asciiArt.txt", "r");
+    char c;
+    int i = 0, j = 0;
+    MyString line;
+    while ((c = fgetc(asciiArt)) != EOF)
+    {
+
+        if (c != '\n')
+        {
+            line += c;
+        }
+        else
+        {
+            mvaddstr(i+7, halfX - line.getLength()/2, line.get());
+            line.reset();
+            i++;
+            j = 0;
+        }
+    }
+}
+
 
 // print main menu, sel is selected item to highlight
 void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
@@ -94,7 +120,7 @@ int getMenu(WINDOW *myWin)
     wbkgd(myWin, COLOR_PAIR(1));             // sets all window attribute
     wrefresh(myWin);
 
-   
+   printAscii();
 
     printMenu(selectedItem, MAX_ITEMS, menuItems);
 
