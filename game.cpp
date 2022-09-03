@@ -212,7 +212,7 @@ Map crossRoom(int enteringSide, Map myMap)
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
     }
-    
+
     str.reset();
 
     return myMap;
@@ -245,7 +245,6 @@ void startGame(WINDOW *myWin)
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
-
     MyString str;
     pos position;
     int ch; // pressed key
@@ -254,13 +253,14 @@ void startGame(WINDOW *myWin)
     // KEYBOARD EVENT LISTENER
     while ((ch = getch()))
     {
-        if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL)
+        if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL && myMap.rooms->currentRoom.getDrawnPower() == 0)
         {
             myMap.rooms->currentRoom.placePower(true);
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
             flag = true;
+            myMap.rooms->currentRoom.setDrawnPower(1);
         }
         myMap.rooms->currentRoom.allEnemyMov(P);
         myMap.rooms->currentRoom.spawnEnBull();
@@ -413,7 +413,7 @@ void startGame(WINDOW *myWin)
             break;
 
         case 'o': // opens all doors
-            myMap.rooms->currentRoom.openDoors(true);           
+            myMap.rooms->currentRoom.openDoors(true);
             break;
 
         case 'p': // closes all doors

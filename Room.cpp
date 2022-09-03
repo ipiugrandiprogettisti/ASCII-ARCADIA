@@ -325,6 +325,14 @@ void Room::drawLook()
     }
 }
 
+bool Room::getDrawnPower()
+{
+    return this->drawnPower;
+}
+void Room::setDrawnPower(bool b)
+{
+    this->drawnPower = b;
+}
 // sets up the room if myDoor doesnt exist (-1), then it is the first room being set up. myDoor is previous door of the new room, empty if first room
 bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 {
