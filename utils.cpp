@@ -1,33 +1,7 @@
 #include "header/utils.hpp"
+#include <iostream>
 #include <ctime>
 
-// custom itoa, converts int to const char *
-MyString itoa(int num)
-{
-    MyString str;
-    bool isNeg = false;
-    if (num < 0)
-    {
-        isNeg = true;
-        num *= -1;
-    }
-
-    if (num == 0)
-        str += '0';
-
-    for (int i = 0; num > 0; i++)
-    {
-        char c = '0' + num % 10;
-        str += c;
-        num = num / 10;
-    }
-
-    if (isNeg)
-        str += '-';
-
-    str.reverse();
-    return str;
-}
 
 // check if screen size is correct to play the game; 110x40
 void checkScreen(int screenCols, int screenLines)
@@ -38,12 +12,7 @@ void checkScreen(int screenCols, int screenLines)
         move(0, 0);
         printw("Resize your screen...");
         move(1, 0);
-        MyString str;
-        str += "Minimum resolution is ";
-        str += itoa(MIN_LINES);
-        str += "x";
-        str += itoa(MIN_COLS);
-        mvwaddstr(stdscr, 0, 0, str.get());
+        mvprintw(0, 0, "Minimum resolution is %dx%d", MIN_LINES, MIN_COLS);
         getmaxyx(stdscr, screenCols, screenLines);
     }
 }
@@ -70,7 +39,7 @@ void clearScreen(int y, int x, int length, WINDOW *win, int delay)
         {
             for (int i = length; i != 0; i--)
             {
-                mvaddstr(y, x + i - 1, " ");
+                mvprintw(y, x + i - 1, " ");
             }
         }
     }
@@ -78,7 +47,7 @@ void clearScreen(int y, int x, int length, WINDOW *win, int delay)
     {
         for (int i = length; i != 0; i--)
         {
-            mvaddstr(y, x + i - 1, " ");
+            mvprintw(y, x + i - 1, " ");
         }
     }
     refresh();

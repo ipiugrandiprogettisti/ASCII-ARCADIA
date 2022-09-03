@@ -1,10 +1,7 @@
 #pragma once
-#include "MyString.hpp"
+#include <ncurses.h>
 
 const int MIN_COLS = 40, MIN_LINES = 110;
-
-// custom itoa, converts int to const char *
-MyString itoa(int num);
 
 // check if screen size is correct to play the game; 110x40
 void checkScreen(int screenCols, int screenLines);

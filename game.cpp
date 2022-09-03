@@ -1,48 +1,5 @@
 #include "header/game.hpp"
 
-// debug info at top screen printing the room key, cols and lines
-void debugRoom(Map myMap)
-{
-    MyString string1, string2, string3;
-    string1 += "Room key: ";
-    string1 += itoa(myMap.rooms->currentRoom.getKey());
-    mvaddstr(0, 0, string1.get());
-    string2 = "Colonne: ";
-    string2 += itoa(COLS);
-    mvaddstr(1, 0, string2.get());
-    string3 = "Righe: ";
-    string3 += itoa(LINES);
-    mvaddstr(2, 0, string3.get());
-
-    refresh();
-    wrefresh(myMap.rooms->currentRoom.getWindow());
-}
-// debug info at top screen printing the coords of the doors
-void debugDoors(Map myMap, int y, int x)
-{
-    MyString string1, string2, string3, string4;
-    door myDoor = myMap.rooms->currentRoom.getDoor(1);
-    string1 += "Next door: ";
-    string1 += "y= ";
-    string1 += itoa(myDoor.y);
-    string1 += ", x= ";
-    string1 += itoa(myDoor.x);
-    string1 += ", side= ";
-    string1 += itoa(myDoor.side);
-    mvaddstr(y, x, string1.get());
-    myDoor = myMap.rooms->currentRoom.getDoor(0);
-    string2 += "Previous door: ";
-    string2 += "y= ";
-    string2 += itoa(myDoor.y);
-    string2 += ", x= ";
-    string2 += itoa(myDoor.x);
-    string2 += ", side= ";
-    string2 += itoa(myDoor.side);
-    mvaddstr(y + 1, x, string2.get());
-
-    refresh();
-    wrefresh(myMap.rooms->currentRoom.getWindow());
-}
 
 // prints ascii art
 void printAscii()
@@ -52,22 +9,23 @@ void printAscii()
     FILE *asciiArt = fopen("asciiArt.txt", "r");
     char c;
     int i = 0, j = 0;
-    MyString line;
+    
+    //read and print ascii art
     while ((c = fgetc(asciiArt)) != EOF)
     {
-
         if (c != '\n')
         {
-            line += c;
+            mvaddch(i + 7, halfX - 63 + j, c);
+            j++;
         }
         else
         {
-            mvaddstr(i + 7, halfX - line.getLength() / 2, line.get());
-            line.reset();
             i++;
             j = 0;
         }
     }
+
+    fclose(asciiArt);
 }
 
 // print main menu, sel is selected item to highlight
@@ -167,49 +125,22 @@ int getMenu(WINDOW *myWin)
 
 void printRoomKey(int key)
 {
-    MyString str;
-    str += "Room: ";
-    str += itoa(key);
-    clearScreen(0, 0, str.getLength(), stdscr, 0);
-    mvaddstr(0, 0, str.get());
+    clearScreen(0, 0, 10, stdscr, 0);
+    mvprintw(0, 0, "Room: %d", key);
 }
 
 void printInfo(int life, int score)
 {
     clearScreen(0, 15, 204, stdscr, 0);
-    MyString string;
-    string += "HEARTS: ";
-    string += itoa(life);
 
-    mvaddstr(0, 30, string.get());
-
-    MyString string2;
-    string2 += "LIFEPOINTS: ";
-    string2 += itoa(10 * life);
-
-    mvaddstr(0, 80, string2.get());
-
-    MyString string3;
-    string3 += "SCORE: ";
-    string3 += itoa(score);
-
-    mvaddstr(0, 120, string3.get());
-}
-
-void printDebug(int n)
-{
-    MyString str;
-    str += "Debug: ";
-    str += itoa(n);
-    clearScreen(10, 0, str.getLength(), stdscr, 0);
-    mvaddstr(10, 0, str.get());
+    mvprintw(0, 30, "HEARTS: %d", life);
+    mvprintw(0, 80, "LIFEPOINTS: %d", 10*life);
+    mvprintw(0, 120, "SCORE: %d", score);
 }
 
 // enters new room
 Map crossRoom(int enteringSide, Map myMap)
 {
-    MyString str;
-
     if (myMap.rooms->currentRoom.getDoor(1).side == enteringSide && myMap.rooms->currentRoom.getDoor(1).isOpen == true) // GO TO NEXT ROOM
     {
         myMap.createRoom(myMap.rooms->currentRoom.getDoor(1));
@@ -226,9 +157,8 @@ Map crossRoom(int enteringSide, Map myMap)
         }
         else
         {
-            str += "Impossibile entrare";
-            mvaddstr(0, 56, str.get());
-            clearScreen(0, 56, str.getLength(), myMap.rooms->currentRoom.getWindow(), 1);
+            mvprintw(0,56, "Impossibile entrare");
+            clearScreen(0, 56, 20, myMap.rooms->currentRoom.getWindow(), 1);
         }
     }
     else if (myMap.rooms->currentRoom.getDoor(0).side == enteringSide && myMap.rooms->currentRoom.getDoor(0).isOpen == true) // GO TO PREVIOUS ROOM
@@ -241,8 +171,6 @@ Map crossRoom(int enteringSide, Map myMap)
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
     }
-
-    str.reset();
 
     return myMap;
 }
@@ -274,7 +202,6 @@ void startGame(WINDOW *myWin)
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
-    MyString str;
     pos position;
     int ch; // pressed key
     bool flag = false;
@@ -441,8 +368,8 @@ void startGame(WINDOW *myWin)
                 clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
                 clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
 
-                debugRoom(myMap);
-                debugDoors(myMap, 0, 40);
+                //debugRoom(myMap);
+                //debugDoors(myMap, 0, 40);
                 break;
             case 'c':
                 clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
@@ -615,8 +542,8 @@ void startGame(WINDOW *myWin)
                 clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
                 clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
 
-                debugRoom(myMap);
-                debugDoors(myMap, 0, 40);
+                //debugRoom(myMap);
+                //debugDoors(myMap, 0, 40);
                 break;
             case 'c':
                 clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
@@ -656,6 +583,5 @@ void startGame(WINDOW *myWin)
             }
             count++;
         }
-        str.reset();
     }
 }
