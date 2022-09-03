@@ -1029,6 +1029,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
     }
     else if (c_next == ACS_PI)
     {
+        P.takeDamage(P.getLife());
         placeObject(now, ' ');
         placeObject(next, e.tag);
         e.position = next;
