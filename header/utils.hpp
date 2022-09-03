@@ -1,4 +1,6 @@
-#pragma once
+//#pragma once
+#ifndef _UTILS
+#define _UTILS
 #include <ncurses.h>
 
 const int MIN_COLS = 40, MIN_LINES = 110;
@@ -11,3 +13,5 @@ void checkColors();
 
 // clear the screen with " "
 void clearScreen(int y, int x, int length, WINDOW *win, int delay);
+
+#endif

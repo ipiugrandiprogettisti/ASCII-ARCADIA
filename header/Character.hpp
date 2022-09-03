@@ -1,6 +1,7 @@
-
+#ifndef _CHARACTER
+#define _CHARACTER
 #include "Entity.hpp"
-#pragma once
+
 
 // struct bullet
 typedef struct bullet
@@ -38,3 +39,5 @@ public:
     //set up the score
     void set_score(int c);
 };
+
+#endif

@@ -1,6 +1,7 @@
+#ifndef _ENTITY
+#define _ENTITY
 #include <iostream>
 #include <ncurses.h>
-#pragma once
 typedef struct pos
 {
     int y;
@@ -25,3 +26,6 @@ public:
     // sets new entity's position (if it moves)
     void setPosition(int newy, int newx);
 };
+
+
+#endif
