@@ -1103,7 +1103,7 @@ void Room::oneMove(Protagonist p)
 void Room::spawnEnBull()
 {
     int n = rand() % 4;
-    if (n == 1 || n == 3)
+    if (n == 1)
     {
         pListEnemies en_tmp = objects.enemies;
         bullet b;
@@ -1203,11 +1203,11 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
                 this->bullet_enemyRemove(b);
                 this->placeObject(next, ' ');
                 p.bulletRemove(tmp->B);
-                
+
                 //his->drawLook();
                 //wrefresh(this->getWindow());
                 //refresh();
-                
+
             }
         }
     }

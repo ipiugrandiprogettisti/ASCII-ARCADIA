@@ -285,15 +285,12 @@ void startGame(WINDOW *myWin)
     // KEYBOARD EVENT LISTENER
     while (ch = getch())
     {
-
-        /*if (delay > 0)
+        if (count > 10)
         {
-            delay *= CLOCKS_PER_SEC;
-            clock_t now = clock();
-            while (clock() - now < delay)
-            {*/
+            count = 0;
+        }
 
-        if ((count == 1))
+        if ((count % 10 == 1))
         {
             if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL && myMap.rooms->currentRoom.getDrawnPower() == 0)
             {
@@ -485,27 +482,8 @@ void startGame(WINDOW *myWin)
             }
             count++;
         }
-        else if (count == 3)
+        else
         {
-
-            if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL && myMap.rooms->currentRoom.getDrawnPower() == 0)
-            {
-                myMap.rooms->currentRoom.placePower(true);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-                flag = true;
-                myMap.rooms->currentRoom.setDrawnPower(1);
-            }
-            myMap.rooms->currentRoom.allEnemyMov(P);
-            myMap.rooms->currentRoom.spawnEnBull();
-            myMap.rooms->currentRoom.allEnBullet_move(P);
-            myMap.rooms->currentRoom.allABullMov(P);
-            printInfo(P.getLife(), P.getScore());
-
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
 
             switch (ch)
             {
@@ -676,11 +654,6 @@ void startGame(WINDOW *myWin)
             default:
                 break;
             }
-
-            count = 0;
-        }
-        else
-        {
             count++;
         }
         str.reset();
