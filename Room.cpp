@@ -1040,7 +1040,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         e.setPosition(next.y, next.x);
         // MENU' DI MORTE
     }
-    else if (c_next == ACS_BULLET)
+    /*else if (c_next == ACS_BULLET)
     {
         p_bulletlist tmp = P.getHeadB();
 
@@ -1056,7 +1056,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
             }
             tmp = tmp->next;
         }
-    }
+    }*/
 
     else if (c_next == ACS_DEGREE)
     {
