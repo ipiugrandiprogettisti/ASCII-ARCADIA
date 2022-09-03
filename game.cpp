@@ -62,14 +62,13 @@ void printAscii()
         }
         else
         {
-            mvaddstr(i+7, halfX - line.getLength()/2, line.get());
+            mvaddstr(i + 7, halfX - line.getLength() / 2, line.get());
             line.reset();
             i++;
             j = 0;
         }
     }
 }
-
 
 // print main menu, sel is selected item to highlight
 void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
@@ -120,7 +119,7 @@ int getMenu(WINDOW *myWin)
     wbkgd(myWin, COLOR_PAIR(1));             // sets all window attribute
     wrefresh(myWin);
 
-   printAscii();
+    printAscii();
 
     printMenu(selectedItem, MAX_ITEMS, menuItems);
 
@@ -279,201 +278,411 @@ void startGame(WINDOW *myWin)
     pos position;
     int ch; // pressed key
     bool flag = false;
+    int delay = 1;
+    bool anna = true;
+    int count = 0;
 
     // KEYBOARD EVENT LISTENER
-    while ((ch = getch()))
+    while (ch = getch())
     {
-        if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL && myMap.rooms->currentRoom.getDrawnPower() == 0)
+
+        /*if (delay > 0)
         {
-            myMap.rooms->currentRoom.placePower(true);
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
-            flag = true;
-            myMap.rooms->currentRoom.setDrawnPower(1);
-        }
-        myMap.rooms->currentRoom.allEnemyMov(P);
-        myMap.rooms->currentRoom.spawnEnBull();
-        myMap.rooms->currentRoom.allEnBullet_move(P);
+            delay *= CLOCKS_PER_SEC;
+            clock_t now = clock();
+            while (clock() - now < delay)
+            {*/
 
-        // printInfo(P.getLife(), P.getScore());
-
-        myMap.rooms->currentRoom.drawLook();
-        refresh();
-        wrefresh(myMap.rooms->currentRoom.getWindow());
-
-        switch (ch)
+        if ((count == 1))
         {
-        case 'a':
-        case 'A':
-
-            // player enters left door
-            if (P.position.x == 0)
+            if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL && myMap.rooms->currentRoom.getDrawnPower() == 0)
             {
-                if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
-                {
-                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                    P.position.x = 98;
-                    myMap = crossRoom(1, myMap);
-                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                    flag = false;
-                }
+                myMap.rooms->currentRoom.placePower(true);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                flag = true;
+                myMap.rooms->currentRoom.setDrawnPower(1);
             }
+            myMap.rooms->currentRoom.allEnemyMov(P);
+            myMap.rooms->currentRoom.spawnEnBull();
+            myMap.rooms->currentRoom.allEnBullet_move(P);
+            myMap.rooms->currentRoom.allABullMov(P);
+            printInfo(P.getLife(), P.getScore());
 
-            // player's movement
-            myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
-            // printInfo(P.getLife(), P.getScore());
             myMap.rooms->currentRoom.drawLook();
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
 
-            break;
-
-        case 'd':
-        case 'D':
-
-            // player enters right door
-            if (P.position.x == 99)
+            switch (ch)
             {
-                if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+            case 'a':
+            case 'A':
+
+                // player enters left door
+                if (P.position.x == 0)
                 {
-                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                    P.position.x = 1;
-                    myMap = crossRoom(3, myMap);
-                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                    flag = false;
+                    if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                    {
+                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                        P.position.x = 98;
+                        myMap = crossRoom(1, myMap);
+                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        flag = false;
+                    }
                 }
-            }
 
-            // player's movement
-            myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
-            // printInfo(P.getLife(), P.getScore());
+                // player's movement
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
+                // printInfo(P.getLife(), P.getScore());
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
 
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
+                break;
 
-            break;
+            case 'd':
+            case 'D':
 
-        case 'w':
-        case 'W':
-
-            // player enters front door
-            if (P.position.y == 0)
-            {
-                if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                // player enters right door
+                if (P.position.x == 99)
                 {
-                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                    P.position.y = 28;
-                    myMap = crossRoom(2, myMap);
-                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                    flag = false;
+                    if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                    {
+                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                        P.position.x = 1;
+                        myMap = crossRoom(3, myMap);
+                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        flag = false;
+                    }
                 }
-            }
 
-            // player's movement
-            myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
-            // printInfo(P.getLife(), P.getScore());
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
+                // player's movement
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
+                // printInfo(P.getLife(), P.getScore());
 
-            break;
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
 
-        case 's':
-        case 'S':
+                break;
 
-            // player enters back door
-            if (P.position.y == 29)
-            {
-                if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+            case 'w':
+            case 'W':
+
+                // player enters front door
+                if (P.position.y == 0)
                 {
-                    myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                    P.position.y = 1;
-                    myMap = crossRoom(0, myMap);
-                    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
-                    flag = false;
+                    if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                    {
+                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                        P.position.y = 28;
+                        myMap = crossRoom(2, myMap);
+                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        flag = false;
+                    }
                 }
+
+                // player's movement
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
+                // printInfo(P.getLife(), P.getScore());
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                break;
+
+            case 's':
+            case 'S':
+
+                // player enters back door
+                if (P.position.y == 29)
+                {
+                    if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                    {
+                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                        P.position.y = 1;
+                        myMap = crossRoom(0, myMap);
+                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        flag = false;
+                    }
+                }
+
+                // player's movement
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
+
+                // printInfo(P.getLife(), P.getScore());
+
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                break;
+
+            case KEY_LEFT:
+
+                myMap.rooms->currentRoom.spawnAllyBullet(P, 1);
+                break;
+
+            case KEY_RIGHT:
+
+                myMap.rooms->currentRoom.spawnAllyBullet(P, 3);
+                break;
+
+            case KEY_UP:
+
+                myMap.rooms->currentRoom.spawnAllyBullet(P, 2);
+                break;
+
+            case KEY_DOWN:
+                myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
+                break;
+
+            case 'i':
+                // DEBUGGING INFO
+                clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+
+                debugRoom(myMap);
+                debugDoors(myMap, 0, 40);
+                break;
+            case 'c':
+                clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                break;
+
+            case 'o': // opens all doors
+                myMap.rooms->currentRoom.openDoors(true);
+                break;
+
+            case 'p': // closes all doors
+                myMap.rooms->currentRoom.openDoors(false);
+                break;
+
+            // ESEMPIO .placeObject() senza struct
+            case '1': // oggetto in alto a sinistra
+                myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                break;
+
+            // ESEMPIO .placeObject() scon struct pos
+            case '2': // oggetto in basso a destra
+                position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
+                position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;
+                myMap.rooms->currentRoom.placeObject(position, ACS_BULLET);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                break;
+
+            default:
+                break;
             }
-
-            // player's movement
-            myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
-
-            // printInfo(P.getLife(), P.getScore());
-
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
-
-            break;
-
-        case KEY_LEFT:
-
-            myMap.rooms->currentRoom.spawnAllyBullet(P, 1);
-            break;
-
-        case KEY_RIGHT:
-
-            myMap.rooms->currentRoom.spawnAllyBullet(P, 3);
-            break;
-
-        case KEY_UP:
-
-            myMap.rooms->currentRoom.spawnAllyBullet(P, 2);
-            break;
-
-        case KEY_DOWN:
-            myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
-            break;
-
-        case 'i':
-            // DEBUGGING INFO
-            clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-            clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-            clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-
-            debugRoom(myMap);
-            debugDoors(myMap, 0, 40);
-            break;
-        case 'c':
-            clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-            clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-            clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-            clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-            break;
-
-        case 'o': // opens all doors
-            myMap.rooms->currentRoom.openDoors(true);
-            break;
-
-        case 'p': // closes all doors
-            myMap.rooms->currentRoom.openDoors(false);
-            break;
-
-        // ESEMPIO .placeObject() senza struct
-        case '1': // oggetto in alto a sinistra
-            myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
-            break;
-
-        // ESEMPIO .placeObject() scon struct pos
-        case '2': // oggetto in basso a destra
-            position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
-            position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;
-            myMap.rooms->currentRoom.placeObject(position, ACS_BULLET);
-            myMap.rooms->currentRoom.drawLook();
-            refresh();
-            wrefresh(myMap.rooms->currentRoom.getWindow());
-            break;
-
-        default:
-            break;
+            count++;
         }
-        myMap.rooms->currentRoom.allABullMov(P);
-        printInfo(P.getLife(), P.getScore());
+        else if (count == 3)
+        {
 
+            if (flag == false && myMap.rooms->currentRoom.getObjectList().enemies == NULL && myMap.rooms->currentRoom.getDrawnPower() == 0)
+            {
+                myMap.rooms->currentRoom.placePower(true);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                flag = true;
+                myMap.rooms->currentRoom.setDrawnPower(1);
+            }
+            myMap.rooms->currentRoom.allEnemyMov(P);
+            myMap.rooms->currentRoom.spawnEnBull();
+            myMap.rooms->currentRoom.allEnBullet_move(P);
+            myMap.rooms->currentRoom.allABullMov(P);
+            printInfo(P.getLife(), P.getScore());
+
+            myMap.rooms->currentRoom.drawLook();
+            refresh();
+            wrefresh(myMap.rooms->currentRoom.getWindow());
+
+            switch (ch)
+            {
+            case 'a':
+            case 'A':
+
+                // player enters left door
+                if (P.position.x == 0)
+                {
+                    if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                    {
+                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                        P.position.x = 98;
+                        myMap = crossRoom(1, myMap);
+                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        flag = false;
+                    }
+                }
+
+                // player's movement
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
+                // printInfo(P.getLife(), P.getScore());
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                break;
+
+            case 'd':
+            case 'D':
+
+                // player enters right door
+                if (P.position.x == 99)
+                {
+                    if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                    {
+                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                        P.position.x = 1;
+                        myMap = crossRoom(3, myMap);
+                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        flag = false;
+                    }
+                }
+
+                // player's movement
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
+                // printInfo(P.getLife(), P.getScore());
+
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                break;
+
+            case 'w':
+            case 'W':
+
+                // player enters front door
+                if (P.position.y == 0)
+                {
+                    if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                    {
+                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                        P.position.y = 28;
+                        myMap = crossRoom(2, myMap);
+                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        flag = false;
+                    }
+                }
+
+                // player's movement
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
+                // printInfo(P.getLife(), P.getScore());
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                break;
+
+            case 's':
+            case 'S':
+
+                // player enters back door
+                if (P.position.y == 29)
+                {
+                    if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                    {
+                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
+                        P.position.y = 1;
+                        myMap = crossRoom(0, myMap);
+                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        flag = false;
+                    }
+                }
+
+                // player's movement
+                myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
+
+                // printInfo(P.getLife(), P.getScore());
+
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+
+                break;
+
+            case KEY_LEFT:
+
+                myMap.rooms->currentRoom.spawnAllyBullet(P, 1);
+                break;
+
+            case KEY_RIGHT:
+
+                myMap.rooms->currentRoom.spawnAllyBullet(P, 3);
+                break;
+
+            case KEY_UP:
+
+                myMap.rooms->currentRoom.spawnAllyBullet(P, 2);
+                break;
+
+            case KEY_DOWN:
+                myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
+                break;
+
+            case 'i':
+                // DEBUGGING INFO
+                clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+
+                debugRoom(myMap);
+                debugDoors(myMap, 0, 40);
+                break;
+            case 'c':
+                clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
+                break;
+
+            case 'o': // opens all doors
+                myMap.rooms->currentRoom.openDoors(true);
+                break;
+
+            case 'p': // closes all doors
+                myMap.rooms->currentRoom.openDoors(false);
+                break;
+
+            // ESEMPIO .placeObject() senza struct
+            case '1': // oggetto in alto a sinistra
+                myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                break;
+
+            // ESEMPIO .placeObject() scon struct pos
+            case '2': // oggetto in basso a destra
+                position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
+                position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;
+                myMap.rooms->currentRoom.placeObject(position, ACS_BULLET);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+                break;
+
+            default:
+                break;
+            }
+
+            count = 0;
+        }
+        else
+        {
+            count++;
+        }
         str.reset();
     }
 }

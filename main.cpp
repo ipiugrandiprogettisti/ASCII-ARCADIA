@@ -12,8 +12,8 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     initscr();
-    halfdelay(2);
     nodelay(stdscr, TRUE);
+    timeout(10);
     setlocale(LC_ALL, "");
 
     keypad(stdscr, TRUE); // sets arrow keys
@@ -34,29 +34,29 @@ int main(int argc, char *argv[])
     wrefresh(myWin);
 
     switch (choice) // handle choice
-{
-case 2: // EXIT
-    endwin();
-    cout << "You chose to exit\n";
-    return 0;
-    break;
-case 1: // CREDITS
-    endwin();
-    cout << "You chose to see the credits\n";
-    return 0;
-    break;
-case 0: // PLAY
-    startGame(myWin);
-    return 0;
-    break;
-default:
-    endwin();
-    cout << "ERROR:\nWrong choice!\n";
-    exit(1);
-    break;
-}
+    {
+    case 2: // EXIT
+        endwin();
+        cout << "You chose to exit\n";
+        return 0;
+        break;
+    case 1: // CREDITS
+        endwin();
+        cout << "You chose to see the credits\n";
+        return 0;
+        break;
+    case 0: // PLAY
+        startGame(myWin);
+        return 0;
+        break;
+    default:
+        endwin();
+        cout << "ERROR:\nWrong choice!\n";
+        exit(1);
+        break;
+    }
 
-endwin(); // End curses mode
+    endwin(); // End curses mode
 
-return 0;
+    return 0;
 }
