@@ -250,12 +250,6 @@ public:
 
     void allEnBullet_move(Protagonist &P);
 
-    // one function for all independent movements (enemy, enemybull, allybull)
-    void oneMove(Protagonist p);
-    /*
-    void spawnSXBul(Protagonist p);
-    */
-
     // spawns allybullets right next to the player
     void spawnAllyBullet(Protagonist &p, int dir);
 };

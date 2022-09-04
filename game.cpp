@@ -286,7 +286,7 @@ void startGame(WINDOW *myWin)
     printInfo(P.getLife(), P.get_score(), myMap.rooms->currentRoom.getKey());
 
     // spawns protagonist
-    myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+    myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
 
     myMap.rooms->currentRoom.drawLook();
     // printRoomKey(myMap.rooms->currentRoom.getKey());
@@ -360,22 +360,21 @@ void startGame(WINDOW *myWin)
             case 'A':
 
                 // player enters left door
-                if (P.position.x == 0)
+                if (P.getPosition().x == 0)
                 {
-                    if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                    if (P.getPosition().y - 1 == 14 && P.getPosition().y + 1 == 16)
                     {
-                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                        P.position.x = 98;
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
+                        P.setPosition(P.getPosition().y, 98);
                         tmplist = P.getHeadB();
                         while (tmplist != NULL)
                         {
                             myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
                             tmplist = tmplist->next;
                         }
-
                         P.setHeadB(NULL);
                         myMap = crossRoom(1, myMap);
-                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
                     }
                 }
@@ -393,12 +392,12 @@ void startGame(WINDOW *myWin)
             case 'D':
 
                 // player enters right door
-                if (P.position.x == 99)
+                if (P.getPosition().x == 99)
                 {
-                    if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                    if (P.getPosition().y - 1 == 14 && P.getPosition().y + 1 == 16)
                     {
-                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                        P.position.x = 1;
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
+                        P.setPosition(P.getPosition().y, 1);
                         tmplist = P.getHeadB();
                         while (tmplist != NULL)
                         {
@@ -407,7 +406,7 @@ void startGame(WINDOW *myWin)
                         }
                         P.setHeadB(NULL);
                         myMap = crossRoom(3, myMap);
-                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
                     }
                 }
@@ -426,12 +425,12 @@ void startGame(WINDOW *myWin)
             case 'W':
 
                 // player enters front door
-                if (P.position.y == 0)
+                if (P.getPosition().y == 0)
                 {
-                    if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                    if (P.getPosition().x - 1 == 49 && P.getPosition().x + 1 == 51)
                     {
-                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                        P.position.y = 28;
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
+                        P.setPosition(28, P.getPosition().x);
                         tmplist = P.getHeadB();
                         while (tmplist != NULL)
                         {
@@ -440,7 +439,7 @@ void startGame(WINDOW *myWin)
                         }
                         P.setHeadB(NULL);
                         myMap = crossRoom(2, myMap);
-                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
                     }
                 }
@@ -458,12 +457,12 @@ void startGame(WINDOW *myWin)
             case 'S':
 
                 // player enters back door
-                if (P.position.y == 29)
+                if (P.getPosition().y == 29)
                 {
-                    if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                    if (P.getPosition().x - 1 == 49 && P.getPosition().x + 1 == 51)
                     {
-                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                        P.position.y = 1;
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
+                        P.setPosition(1, P.getPosition().x);
                         tmplist = P.getHeadB();
                         while (tmplist != NULL)
                         {
@@ -472,7 +471,7 @@ void startGame(WINDOW *myWin)
                         }
                         P.setHeadB(NULL);
                         myMap = crossRoom(0, myMap);
-                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
                     }
                 }
@@ -563,12 +562,12 @@ void startGame(WINDOW *myWin)
             case 'A':
 
                 // player enters left door
-                if (P.position.x == 0)
+                if (P.getPosition().x == 0)
                 {
-                    if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                    if (P.getPosition().y - 1 == 14 && P.getPosition().y + 1 == 16)
                     {
-                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                        P.position.x = 98;
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
+                        P.setPosition(P.getPosition().y, 98);
                         tmplist = P.getHeadB();
                         while (tmplist != NULL)
                         {
@@ -577,7 +576,7 @@ void startGame(WINDOW *myWin)
                         }
                         P.setHeadB(NULL);
                         myMap = crossRoom(1, myMap);
-                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
                     }
                 }
@@ -595,12 +594,12 @@ void startGame(WINDOW *myWin)
             case 'D':
 
                 // player enters right door
-                if (P.position.x == 99)
+                if (P.getPosition().x == 99)
                 {
-                    if (P.position.y - 1 == 14 && P.position.y + 1 == 16)
+                    if (P.getPosition().y - 1 == 14 && P.getPosition().y + 1 == 16)
                     {
-                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                        P.position.x = 1;
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
+                        P.setPosition(P.getPosition().y, 1);
                         tmplist = P.getHeadB();
                         while (tmplist != NULL)
                         {
@@ -609,7 +608,7 @@ void startGame(WINDOW *myWin)
                         }
                         P.setHeadB(NULL);
                         myMap = crossRoom(3, myMap);
-                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
                     }
                 }
@@ -628,12 +627,12 @@ void startGame(WINDOW *myWin)
             case 'W':
 
                 // player enters front door
-                if (P.position.y == 0)
+                if (P.getPosition().y == 0)
                 {
-                    if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                    if (P.getPosition().x - 1 == 49 && P.getPosition().x + 1 == 51)
                     {
-                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                        P.position.y = 28;
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
+                        P.setPosition(28, P.getPosition().x);
                         tmplist = P.getHeadB();
                         while (tmplist != NULL)
                         {
@@ -642,7 +641,7 @@ void startGame(WINDOW *myWin)
                         }
                         P.setHeadB(NULL);
                         myMap = crossRoom(2, myMap);
-                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
                     }
                 }
@@ -660,12 +659,12 @@ void startGame(WINDOW *myWin)
             case 'S':
 
                 // player enters back door
-                if (P.position.y == 29)
+                if (P.getPosition().y == 29)
                 {
-                    if (P.position.x - 1 == 49 && P.position.x + 1 == 51)
+                    if (P.getPosition().x - 1 == 49 && P.getPosition().x + 1 == 51)
                     {
-                        myMap.rooms->currentRoom.placeObject(P.position, ' ');
-                        P.position.y = 1;
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
+                        P.setPosition(1, P.getPosition().x);
                         tmplist = P.getHeadB();
                         while (tmplist != NULL)
                         {
@@ -674,7 +673,7 @@ void startGame(WINDOW *myWin)
                         }
                         P.setHeadB(NULL);
                         myMap = crossRoom(0, myMap);
-                        myMap.rooms->currentRoom.placeObject(P.position, P.tag);
+                        myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
                     }
                 }

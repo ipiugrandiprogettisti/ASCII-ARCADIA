@@ -33,3 +33,9 @@ chtype Entity::get_tag()
 {
     return this->tag;
 }
+
+// sets tag
+void Entity::set_tag(chtype tag)
+{
+    this->tag = tag;
+}

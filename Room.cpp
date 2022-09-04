@@ -87,8 +87,8 @@ void Room::placePower(bool b)
 {
     // FIXME: qui ci va un if che li fa apparire solo dopp che la lista di nemici si è svuotata, ovvero sono tutti morti
     Power p;
-    p.tag = 'P';
-    chtype rar = p.tag;
+    p.set_tag('P');
+    chtype rar = p.get_tag();
     pos posPow;
     chtype var = ' ';
     do
@@ -113,11 +113,10 @@ void Room::placeArtifacts()
         chtype chflag;
         do
         {
-            a.position.x = rand() % HEIGTH;
-            a.position.y = rand() % WIDTH;
+            a.setPosition(rand() % WIDTH, rand() % HEIGTH);
             pos flag;
-            flag.x = a.position.x;
-            flag.y = a.position.y;
+            flag.x = a.getPosition().x;
+            flag.y = a.getPosition().y;
             chflag = this->getTile(flag);
         } while (chflag != ' ');
 
@@ -125,30 +124,30 @@ void Room::placeArtifacts()
 
         if (artRarity <= 60 && artRarity > 0)
         {
-            a.tag = 'C';
+            a.set_tag('C');
             a.rarity = 1;
             a.lifepoints = 1;
         }
         else if (artRarity > 60 && artRarity <= 85)
         {
-            a.tag = 'R';
+            a.set_tag('R');
             a.rarity = 2;
             a.lifepoints = 3;
         }
         else if (artRarity > 85 && artRarity <= 95)
         {
-            a.tag = '$';
+            a.set_tag('$');
             a.rarity = 3;
             a.lifepoints = 5;
         }
         else if (artRarity > 95 && artRarity >= 100)
         {
-            a.tag = ACS_DIAMOND;
+            a.set_tag(ACS_DIAMOND);
             a.rarity = 4;
             a.lifepoints = 7;
         }
 
-        placeObject(a.position, a.tag);
+        placeObject(a.getPosition(), a.get_tag());
         ArtifactHeadinsert(a);
     }
 }
@@ -165,19 +164,19 @@ void Room::place_enemies(bool b)
         int n_type = rand() % 100 + 1;
         if (n_type <= 40)
         {
-            en.tag = ACS_BLOCK;
+            en.set_tag(ACS_BLOCK);
             en.set_enemyKey(1);
             en.set_score(20);
         }
         else if (n_type <= 80 && n_type > 40)
         {
-            en.tag = ACS_NEQUAL;
+            en.set_tag(ACS_NEQUAL);
             en.set_enemyKey(2);
             en.set_score(30);
         }
         else if (n_type <= 100 && n_type > 80)
         {
-            en.tag = '@';
+            en.set_tag('@');
             en.set_enemyKey(3);
             en.set_score(50);
         }
@@ -190,11 +189,11 @@ void Room::place_enemies(bool b)
             posEnemy.y = rand() % 24 + 3;
             posEnemy.x = rand() % 94 + 3;
 
-            en.position = posEnemy;
-            p = this->getTile(en.position);
+            en.setPosition(posEnemy.y, posEnemy.x);
+            p = this->getTile(en.getPosition());
             if (p == ' ')
             {
-                this->placeObject(en.position, en.tag);
+                this->placeObject(en.getPosition(), en.get_tag());
                 this->drawLook();
                 this->HeadInsert_enemy(en);
                 flag = false;
@@ -646,7 +645,7 @@ void Room::aBullMov(Protagonist &P, bullet &b)
         pListEnemies enList = this->objects.enemies; // lista dappoggio per scorrere
         while (enList != NULL)
         { // cerco nemico in posizione pos
-            if (next.x == enList->e.position.x && next.y == enList->e.position.y)
+            if (next.x == enList->e.getPosition().x && next.y == enList->e.getPosition().y)
             {
                 // trovato nemico, me lo salvo
                 Enemy workEn = enList->e;
@@ -787,7 +786,7 @@ void Room::removePower(chtype tag, pos position)
     {
         this->objects.powers = this->objects.powers;
     }
-    else if (this->objects.powers->P.tag == tag && this->objects.powers->P.getPosition().x == position.x && this->objects.powers->P.getPosition().x == position.y)
+    else if (this->objects.powers->P.get_tag() == tag && this->objects.powers->P.getPosition().x == position.x && this->objects.powers->P.getPosition().x == position.y)
     {
         tmp = this->objects.powers;
         this->objects.powers = this->objects.powers->next;
@@ -798,7 +797,7 @@ void Room::removePower(chtype tag, pos position)
         x = this->objects.powers;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->P.tag == tag && x->next->P.getPosition().x == position.x && x->next->P.getPosition().y == position.y)
+            if (x->next->P.get_tag() == tag && x->next->P.getPosition().x == position.x && x->next->P.getPosition().y == position.y)
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -829,7 +828,7 @@ void Room::removeArtifact(Artifact a)
     {
         this->objects.artifacts = this->objects.artifacts;
     }
-    else if (this->objects.artifacts->A.tag == a.tag && this->objects.artifacts->A.getPosition().x == a.getPosition().x && this->objects.artifacts->A.getPosition().x == a.getPosition().y)
+    else if (this->objects.artifacts->A.get_tag() == a.get_tag() && this->objects.artifacts->A.getPosition().x == a.getPosition().x && this->objects.artifacts->A.getPosition().x == a.getPosition().y)
     {
         tmp = this->objects.artifacts;
         this->objects.artifacts = this->objects.artifacts->next;
@@ -840,7 +839,7 @@ void Room::removeArtifact(Artifact a)
         x = this->objects.artifacts;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->A.tag == a.tag && x->next->A.getPosition().x == a.getPosition().x && x->next->A.getPosition().y == a.getPosition().y)
+            if (x->next->A.get_tag() == a.get_tag() && x->next->A.getPosition().x == a.getPosition().x && x->next->A.getPosition().y == a.getPosition().y)
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -863,7 +862,7 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
     {
         Room::placeObject(currentpos, ' ');
         p.setPosition(newPos.y, newPos.x);
-        Room::placeObject(p.getPosition(), p.tag);
+        Room::placeObject(p.getPosition(), p.get_tag());
     }
     else if (Room::getTile(newPos) == 'C' || Room::getTile(newPos) == 'R' || Room::getTile(newPos) == '$' || Room::getTile(newPos) == '%') // hits artifact
     {
@@ -881,14 +880,14 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
 
         Room::placeObject(currentpos, ' ');
         p.setPosition(newPos.y, newPos.x);
-        Room::placeObject(p.getPosition(), p.tag);
+        Room::placeObject(p.getPosition(), p.get_tag());
     }
     else if (Room::getTile(newPos) == 'P') // hits power
     {
         removePower('P', newPos);
         Room::placeObject(p.getPosition(), ' ');
         p.setPosition(newPos.y, newPos.x);
-        Room::placeObject(p.getPosition(), p.tag);
+        Room::placeObject(p.getPosition(), p.get_tag());
         Room::openDoors(true);
         Room::placeArtifacts();
     }
@@ -929,7 +928,7 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
                 p.bulletRemove(tmp2->B);
                 Room::placeObject(p.getPosition(), ' ');
                 p.setPosition(newPos.y, newPos.x);
-                Room::placeObject(p.getPosition(), p.tag);
+                Room::placeObject(p.getPosition(), p.get_tag());
                 done = true;
             }
 
@@ -1003,7 +1002,7 @@ void Room::enemyRemove(Enemy en)
     {
         this->objects.enemies = this->objects.enemies;
     }
-    else if (this->objects.enemies->e.get_enemyKey() == en.get_enemyKey() && this->objects.enemies->e.getLife() == en.getLife() && this->objects.enemies->e.get_maxLife() == en.get_maxLife() && this->objects.enemies->e.position.y == en.position.y && this->objects.enemies->e.position.x == en.position.x && this->objects.enemies->e.tag == en.tag)
+    else if (this->objects.enemies->e.get_enemyKey() == en.get_enemyKey() && this->objects.enemies->e.getLife() == en.getLife() && this->objects.enemies->e.get_maxLife() == en.get_maxLife() && this->objects.enemies->e.getPosition().y == en.getPosition().y && this->objects.enemies->e.getPosition().x == en.getPosition().x && this->objects.enemies->e.get_tag() == en.get_tag())
     {
         tmp = this->objects.enemies;
         this->objects.enemies = this->objects.enemies->next;
@@ -1014,7 +1013,7 @@ void Room::enemyRemove(Enemy en)
         x = this->objects.enemies;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->e.get_enemyKey() == en.get_enemyKey() && x->next->e.getLife() == en.getLife() && x->next->e.get_maxLife() == en.get_maxLife() && x->next->e.position.y == en.position.y && x->next->e.position.x == en.position.x && x->next->e.tag == en.tag)
+            if (x->next->e.get_enemyKey() == en.get_enemyKey() && x->next->e.getLife() == en.getLife() && x->next->e.get_maxLife() == en.get_maxLife() && x->next->e.getPosition().y == en.getPosition().y && x->next->e.getPosition().x == en.getPosition().x && x->next->e.get_tag() == en.get_tag())
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -1033,7 +1032,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
     pos next = nextPos(now, dir);
     if (c_next == ' ')
     {
-        Room::placeObject(next, e.tag);
+        Room::placeObject(next, e.get_tag());
         Room::placeObject(now, ' ');
         e.setPosition(next.y, next.x);
     }
@@ -1042,7 +1041,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         P.takeDamage(P.getLife());
         P.setisAlive(FALSE);
         Room::placeObject(now, ' ');
-        Room::placeObject(next, e.tag);
+        Room::placeObject(next, e.get_tag());
         e.setPosition(next.y, next.x);
     }
     /*else if (c_next == ACS_BULLET)
@@ -1072,7 +1071,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
             {
                 bullet_enemyRemove(tmp_en->B);
                 placeObject(now, ' ');
-                placeObject(next, e.tag);
+                placeObject(next, e.get_tag());
                 e.setPosition(next.y, next.x);
             }
             tmp_en = tmp_en->next;
@@ -1097,18 +1096,6 @@ void Room::allEnemyMov(Protagonist &p)
 
         entmp = entmp->next;
     }
-}
-
-// one function for all independent movements (enemy, enemybull, allybull)
-void Room::oneMove(Protagonist p)
-{
-    // ally bullets movement
-    allABullMov(p);
-    // all enemies movement
-    allEnemyMov(p);
-
-    // TO-DO
-    // all enemy bullets movement
 }
 
 // da rivedere
@@ -1137,7 +1124,7 @@ void Room::spawnEnBull()
                 default:
                     break;
                 }
-                pos now = en_tmp->e.position;
+                pos now = en_tmp->e.getPosition();
                 chtype c_next = checkNextPos(now, b.direction);
                 pos next = nextPos(now, b.direction);
                 if (c_next == ' ')
