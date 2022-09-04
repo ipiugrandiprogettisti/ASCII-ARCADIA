@@ -1,5 +1,5 @@
 main: main.o game.o  myWindow.o utils.o Map.o Room.o Entity.o Enemy.o Artifact.o Character.o Protagonist.o Power.o 
-	g++ -o main main.o game.o  myWindow.o utils.o Map.o Room.o Entity.o Enemy.o Character.o Protagonist.o Artifact.o Power.o -lncurses
+	g++ -o main main.o game.o  myWindow.o utils.o Map.o Room.o Entity.o Enemy.o Artifact.o Character.o Protagonist.o Power.o -lncurses
 main.o: main.cpp header/game.hpp
 	g++ -c main.cpp
 game.o: game.cpp header/game.hpp
