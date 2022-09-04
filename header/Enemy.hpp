@@ -13,7 +13,7 @@ public:
     Enemy();
 
     // constructor
-    Enemy(int key, int current_life, int max_life, int score, int y, int x, chtype tag);
+    Enemy(int key,int score, int y, int x, chtype tag);
 
     //sets enemy's score
     void set_score(int c);

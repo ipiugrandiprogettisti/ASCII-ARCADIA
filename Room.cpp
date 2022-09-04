@@ -155,7 +155,7 @@ void Room::placeArtifacts()
 void Room::place_enemies(bool b)
 {
 
-    Enemy en(0, 1, 1, 0, 0, 0, ' ');
+    Enemy en(0, 0, 0, 0, ' ');
 
     int n = rand() % 3 + 1;
 
@@ -1002,7 +1002,7 @@ void Room::enemyRemove(Enemy en)
     {
         this->objects.enemies = this->objects.enemies;
     }
-    else if (this->objects.enemies->e.get_enemyKey() == en.get_enemyKey() && this->objects.enemies->e.getLife() == en.getLife() && this->objects.enemies->e.get_maxLife() == en.get_maxLife() && this->objects.enemies->e.getPosition().y == en.getPosition().y && this->objects.enemies->e.getPosition().x == en.getPosition().x && this->objects.enemies->e.get_tag() == en.get_tag())
+    else if (this->objects.enemies->e.get_enemyKey() == en.get_enemyKey() && this->objects.enemies->e.getPosition().y == en.getPosition().y && this->objects.enemies->e.getPosition().x == en.getPosition().x && this->objects.enemies->e.get_tag() == en.get_tag())
     {
         tmp = this->objects.enemies;
         this->objects.enemies = this->objects.enemies->next;
@@ -1013,7 +1013,7 @@ void Room::enemyRemove(Enemy en)
         x = this->objects.enemies;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->e.get_enemyKey() == en.get_enemyKey() && x->next->e.getLife() == en.getLife() && x->next->e.get_maxLife() == en.get_maxLife() && x->next->e.getPosition().y == en.getPosition().y && x->next->e.getPosition().x == en.getPosition().x && x->next->e.get_tag() == en.get_tag())
+            if (x->next->e.get_enemyKey() == en.get_enemyKey() && x->next->e.getPosition().y == en.getPosition().y && x->next->e.getPosition().x == en.getPosition().x && x->next->e.get_tag() == en.get_tag())
             {
                 tmp = x->next;
                 x->next = x->next->next;

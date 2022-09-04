@@ -21,6 +21,8 @@ class Protagonist : public Character
 protected:
     bool isAlive;
     p_bulletlist headB;
+    int current_life; // in termini di cuori posseduti al momento
+    int max_life;
 
 public:
     // constructor
@@ -43,6 +45,12 @@ public:
 
     // removes whatever bullet is given as parameter
     void bulletRemove(bullet b);
+
+    // ritorna la vita corrente
+    int getLife();
+
+    // prende in input il danno ricevuto e aggiorna la vita sottraendoglielo
+    bool takeDamage(int);
 
     // increases life basing on the gained artifact
     void gainLife(int p);

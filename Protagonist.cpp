@@ -1,7 +1,5 @@
 #include "header/Protagonist.hpp"
 
-p_bulletlist headB;
-
 Protagonist::Protagonist()
 {
     isAlive = TRUE;
@@ -14,7 +12,7 @@ Protagonist::Protagonist()
     tag = ' ';
 }
 
-Protagonist::Protagonist(bool isAlive, p_bulletlist headB, int current_life, int max_life, int score, int y, int x, chtype tag) : Character(current_life, max_life, score, y, x, tag)
+Protagonist::Protagonist(bool isAlive, p_bulletlist headB, int current_life, int max_life, int score, int y, int x, chtype tag) : Character(score, y, x, tag)
 {
     this->isAlive = isAlive;
     this->headB = headB;
@@ -87,6 +85,29 @@ void Protagonist::bulletRemove(bullet b)
             x = x->next;
         }
     }
+}
+
+// returns current life
+int Protagonist::getLife()
+{
+    return this->current_life;
+}
+
+// updates life according to the damage received
+bool Protagonist::takeDamage(int damage_received)
+{
+    bool dead = false;
+    int curr_life = Protagonist::getLife();
+    if ((curr_life - damage_received) > 0)
+    {
+        this->current_life = (curr_life - damage_received);
+    }
+    else
+    {
+        this->current_life = 0;
+        dead = true;
+    }
+    return dead;
 }
 
 // add life

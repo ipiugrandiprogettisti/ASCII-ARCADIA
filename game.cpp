@@ -307,7 +307,7 @@ void startGame(WINDOW *myWin)
     {
         if (P.getisAlive() == FALSE)
         {
-            int choice = deathMenu(deathwin); // draw main menu and get user choice: 0: Play, 1: Credits, 2: Exit
+            int choice = deathMenu(deathwin); // draw main menu and get user choice: 0: Play, 1: Exit
             wclear(deathwin);
             wrefresh(deathwin);
 
