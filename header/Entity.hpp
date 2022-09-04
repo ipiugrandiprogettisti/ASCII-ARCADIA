@@ -25,6 +25,9 @@ public:
 
     // sets new entity's position (if it moves)
     void setPosition(int newy, int newx);
+
+    //returns the entity tag
+    chtype get_tag();
 };
 
 

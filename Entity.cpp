@@ -28,3 +28,8 @@ void Entity::setPosition(int newy, int newx)
     this->position.y = newy;
     this->position.x = newx;
 };
+
+chtype Entity::get_tag()
+{
+    return this->tag;
+}

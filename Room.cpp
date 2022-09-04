@@ -156,9 +156,9 @@ void Room::placeArtifacts()
 void Room::place_enemies(bool b)
 {
 
-    Enemy en(0, 5, 5, 2, 0, 0, 0, ' ');
+    Enemy en(0, 1, 1, 0, 0, 0, ' ');
 
-    int n = rand() % 4;
+    int n = rand() % 3 + 1;
 
     for (int i = 0; i < n; i++)
     {
@@ -166,19 +166,19 @@ void Room::place_enemies(bool b)
         if (n_type <= 40)
         {
             en.tag = ACS_BLOCK;
-            en.key = 1;
+            en.set_enemyKey(1);
             en.set_score(20);
         }
         else if (n_type <= 80 && n_type > 40)
         {
             en.tag = ACS_NEQUAL;
-            en.key = 2;
+            en.set_enemyKey(2);
             en.set_score(30);
         }
         else if (n_type <= 100 && n_type > 80)
         {
             en.tag = '@';
-            en.key = 3;
+            en.set_enemyKey(3);
             en.set_score(50);
         }
 
@@ -998,7 +998,7 @@ void Room::enemyRemove(Enemy en)
     {
         this->objects.enemies = this->objects.enemies;
     }
-    else if (this->objects.enemies->e.key == en.key && this->objects.enemies->e.current_life == en.current_life && this->objects.enemies->e.max_life == en.max_life && this->objects.enemies->e.atk_damage == en.atk_damage && this->objects.enemies->e.position.y == en.position.y && this->objects.enemies->e.position.x == en.position.x && this->objects.enemies->e.tag == en.tag)
+    else if (this->objects.enemies->e.get_enemyKey() == en.get_enemyKey() && this->objects.enemies->e.getLife() == en.getLife() && this->objects.enemies->e.get_maxLife() == en.get_maxLife() && this->objects.enemies->e.position.y == en.position.y && this->objects.enemies->e.position.x == en.position.x && this->objects.enemies->e.tag == en.tag)
     {
         tmp = this->objects.enemies;
         this->objects.enemies = this->objects.enemies->next;
@@ -1009,7 +1009,7 @@ void Room::enemyRemove(Enemy en)
         x = this->objects.enemies;
         while (!found && (x != NULL) && (x->next != NULL))
         {
-            if (x->next->e.key == en.key && x->next->e.current_life == en.current_life && x->next->e.max_life == en.max_life && x->next->e.atk_damage == en.atk_damage && x->next->e.position.y == en.position.y && x->next->e.position.x == en.position.x && x->next->e.tag == en.tag)
+            if (x->next->e.get_enemyKey() == en.get_enemyKey() && x->next->e.getLife() == en.getLife() && x->next->e.get_maxLife() == en.get_maxLife() && x->next->e.position.y == en.position.y && x->next->e.position.x == en.position.x && x->next->e.tag == en.tag)
             {
                 tmp = x->next;
                 x->next = x->next->next;
@@ -1085,7 +1085,7 @@ void Room::allEnemyMov(Protagonist &p)
     {
         int direction = rand() % 4;
 
-        if (entmp->e.key != 1)
+        if (entmp->e.get_enemyKey() != 1)
         {
             enemy_movement(p, entmp->e, direction);
         }
@@ -1119,9 +1119,9 @@ void Room::spawnEnBull()
 
         while (en_tmp != NULL)
         {
-            if (en_tmp->e.key != 2)
+            if (en_tmp->e.get_enemyKey() != 2)
             {
-                switch (en_tmp->e.key)
+                switch (en_tmp->e.get_enemyKey())
                 {
                 case 1:
                     b.bullet_damage = 2;

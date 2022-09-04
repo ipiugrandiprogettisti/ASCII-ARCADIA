@@ -26,7 +26,7 @@ public:
     Protagonist();
 
     // constructor
-    Protagonist(p_bulletlist headB, int current_life, int max_life, int atk_damage, int score, int y, int x, chtype tag);
+    Protagonist(p_bulletlist headB, int current_life, int max_life, int score, int y, int x, chtype tag);
 
     // returns head to list of ally bullets
     p_bulletlist getHeadB();

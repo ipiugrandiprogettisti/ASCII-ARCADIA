@@ -183,7 +183,7 @@ void startGame(WINDOW *myWin)
     p_bulletlist headB = NULL;
 
     // creation of the protagonist (player)
-    Protagonist P(headB, 10, 10, 1, 0, 1, 1, ACS_PI);
+    Protagonist P(headB, 10, 10, 0, 1, 1, ACS_PI);
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door

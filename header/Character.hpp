@@ -16,17 +16,18 @@ typedef struct bullet
 // class character
 class Character : public Entity
 {
-
-public:
+protected:
     int current_life; // in termini di cuori posseduti al momento
     int max_life;     // cuori  massimi=10
-    int atk_damage;   // danno che produce in attacco
     int score;
+
+public:
+
     // constructor
     Character();
 
     // constructor
-    Character(int current_life, int max_life, int atk_damage, int score, int y, int x, chtype tag);
+    Character(int current_life, int max_life, int score, int y, int x, chtype tag);
 
     // ritorna la vita corrente
     int getLife();
@@ -38,6 +39,9 @@ public:
 
     //set up the score
     void set_score(int c);
+
+    //return max life
+    int get_maxLife();
 };
 
 #endif
