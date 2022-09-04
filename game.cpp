@@ -40,7 +40,7 @@ void printDeathAscii()
     {
         if (c != '\n')
         {
-            mvaddch(i + 7, halfX - 20 + j, c);
+            mvaddch(i + 7, halfX - 22 + j, c);
             j++;
         }
         else
