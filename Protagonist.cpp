@@ -26,11 +26,15 @@ Protagonist::Protagonist(p_bulletlist headB, int current_life, int max_life, int
     this->tag = tag;
 }
 
-
 // returns head to list of ally bullets
 p_bulletlist Protagonist::getHeadB()
 {
     return this->headB;
+}
+
+void Protagonist::setHeadB(p_bulletlist p)
+{
+    this->headB = p;
 }
 
 // head insert new bullet
@@ -81,7 +85,7 @@ void Protagonist::gainLife(int p)
     this->current_life += p;
 }
 
-//sets protagonist's score
+// sets protagonist's score
 void Protagonist::set_score(int newscore)
 {
     this->score += newscore;

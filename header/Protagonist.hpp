@@ -19,7 +19,6 @@ typedef bulletlist *p_bulletlist;
 class Protagonist : public Character
 {
 protected:
-
     p_bulletlist headB;
 
 public:
@@ -32,6 +31,8 @@ public:
     // returns head to list of ally bullets
     p_bulletlist getHeadB();
 
+    void setHeadB(p_bulletlist p);
+
     // head insert a new bullet
     void bulletHeadInsert(bullet b);
 
@@ -41,7 +42,6 @@ public:
     // increases life basing on the gained artifact
     void gainLife(int p);
 
-    //sets protagonist's score;
+    // sets protagonist's score;
     void set_score(int newscore);
-
 };

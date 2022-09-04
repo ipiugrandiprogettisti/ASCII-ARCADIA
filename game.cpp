@@ -1,5 +1,4 @@
- #include "header/game.hpp"
-
+#include "header/game.hpp"
 
 // prints ascii art
 void printAscii()
@@ -9,8 +8,8 @@ void printAscii()
     FILE *asciiArt = fopen("asciiArt.txt", "r");
     char c;
     int i = 0, j = 0;
-    
-    //read and print ascii art
+
+    // read and print ascii art
     while ((c = fgetc(asciiArt)) != EOF)
     {
         if (c != '\n')
@@ -134,7 +133,7 @@ void printInfo(int life, int score)
     clearScreen(0, 15, 204, stdscr, 0);
 
     mvprintw(0, 30, "HEARTS: %d", life);
-    mvprintw(0, 80, "LIFEPOINTS: %d", 10*life);
+    mvprintw(0, 80, "LIFEPOINTS: %d", 10 * life);
     mvprintw(0, 120, "SCORE: %d", score);
 }
 
@@ -157,7 +156,7 @@ Map crossRoom(int enteringSide, Map myMap)
         }
         else
         {
-            mvprintw(0,56, "Impossibile entrare");
+            mvprintw(0, 56, "Impossibile entrare");
             clearScreen(0, 56, 20, myMap.rooms->currentRoom.getWindow(), 1);
         }
     }
@@ -208,6 +207,7 @@ void startGame(WINDOW *myWin)
     int delay = 1;
     bool anna = true;
     int count = 0;
+    p_bulletlist tmplist = NULL;
 
     // KEYBOARD EVENT LISTENER
     while (ch = getch())
@@ -250,6 +250,14 @@ void startGame(WINDOW *myWin)
                     {
                         myMap.rooms->currentRoom.placeObject(P.position, ' ');
                         P.position.x = 98;
+                        tmplist = P.getHeadB();
+                        while (tmplist != NULL)
+                        {
+                            myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
+                            tmplist = tmplist->next;
+                        }
+
+                        P.setHeadB(NULL);
                         myMap = crossRoom(1, myMap);
                         myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                         flag = false;
@@ -275,6 +283,13 @@ void startGame(WINDOW *myWin)
                     {
                         myMap.rooms->currentRoom.placeObject(P.position, ' ');
                         P.position.x = 1;
+                        tmplist = P.getHeadB();
+                        while (tmplist != NULL)
+                        {
+                            myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
+                            tmplist = tmplist->next;
+                        }
+                        P.setHeadB(NULL);
                         myMap = crossRoom(3, myMap);
                         myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                         flag = false;
@@ -301,6 +316,13 @@ void startGame(WINDOW *myWin)
                     {
                         myMap.rooms->currentRoom.placeObject(P.position, ' ');
                         P.position.y = 28;
+                        tmplist = P.getHeadB();
+                        while (tmplist != NULL)
+                        {
+                            myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
+                            tmplist = tmplist->next;
+                        }
+                        P.setHeadB(NULL);
                         myMap = crossRoom(2, myMap);
                         myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                         flag = false;
@@ -326,6 +348,13 @@ void startGame(WINDOW *myWin)
                     {
                         myMap.rooms->currentRoom.placeObject(P.position, ' ');
                         P.position.y = 1;
+                        tmplist = P.getHeadB();
+                        while (tmplist != NULL)
+                        {
+                            myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
+                            tmplist = tmplist->next;
+                        }
+                        P.setHeadB(NULL);
                         myMap = crossRoom(0, myMap);
                         myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                         flag = false;
@@ -368,8 +397,8 @@ void startGame(WINDOW *myWin)
                 clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
                 clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
 
-                //debugRoom(myMap);
-                //debugDoors(myMap, 0, 40);
+                // debugRoom(myMap);
+                // debugDoors(myMap, 0, 40);
                 break;
             case 'c':
                 clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
@@ -424,6 +453,13 @@ void startGame(WINDOW *myWin)
                     {
                         myMap.rooms->currentRoom.placeObject(P.position, ' ');
                         P.position.x = 98;
+                        tmplist = P.getHeadB();
+                        while (tmplist != NULL)
+                        {
+                            myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
+                            tmplist = tmplist->next;
+                        }
+                        P.setHeadB(NULL);
                         myMap = crossRoom(1, myMap);
                         myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                         flag = false;
@@ -449,6 +485,13 @@ void startGame(WINDOW *myWin)
                     {
                         myMap.rooms->currentRoom.placeObject(P.position, ' ');
                         P.position.x = 1;
+                        tmplist = P.getHeadB();
+                        while (tmplist != NULL)
+                        {
+                            myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
+                            tmplist = tmplist->next;
+                        }
+                        P.setHeadB(NULL);
                         myMap = crossRoom(3, myMap);
                         myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                         flag = false;
@@ -475,6 +518,13 @@ void startGame(WINDOW *myWin)
                     {
                         myMap.rooms->currentRoom.placeObject(P.position, ' ');
                         P.position.y = 28;
+                        tmplist = P.getHeadB();
+                        while (tmplist != NULL)
+                        {
+                            myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
+                            tmplist = tmplist->next;
+                        }
+                        P.setHeadB(NULL);
                         myMap = crossRoom(2, myMap);
                         myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                         flag = false;
@@ -500,6 +550,13 @@ void startGame(WINDOW *myWin)
                     {
                         myMap.rooms->currentRoom.placeObject(P.position, ' ');
                         P.position.y = 1;
+                        tmplist = P.getHeadB();
+                        while (tmplist != NULL)
+                        {
+                            myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
+                            tmplist = tmplist->next;
+                        }
+                        P.setHeadB(NULL);
                         myMap = crossRoom(0, myMap);
                         myMap.rooms->currentRoom.placeObject(P.position, P.tag);
                         flag = false;
@@ -542,8 +599,8 @@ void startGame(WINDOW *myWin)
                 clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
                 clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
 
-                //debugRoom(myMap);
-                //debugDoors(myMap, 0, 40);
+                // debugRoom(myMap);
+                // debugDoors(myMap, 0, 40);
                 break;
             case 'c':
                 clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
