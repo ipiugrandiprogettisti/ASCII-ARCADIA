@@ -1,44 +1,24 @@
-# Progetto-programmazione
+# ASCII ARCADIA
+## IL GIOCO
+ASCII ARCADIA è un gioco con visuale dall'alto sviluppato da Annalisa Poluzzi, Enrico Ferraiolo, Francesco Menarini e Nicole Sabrina Marro per il progetto del corso di Programmazione-00819 a.a. 2021/2022.
+Ci troviamo nei panni di un protagonista che deve riuscire a fare lo _score_ più alto possibile senza perdere, abbattendosi in nemici e raccogliendo artefatti e poteri da terra nelle stanze.
+Quest'ultime vengono create proceduralmente man mano che il giocatore entra in una di esse.
+## PREREQUISITI
+- g++ 11.2.0
+- ncurses 6.3.2
+- make 4.3
+- Ubuntu 22.04
 
-PREREQUISITI:
-gcc, g++, ncurses, curses
+## ISTRUZIONI
+Recarsi nella cartella `ASCII-ARCADIA/`
+### Compilare
 
-ISTRUZIONI:
-Per compilare:
+- `make main`
+### Eseguire 
 
-- make main
+- `./main`
 
-Per eseguire:
+###  Per pulire i file compilati 
 
-- ./main
+- `make clean`
 
-Per clean:
-
-- make clean
-
-Per compilare ed eseguire con un solo comando:
-
-- make run
-
-Idea stanze:
-
-- le porte presenti dentro la classe Map si riferiscono al puntatore della prossima stanza (Room)
-- le porte presenti dentro la classe Room si riferiscono esclusivamente ai tratti estetici/funzionali della porta
-  - cioè dove è posizionata, se è aperta, ecc...
-
-CARATTERI
-
-Angoli muri: ACS_ULCORNER ACS_LLCORNER ACS_LRCORNER ACS_URCORNER
-Protagonista: ACS_PI
-Prioettile: ACS_BULLET
-Artefatti: 'C' (common) 'R' (rare) '$' (special) % (epic)
-Nemici: '@' (si muove e spara) ACS_NEQUAL(si muove e basta e fa danno al nemico se questo gli va sopra) ACS_BLOCK (non si muove ma spara)
-Muri dxsx: ACS_VLINE ACS_HLINE ACS_CKBOARD
-Potere: 'P'
-
-DIREZIONI
-
-0 basso
-1 sx
-2 alto
-3 dx 
