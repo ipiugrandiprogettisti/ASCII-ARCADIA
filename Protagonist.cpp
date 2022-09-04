@@ -4,6 +4,7 @@ p_bulletlist headB;
 
 Protagonist::Protagonist()
 {
+    isAlive = TRUE;
     headB = NULL;
     current_life = 0;
     max_life = 0;
@@ -13,8 +14,9 @@ Protagonist::Protagonist()
     tag = ' ';
 }
 
-Protagonist::Protagonist(p_bulletlist headB, int current_life, int max_life, int score, int y, int x, chtype tag) : Character(current_life, max_life, score, y, x, tag)
+Protagonist::Protagonist(bool isAlive, p_bulletlist headB, int current_life, int max_life, int score, int y, int x, chtype tag) : Character(current_life, max_life, score, y, x, tag)
 {
+    this->isAlive = isAlive;
     this->headB = headB;
     this->current_life = current_life;
     this->max_life = max_life;
@@ -22,6 +24,16 @@ Protagonist::Protagonist(p_bulletlist headB, int current_life, int max_life, int
     this->position.y = y;
     this->position.x = x;
     this->tag = tag;
+}
+
+bool Protagonist::getisAlive()
+{
+    return this->isAlive;
+}
+
+void Protagonist::setisAlive(bool b)
+{
+    this->isAlive = b;
 }
 
 // returns head to list of ally bullets

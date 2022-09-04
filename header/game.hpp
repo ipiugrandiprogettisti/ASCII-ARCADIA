@@ -20,6 +20,8 @@ draw the main menu and returns choice taken by user:
 */
 int getMenu(WINDOW *myWin);
 
+int deathMenu(WINDOW *myWin);
+
 // starts the game
 void startGame(WINDOW *myWin);
 

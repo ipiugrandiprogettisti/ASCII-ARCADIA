@@ -14,7 +14,7 @@ void printAscii()
     {
         if (c != '\n')
         {
-            mvaddch(i + 7, halfX - 63 + j, c);
+            mvaddch(i + 7, halfX - 33 + j, c);
             j++;
         }
         else
@@ -25,6 +25,32 @@ void printAscii()
     }
 
     fclose(asciiArt);
+}
+
+void printDeathAscii()
+{
+    int halfY = LINES / 2 - 2;
+    int halfX = COLS / 2 - 2;
+    FILE *asciiDeathArt = fopen("asciiDeathArt.txt", "r");
+    char c;
+    int i = 0, j = 0;
+
+    // read and print ascii art
+    while ((c = fgetc(asciiDeathArt)) != EOF)
+    {
+        if (c != '\n')
+        {
+            mvaddch(i + 7, halfX - 20 + j, c);
+            j++;
+        }
+        else
+        {
+            i++;
+            j = 0;
+        }
+    }
+
+    fclose(asciiDeathArt);
 }
 
 // print main menu, sel is selected item to highlight
@@ -71,12 +97,74 @@ int getMenu(WINDOW *myWin)
     wrefresh(myWin);
 
     start_color();                           /* Start color 			*/
-    init_pair(1, COLOR_YELLOW, COLOR_BLACK); // first color is font color, second is background color
-    init_pair(2, COLOR_BLACK, COLOR_YELLOW); // color for selected item
+    init_pair(1, COLOR_CYAN, COLOR_BLACK); // first color is font color, second is background color
+    init_pair(2, COLOR_BLACK, COLOR_CYAN); // color for selected item
     wbkgd(myWin, COLOR_PAIR(1));             // sets all window attribute
     wrefresh(myWin);
 
     printAscii();
+
+    printMenu(selectedItem, MAX_ITEMS, menuItems);
+
+    int ch; // pressed key
+    // KEYBOARD EVENT LISTENER
+    while ((ch = getch()))
+    {
+        switch (ch)
+        {
+        case 10: // 10 is the ASCII for the enter key
+            return selectedItem;
+            break;
+        case KEY_DOWN:
+            clrtoeol();
+            /*
+            clrtoeol():
+            erase the current line to the right of the cursor,
+            inclusive, to the end of the current line.
+            Blanks created by erasure have the current background
+            rendition (as set by wbkgdset) merged into them.
+            */
+            if (selectedItem + 1 >= MAX_ITEMS)
+                selectedItem = MIN_ITEMS; // reset selectedItem to MIN_ITEMS (0)
+            else
+                selectedItem++;
+            printMenu(selectedItem, MAX_ITEMS, menuItems);
+            wrefresh(myWin);
+            break;
+
+        case KEY_UP:
+            clrtoeol();
+            wrefresh(myWin);
+            if (selectedItem - 1 < MIN_ITEMS)
+                selectedItem = MAX_ITEMS - 1; // reset selectedItem to MAX_ITEMS (2)
+            else
+                selectedItem--;
+            printMenu(selectedItem, MAX_ITEMS, menuItems);
+            wrefresh(myWin);
+            break;
+        }
+    }
+
+    return selectedItem;
+}
+
+int deathMenu(WINDOW *myWin)
+{
+    const int MAX_ITEMS = 2,
+              MIN_ITEMS = 0;
+    int width, height, halfX, halfY;
+    char menuItems[MAX_ITEMS][MAX_LENGTH_ITEM] = {"Try again", "Exit"};
+    int selectedItem = 0;
+
+    wrefresh(myWin);
+
+    start_color();                         /* Start color 			*/
+    init_pair(1, COLOR_CYAN, COLOR_BLACK); // first color is font color, second is background color
+    init_pair(2, COLOR_BLACK, COLOR_CYAN); // color for selected item
+    wbkgd(myWin, COLOR_PAIR(1));           // sets all window attribute
+    wrefresh(myWin);
+
+    printDeathAscii();
 
     printMenu(selectedItem, MAX_ITEMS, menuItems);
 
@@ -183,7 +271,7 @@ void startGame(WINDOW *myWin)
     p_bulletlist headB = NULL;
 
     // creation of the protagonist (player)
-    Protagonist P(headB, 10, 10, 0, 1, 1, ACS_PI);
+    Protagonist P(TRUE, headB, 10, 10, 0, 1, 1, ACS_PI);
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
@@ -204,14 +292,38 @@ void startGame(WINDOW *myWin)
     pos position;
     int ch; // pressed key
     bool flag = false;
-    int delay = 1;
-    bool anna = true;
     int count = 0;
     p_bulletlist tmplist = NULL;
+    int maxY, maxX, offY = 0, offX = 0;
+    getmaxyx(stdscr, maxY, maxX);
+    WINDOW *deathwin = newwin(maxY, maxX, offY, offX);
 
     // KEYBOARD EVENT LISTENER
     while (ch = getch())
     {
+        if (P.getisAlive() == FALSE)
+        {
+            int choice = deathMenu(deathwin); // draw main menu and get user choice: 0: Play, 1: Credits, 2: Exit
+            wclear(deathwin);
+            wrefresh(deathwin);
+
+            switch (choice) // handle choice
+            {
+            case 1: // EXIT
+                endwin();
+                exit(1);
+                break;
+            case 0: // TRY AGAIN
+                startGame(deathwin);
+
+                break;
+            default:
+                endwin();
+                exit(1);
+                break;
+            }
+        }
+
         if (count > 10)
         {
             count = 0;

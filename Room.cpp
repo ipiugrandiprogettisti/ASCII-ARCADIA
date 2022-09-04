@@ -630,10 +630,15 @@ void Room::aBullMov(Protagonist &P, bullet &b)
                 b.bulletpos = posNextB;            // aggiorno posizione sulla lista
             }
         }
+        else if (nextA == ACS_BULLET || nextA == ACS_DEGREE) // PROIETTILE->ARTEF->PROIETTILE O NEMICO O ALLEATO
+        {
+            Room::placeObject(now, empty);
+            P.bulletRemove(b);
+        }
+
         this->drawLook();
         refresh();
         wrefresh(this->getWindow());
-        // NON CI SONO ALTRE COLLISIONI DELLA SERIE PROIETT -> ARTEF -> ALTRO PERCHè GLI ARTEFATTI SPAWNANO SOLO DOPO CHE I NEMICI SONO MORTI
     }
     else if (nextP == '@' || nextP == ACS_NEQUAL || nextP == ACS_BLOCK) // PROIETTILE -> NEMICO
     {
@@ -893,15 +898,15 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         // p_bulletlist tmp2 = p.getHeadB();
         while (tmp1 != NULL)
         {
-            if (/*tmp1->B.direction == direction &&*/ tmp1->B.bulletpos.y == newPos.y && tmp1->B.bulletpos.x == newPos.x)
+            if (tmp1->B.bulletpos.y == newPos.y && tmp1->B.bulletpos.x == newPos.x)
             {
 
                 Room::placeObject(tmp1->B.bulletpos, ' ');
                 bool dead = p.takeDamage(tmp1->B.bullet_damage);
                 if (dead == true)
                 {
+                    p.setisAlive(FALSE);
                     Room::placeObject(p.getPosition(), ' ');
-                    // menu morte
                 }
                 else
                 {
@@ -931,11 +936,11 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
             tmp2 = tmp2->next;
         }
     }
-    else if (Room::getTile(newPos) == ACS_NEQUAL || Room::getTile(newPos) == ACS_BLOCK || Room::getTile(newPos) == '@') // hits enemy, the flag is set to 4
+    else if (Room::getTile(newPos) == ACS_NEQUAL || Room::getTile(newPos) == ACS_BLOCK || Room::getTile(newPos) == '@') // hits enemy
     {
         p.takeDamage(p.getLife());
+        p.setisAlive(FALSE);
         Room::placeObject(p.getPosition(), ' ');
-        // menu morte
     }
 }
 
@@ -1035,10 +1040,10 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
     else if (c_next == ACS_PI)
     {
         P.takeDamage(P.getLife());
+        P.setisAlive(FALSE);
         Room::placeObject(now, ' ');
         Room::placeObject(next, e.tag);
         e.setPosition(next.y, next.x);
-        // MENU' DI MORTE
     }
     /*else if (c_next == ACS_BULLET)
     {
@@ -1166,8 +1171,8 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
         bool dead = p.takeDamage(b.bullet_damage);
         if (dead == true)
         {
+            p.setisAlive(FALSE);
             placeObject(p.getPosition(), ' ');
-            // menu morte
         }
         else
         {
