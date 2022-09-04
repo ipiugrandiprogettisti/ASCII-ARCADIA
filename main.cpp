@@ -35,14 +35,9 @@ int main(int argc, char *argv[])
 
     switch (choice) // handle choice
     {
-    case 2: // EXIT
+    case 1: // EXIT
         endwin();
         cout << "You chose to exit\n";
-        return 0;
-        break;
-    case 1: // CREDITS
-        endwin();
-        cout << "You chose to see the credits\n";
         return 0;
         break;
     case 0: // PLAY

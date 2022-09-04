@@ -87,24 +87,29 @@ draw the main menu and returns choice taken by user:
 */
 int getMenu(WINDOW *myWin)
 {
-    const int MAX_ITEMS = 3,
+    const int MAX_ITEMS = 2,
               MIN_ITEMS = 0;
     int width, height, halfX, halfY;
-    char menuItems[MAX_ITEMS][MAX_LENGTH_ITEM] = {"Play", "Credits", "Exit"};
+    char menuItems[MAX_ITEMS][MAX_LENGTH_ITEM] = {"Play", "Exit"};
     int selectedItem = 0; // could only be -1, 0 or 1. 0 is default
 
     // WINDOW *myWin = newwin(maxY, maxX, offY, offX);
     wrefresh(myWin);
 
-    start_color();                           /* Start color 			*/
+    start_color();                         /* Start color 			*/
     init_pair(1, COLOR_CYAN, COLOR_BLACK); // first color is font color, second is background color
     init_pair(2, COLOR_BLACK, COLOR_CYAN); // color for selected item
-    wbkgd(myWin, COLOR_PAIR(1));             // sets all window attribute
+    wbkgd(myWin, COLOR_PAIR(1));           // sets all window attribute
     wrefresh(myWin);
 
     printAscii();
 
     printMenu(selectedItem, MAX_ITEMS, menuItems);
+
+    // prints credits at the bottom of the screen
+    attron(COLOR_PAIR(1));
+    mvaddstr(LINES - 5, COLS / 2 - 77 / 2, "Annalisa Poluzzi, Enrico Ferraiolo, Francesco Menarini, Nicole Sabrina Marro");
+    attroff(COLOR_PAIR(1));
 
     int ch; // pressed key
     // KEYBOARD EVENT LISTENER
@@ -216,13 +221,12 @@ void printRoomKey(int key)
     mvprintw(0, 0, "Room: %d", key);
 }
 
-void printInfo(int life, int score)
+void printInfo(int life, int score, int key)
 {
-    clearScreen(0, 15, 204, stdscr, 0);
-
-    mvprintw(0, 30, "HEARTS: %d", life);
-    mvprintw(0, 80, "LIFEPOINTS: %d", 10 * life);
-    mvprintw(0, 120, "SCORE: %d", score);
+    clearScreen(3, COLS / 2 - 32, 204, stdscr, 0);
+    attron(COLOR_PAIR(1));
+    mvprintw(3, COLS / 2 - 32, "ROOM: %d       HEARTS: %d     LIFEPOINTS: %d      SCORE: %d", key, life, 10 * life, score);
+    attroff(COLOR_PAIR(1));
 }
 
 // enters new room
@@ -238,7 +242,7 @@ Map crossRoom(int enteringSide, Map myMap)
         if (myMap.changeRoom(1)) // changeroom returns true if room has changed
         {
             myMap.rooms->currentRoom.drawLook();
-            printRoomKey(myMap.rooms->currentRoom.getKey());
+            // printRoomKey(myMap.rooms->currentRoom.getKey());
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
@@ -253,7 +257,7 @@ Map crossRoom(int enteringSide, Map myMap)
         if (myMap.changeRoom(0))
         {
             myMap.rooms->currentRoom.drawLook();
-            printRoomKey(myMap.rooms->currentRoom.getKey());
+            // printRoomKey(myMap.rooms->currentRoom.getKey());
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
@@ -279,13 +283,13 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
 
     // spawns protagonist info
-    printInfo(P.getLife(), P.get_score());
+    printInfo(P.getLife(), P.get_score(), myMap.rooms->currentRoom.getKey());
 
     // spawns protagonist
     myMap.rooms->currentRoom.placeObject(P.position, P.tag);
 
     myMap.rooms->currentRoom.drawLook();
-    printRoomKey(myMap.rooms->currentRoom.getKey());
+    // printRoomKey(myMap.rooms->currentRoom.getKey());
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
@@ -344,7 +348,7 @@ void startGame(WINDOW *myWin)
             myMap.rooms->currentRoom.spawnEnBull();
             myMap.rooms->currentRoom.allEnBullet_move(P);
             myMap.rooms->currentRoom.allABullMov(P);
-            printInfo(P.getLife(), P.get_score());
+            printInfo(P.getLife(), P.get_score(), myMap.rooms->currentRoom.getKey());
 
             myMap.rooms->currentRoom.drawLook();
             refresh();
