@@ -41,9 +41,6 @@ public:
     // returns win of the given room
     WINDOW *getRoomWindow(int key);
 
-    // enters new room. return true if succeeds. isNextRoom = 0 previous room, = 1 next room
-    bool enterRoom(int isNextRoom);
-
     // creates next room
     bool createRoom(door previousDoor);
 

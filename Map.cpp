@@ -137,45 +137,7 @@ bool Map::createRoom(door previousDoor)
     return success;
 }
 
-// enters new room. returns true if succeeds. isNextRoom = 0 previous room, = 1 next room
-bool Map::enterRoom(int isNextRoom)
-{
-    bool entered = false;
-    switch (isNextRoom)
-    {
-    case 0:                              // PREVIOUS ROOM
-        if (rooms->previousRoom != NULL) // check if previous room exists
-        {
-            pListRooms previousRoomList = rooms;
-            rooms = rooms->previousRoom;        // enter next room
-            rooms->nextRoom = previousRoomList; // set previous room as the one the player entered
-            entered = true;
-        }
-        break;
-    case 1:                          // NEXT ROOM
-        if (rooms->nextRoom != NULL) // check if next room exists
-        {
-            pListRooms previousRoomList = rooms;
-            rooms = rooms->nextRoom;                // enter next room
-                                                    // rooms = goNextRoom(rooms);
-            rooms->previousRoom = previousRoomList; // set previous room as the one the player entered
-            rooms->currentRoom.setUp(COLS, LINES, previousRoomList->currentRoom.getDoor(1));
-            if (rooms->currentRoom.setUp(COLS, LINES, previousRoomList->currentRoom.getDoor(1)))
-            {
-                mvaddstr(0, 56, "stanza non setuppata2");
-                refresh();
-                wrefresh(rooms->currentRoom.getWindow());
-            }
-            entered = true;
-        }
-        break;
 
-    default:
-        break;
-    }
-
-    return entered;
-}
 // returns the given door room's key. -1 if not found. parameter room: 0 = previous room; 1 = next room
 int Map::getKeyByDoor(int room)
 {
