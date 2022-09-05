@@ -16,7 +16,7 @@ typedef listRooms *pListRooms;
 
 // listRooms functions
 // tail insert
-pListRooms insertTail(pListRooms rooms, int doorNumber, int newRoomKey);
+pListRooms insertTail(pListRooms myListRoom, Room roomInfo, door previousDoor);
 
 class Map
 {
