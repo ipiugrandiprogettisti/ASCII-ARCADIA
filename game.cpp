@@ -555,6 +555,13 @@ void startGame(WINDOW *myWin)
         }
         else
         {
+            if (count <= 2)
+            {
+                myMap.rooms->currentRoom.allABullMov(P);
+                myMap.rooms->currentRoom.drawLook();
+                refresh();
+                wrefresh(myMap.rooms->currentRoom.getWindow());
+            }
 
             switch (ch)
             {

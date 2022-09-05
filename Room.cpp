@@ -745,9 +745,20 @@ void Room::aBullMov(Protagonist &P, bullet &b)
     else if (nextP == empty)
     { // se prossima pos è vuota aggiorno pos proiettile e lo piazzo
 
-        placeObject(now, empty);
-        placeObject(next, ACS_BULLET);
-        b.bulletpos = next;
+        if (next.y == 0 || next.y == 29)
+        {
+            if (next.x == 50)
+            {
+                Room::placeObject(now, empty);
+                P.bulletRemove(b);
+            }
+        }
+        else
+        {
+            placeObject(now, empty);
+            placeObject(next, ACS_BULLET);
+            b.bulletpos = next;
+        }
         Room::drawLook();
         wrefresh(Room::getWindow());
         refresh();
@@ -1262,10 +1273,13 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
         newpos.x = p.getPosition().x;
         if (Room::getTile(newpos) == ' ')
         {
-            b.bulletpos.y = p.getPosition().y + 1;
-            b.bulletpos.x = p.getPosition().x;
-            Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(b);
+            if (newpos.y != 29)
+            {
+                b.bulletpos.y = p.getPosition().y + 1;
+                b.bulletpos.x = p.getPosition().x;
+                Room::placeObject(b.bulletpos, b.bullet_tag);
+                p.bulletHeadInsert(b);
+            }
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
@@ -1278,6 +1292,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
         newpos.x = p.getPosition().x - 1;
         if (Room::getTile(newpos) == ' ')
         {
+
             b.bulletpos.y = p.getPosition().y;
             b.bulletpos.x = p.getPosition().x - 1;
             Room::placeObject(b.bulletpos, b.bullet_tag);
@@ -1294,10 +1309,14 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
         newpos.x = p.getPosition().x;
         if (Room::getTile(newpos) == ' ')
         {
-            b.bulletpos.y = p.getPosition().y - 1;
-            b.bulletpos.x = p.getPosition().x;
-            Room::placeObject(b.bulletpos, b.bullet_tag);
-            p.bulletHeadInsert(b);
+            if (newpos.y != 0)
+            {
+                b.bulletpos.y = p.getPosition().y - 1;
+                b.bulletpos.x = p.getPosition().x;
+                Room::placeObject(b.bulletpos, b.bullet_tag);
+                p.bulletHeadInsert(b);
+            }
+
             Room::drawLook();
             refresh();
             wrefresh(this->getWindow());
@@ -1311,6 +1330,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
         newpos.x = p.getPosition().x + 1;
         if (Room::getTile(newpos) == ' ')
         {
+
             b.bulletpos.y = p.getPosition().y;
             b.bulletpos.x = p.getPosition().x + 1;
             Room::placeObject(b.bulletpos, b.bullet_tag);
