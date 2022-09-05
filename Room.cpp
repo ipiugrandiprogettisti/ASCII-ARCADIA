@@ -85,7 +85,6 @@ bool Room::checkTilesAround(pos position, pos previousPosition)
 // places 1 power to open door
 void Room::placePower(bool b)
 {
-    // FIXME: qui ci va un if che li fa apparire solo dopp che la lista di nemici si è svuotata, ovvero sono tutti morti
     Power p;
     p.set_tag('P');
     chtype rar = p.get_tag();
@@ -151,6 +150,7 @@ void Room::placeArtifacts()
         ArtifactHeadinsert(a);
     }
 }
+
 // places random enemies
 void Room::place_enemies(bool b)
 {
@@ -335,6 +335,7 @@ void Room::setDrawnPower(bool b)
 {
     this->drawnPower = b;
 }
+
 // sets up the room if myDoor doesnt exist (-1), then it is the first room being set up. myDoor is previous door of the new room, empty if first room
 bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
 {
@@ -473,15 +474,8 @@ bool Room::setUp(int maxCols, int maxLines, struct door myDoor)
         randomPathWall(pos1, h, w);
     }
 
-    // place artifacts
-
-    // TODO: place player
-    // TODO: place enemies
-    // TODO:  place etc
-
     place_enemies(1);
     placeArtifacts();
-    // placePower(1);
     drawn = true;
 
     return drawn;
@@ -1143,7 +1137,7 @@ void Room::spawnEnBull()
     }
 }
 
-// da rivedere
+
 void Room::enBullet_move(bullet &b, Protagonist &p)
 {
 
@@ -1244,13 +1238,7 @@ void Room::allEnBullet_move(Protagonist &p)
         enBulltmp = enBulltmp->next;
     }
 }
-/*
-void Room::spawnSXBul(Protagonist p)
-{
-    pos blletpos = p.createSXBul();
-    placeObject(blletpos, ACS_BULLET);
-};
-*/
+
 
 // spawns allybullets right next to the player
 void Room::spawnAllyBullet(Protagonist &p, int dir)
@@ -1398,55 +1386,3 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
     }
 }
 
-// non toglietele per ora
-/*
-       pos next_P = nextPos(next, b.direction); // posizione dopo il ARTEFATTO
-        chtype c_nextP = checkNextPos(next, b.direction);
-
-        if (c_nextP == ' ') // dopo l' ARTEFATTO c'è uno spazio vuoto
-        {
-            placeObject(now, ' ');
-            placeObject(next_P, ACS_BULLET);
-            b.bulletpos = next_P;
-        }
-        else if (c_nextP == ACS_VLINE || c_nextP == ACS_HLINE || c_nextP == ACS_CKBOARD) // dopo l' ARTEFATTO c'è un muro
-        {
-            placeObject(now, ' ');
-            bullet_enemyRemove(b);
-        }
-        else if (c_nextP == ACS_PI)
-        {
-            p.current_life -= b.bullet_damage;
-            if (p.current_life <= 0)
-            {
-                placeObject(next, ' ');
-                //MENU' MORTE
-            }
-            placeObject(now, ' ');
-            bullet_enemyRemove(b);
-        }
-        else if (c_nextP == ACS_BLOCK || c_nextP == ACS_NEQUAL || c_nextP == '@')
-        {
-            placeObject(now, ' ');
-            bullet_enemyRemove(b);
-        }
-*/
-
-/*
-if (flag == false) // vuol dire che il proiettile che ha incontrato era un altro proiettile nemico
-        {
-            // scambio anche nel caso di collisione PROIETTILE NEMICO-PROIETTILE NEMICO(?)
-            // adesso ho messo di no poi al massimo si cambia
-            while (tmpEn != NULL)
-            {
-                if (tmpEn->B.bulletpos.x == next.x && tmpEn->B.bulletpos.y == next.y)
-                {
-                    placeObject(next, ' ');
-                    placeObject(now, ' ');
-                    bullet_enemyRemove(b);
-                    bullet_enemyRemove(tmpEn->B);
-                }
-                tmpEn = tmpEn->next;
-            }
-        }
-*/
