@@ -185,6 +185,8 @@ public:
     void placeObject(pos position, chtype tag);
     // place object in room
     void placeObject(int x, int y, chtype tag);
+
+    
     // places random artifacts
     void placeArtifacts();
     // places random enemies
