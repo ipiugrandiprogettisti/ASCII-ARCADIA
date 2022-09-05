@@ -31,8 +31,7 @@ public:
     //return the score
     int get_score();
 
-    //set up the score
-    void set_score(int c);
+    
 
 };
 
