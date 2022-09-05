@@ -12,7 +12,7 @@ void checkScreen(int screenCols, int screenLines)
         move(0, 0);
         printw("Resize your screen...");
         move(1, 0);
-        mvprintw(0, 0, "Minimum resolution is %dx%d", MIN_LINES, MIN_COLS);
+        mvprintw(0, 0, "Minimum screen size is %dx%d", MIN_LINES, MIN_COLS);
         getmaxyx(stdscr, screenCols, screenLines);
     }
 }
