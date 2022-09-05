@@ -50,7 +50,7 @@ public:
     int getLife();
 
     // prende in input il danno ricevuto e aggiorna la vita sottraendoglielo
-    bool takeDamage(int);
+    bool takeDamage(int damage_received);
 
     // increases life basing on the gained artifact
     void gainLife(int p);
