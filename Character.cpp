@@ -1,9 +1,5 @@
 #include "header/Character.hpp"
 
-int current_life;
-int max_life;
-int atk_damage;
-int score;
 
 Character::Character()
 {

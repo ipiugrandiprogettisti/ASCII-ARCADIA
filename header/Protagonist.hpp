@@ -22,14 +22,13 @@ protected:
     bool isAlive;
     p_bulletlist headB;
     int current_life; // in termini di cuori posseduti al momento
-    int max_life;
 
 public:
     // constructor
     Protagonist();
 
     // constructor
-    Protagonist(bool isAlive, p_bulletlist headB, int current_life, int max_life, int score, int y, int x, chtype tag);
+    Protagonist(bool isAlive, p_bulletlist headB, int current_life, int score, int y, int x, chtype tag);
 
     bool getisAlive();
 
