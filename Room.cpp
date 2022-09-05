@@ -125,26 +125,26 @@ void Room::placeArtifacts()
         if (artRarity <= 60 && artRarity > 0)
         {
             a.set_tag('C');
-            a.rarity = 1;
-            a.lifepoints = 1;
+            a.setRarity(1);
+            a.setLifepoints(1);
         }
         else if (artRarity > 60 && artRarity <= 85)
         {
             a.set_tag('R');
-            a.rarity = 2;
-            a.lifepoints = 3;
+            a.setRarity(2);
+            a.setLifepoints(3);
         }
         else if (artRarity > 85 && artRarity <= 95)
         {
             a.set_tag('$');
-            a.rarity = 3;
-            a.lifepoints = 5;
+            a.setRarity(3);
+            a.setLifepoints(5);
         }
         else if (artRarity > 95 && artRarity >= 100)
         {
             a.set_tag(ACS_DIAMOND);
-            a.rarity = 4;
-            a.lifepoints = 7;
+            a.setRarity(4);
+            a.setLifepoints(7);
         }
 
         placeObject(a.getPosition(), a.get_tag());
@@ -872,7 +872,7 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
         {
             if (tmp->A.getPosition().y == newPos.y && tmp->A.getPosition().x == newPos.x)
             {
-                p.gainLife(tmp->A.getArtLifepoints());
+                p.gainLife(tmp->A.getLifepoints());
                 Room::removeArtifact(tmp->A);
             }
             tmp = tmp->next;

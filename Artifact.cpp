@@ -24,9 +24,22 @@ Artifact ::Artifact(int rarity, int lifepoints, int posy, int posx, chtype tag) 
     this->tag = ' ';
 }
 
+
 // returns lifepoints
-int Artifact ::getArtLifepoints()
+int Artifact ::getLifepoints()
 {
     return this->lifepoints;
 }
+int Artifact::getRarity(){
+    return this->rarity;
+}
+
+void Artifact::setLifepoints(int life){
+    this->lifepoints=life;
+}
+
+
+    void Artifact::setRarity(int rar){
+        this->rarity=rar;
+    }
 

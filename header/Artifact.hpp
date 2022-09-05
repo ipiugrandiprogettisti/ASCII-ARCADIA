@@ -8,7 +8,7 @@
 //  classe artefatto -> da vita
 class Artifact : public Entity
 {
-public:
+protected:
     int lifepoints; // quanti punti vita dà
     int rarity;
 
@@ -20,5 +20,8 @@ public:
     Artifact(int rarity, int lifepoints, int y, int x, chtype tag);
 
     // returns artifact life points
-    int getArtLifepoints();
+    int getLifepoints();
+    int getRarity();
+    void setLifepoints(int life);
+    void setRarity(int rar);
 };
