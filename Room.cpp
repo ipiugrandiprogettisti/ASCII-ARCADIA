@@ -659,13 +659,6 @@ void Room::aBullMov(Protagonist &P, bullet &b)
             }
             enList = enList->next;
         }
-
-        // proiettili alleato tolgono solo parte della vita
-        /*
-        scorri lista nemici, trovi il nemico in pos nextP,
-        controlli la vita, togli vita in base al proiettile,
-        cancelli proiettile, cancelli nemico se finisce la vita
-        */
     }
     else if (nextP == ACS_DEGREE) // PROIETTILE -> PROETTILE NEMICO, vengono eliminati entrambi
     {
@@ -1266,12 +1259,28 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
     b.bullet_tag = ACS_BULLET;
     b.direction = dir;
     pos newpos;
+    pListEnemies tmpenList = NULL;
     switch (b.direction)
     {
     case 0:
         newpos.y = p.getPosition().y + 1;
         newpos.x = p.getPosition().x;
-        if (Room::getTile(newpos) == ' ')
+
+        if (Room::getTile(newpos) == ACS_BLOCK || Room::getTile(newpos) == ACS_NEQUAL || Room::getTile(newpos) == '@')
+        {
+            tmpenList = this->objects.enemies;
+            while (tmpenList != NULL)
+            {
+                if (newpos.x == tmpenList->e.getPosition().x && newpos.y == tmpenList->e.getPosition().y)
+                {
+                    p.set_score(tmpenList->e.get_score());
+                    this->enemyRemove(tmpenList->e);
+                    this->placeObject(newpos, ' '); // rimuovo en da mappa
+                }
+                tmpenList = tmpenList->next;
+            }
+        }
+        else if (Room::getTile(newpos) == ' ')
         {
             if (newpos.y != 29)
             {
@@ -1290,7 +1299,22 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
     case 1:
         newpos.y = p.getPosition().y;
         newpos.x = p.getPosition().x - 1;
-        if (Room::getTile(newpos) == ' ')
+
+        if (Room::getTile(newpos) == ACS_BLOCK || Room::getTile(newpos) == ACS_NEQUAL || Room::getTile(newpos) == '@')
+        {
+            tmpenList = this->objects.enemies;
+            while (tmpenList != NULL)
+            {
+                if (newpos.x == tmpenList->e.getPosition().x && newpos.y == tmpenList->e.getPosition().y)
+                {
+                    p.set_score(tmpenList->e.get_score());
+                    this->enemyRemove(tmpenList->e);
+                    this->placeObject(newpos, ' '); // rimuovo en da mappa
+                }
+                tmpenList = tmpenList->next;
+            }
+        }
+        else if (Room::getTile(newpos) == ' ')
         {
 
             b.bulletpos.y = p.getPosition().y;
@@ -1307,7 +1331,22 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
 
         newpos.y = p.getPosition().y - 1;
         newpos.x = p.getPosition().x;
-        if (Room::getTile(newpos) == ' ')
+
+        if (Room::getTile(newpos) == ACS_BLOCK || Room::getTile(newpos) == ACS_NEQUAL || Room::getTile(newpos) == '@')
+        {
+            tmpenList = this->objects.enemies;
+            while (tmpenList != NULL)
+            {
+                if (newpos.x == tmpenList->e.getPosition().x && newpos.y == tmpenList->e.getPosition().y)
+                {
+                    p.set_score(tmpenList->e.get_score());
+                    this->enemyRemove(tmpenList->e);
+                    this->placeObject(newpos, ' '); // rimuovo en da mappa
+                }
+                tmpenList = tmpenList->next;
+            }
+        }
+        else if (Room::getTile(newpos) == ' ')
         {
             if (newpos.y != 0)
             {
@@ -1328,7 +1367,22 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
 
         newpos.y = p.getPosition().y;
         newpos.x = p.getPosition().x + 1;
-        if (Room::getTile(newpos) == ' ')
+
+        if (Room::getTile(newpos) == ACS_BLOCK || Room::getTile(newpos) == ACS_NEQUAL || Room::getTile(newpos) == '@')
+        {
+            tmpenList = this->objects.enemies;
+            while (tmpenList != NULL)
+            {
+                if (newpos.x == tmpenList->e.getPosition().x && newpos.y == tmpenList->e.getPosition().y)
+                {
+                    p.set_score(tmpenList->e.get_score());
+                    this->enemyRemove(tmpenList->e);
+                    this->placeObject(newpos, ' '); // rimuovo en da mappa
+                }
+                tmpenList = tmpenList->next;
+            }
+        }
+        else if (Room::getTile(newpos) == ' ')
         {
 
             b.bulletpos.y = p.getPosition().y;
