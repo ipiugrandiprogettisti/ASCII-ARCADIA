@@ -195,8 +195,10 @@ public:
     void placePower(bool b);
 
     // list functions
+
     bool getDrawnPower();
     void setDrawnPower(bool b);
+
     // powers head insert
     void powerHeadinsert(Power p);
 
@@ -231,7 +233,9 @@ public:
 
     void enemy_movement(Protagonist &P, Enemy &e, int dir);
 
+    //all enemy movement
     void allEnemyMov(Protagonist &p);
+
     // checks what's after a position in a certain direction
     chtype checkNextPos(pos p, int direction);
 
@@ -247,9 +251,10 @@ public:
     // bulletes appear next to the enemy
     void spawnEnBull();
 
-    // make enemies's bullet move
+    // makes enemies' bullet move
     void enBullet_move(bullet &b, Protagonist &p);
 
+    //moves all enemies' bullets
     void allEnBullet_move(Protagonist &P);
 
     // spawns allybullets right next to the player
