@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _GAME
+#define _GAME
 #include <ncurses.h>
 #include <stdlib.h>
 #include <ctime>
@@ -27,3 +28,5 @@ void startGame(WINDOW *myWin);
 
 // working during game
 void inGame(WINDOW *myWin);
+
+#endif

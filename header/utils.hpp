@@ -1,4 +1,3 @@
-//#pragma once
 #ifndef _UTILS
 #define _UTILS
 #include <ncurses.h>
