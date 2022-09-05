@@ -506,21 +506,6 @@ void startGame(WINDOW *myWin)
                 myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
                 break;
 
-            case 'i':
-                // DEBUGGING INFO
-                clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-
-                // debugRoom(myMap);
-                // debugDoors(myMap, 0, 40);
-                break;
-            case 'c':
-                clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                break;
 
             case 'o': // opens all doors
                 myMap.rooms->currentRoom.openDoors(true);
@@ -528,24 +513,6 @@ void startGame(WINDOW *myWin)
 
             case 'p': // closes all doors
                 myMap.rooms->currentRoom.openDoors(false);
-                break;
-
-            // ESEMPIO .placeObject() senza struct
-            case '1': // oggetto in alto a sinistra
-                myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-                break;
-
-            // ESEMPIO .placeObject() scon struct pos
-            case '2': // oggetto in basso a destra
-                position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
-                position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;
-                myMap.rooms->currentRoom.placeObject(position, ACS_BULLET);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
                 break;
 
             default:
@@ -715,46 +682,12 @@ void startGame(WINDOW *myWin)
                 myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
                 break;
 
-            case 'i':
-                // DEBUGGING INFO
-                clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-
-                // debugRoom(myMap);
-                // debugDoors(myMap, 0, 40);
-                break;
-            case 'c':
-                clearScreen(0, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(1, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(2, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                clearScreen(3, 0, COLS, myMap.rooms->currentRoom.getWindow(), 0);
-                break;
-
             case 'o': // opens all doors
                 myMap.rooms->currentRoom.openDoors(true);
                 break;
 
             case 'p': // closes all doors
                 myMap.rooms->currentRoom.openDoors(false);
-                break;
-
-            // ESEMPIO .placeObject() senza struct
-            case '1': // oggetto in alto a sinistra
-                myMap.rooms->currentRoom.placeObject(1, 1, ACS_BULLET);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
-                break;
-
-            // ESEMPIO .placeObject() scon struct pos
-            case '2': // oggetto in basso a destra
-                position.y = myMap.rooms->currentRoom.getMaxWidth() - 2;
-                position.x = myMap.rooms->currentRoom.getMaxHeight() - 2;
-                myMap.rooms->currentRoom.placeObject(position, ACS_BULLET);
-                myMap.rooms->currentRoom.drawLook();
-                refresh();
-                wrefresh(myMap.rooms->currentRoom.getWindow());
                 break;
 
             default:
