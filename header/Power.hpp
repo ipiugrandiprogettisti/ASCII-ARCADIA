@@ -1,13 +1,14 @@
 #include "Entity.hpp"
 
-// classe potere 1-> sblocca passaggi
-// potere-> apre porta
-
+// classe potere->apre porte/passaggi
+//non ha bisogno di ulteriori attributi rispetto a entity, creata classe per il costruttore
+// character corrispondente 'P
 class Power : public Entity
 {
 public:
+//null constructor
     Power();
-    // power constructor with type, pos y, posx, tag (set it 111 by default)
-    // after creating a power you need to set his tag with funct setPower()
+    //power constructor
     Power(int y, int x, chtype tag);
+    
 };

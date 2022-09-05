@@ -30,16 +30,17 @@ int Artifact ::getLifepoints()
 {
     return this->lifepoints;
 }
+//return rarity
 int Artifact::getRarity(){
     return this->rarity;
 }
-
+//set lifepoints within {1,3,5,7}
 void Artifact::setLifepoints(int life){
     this->lifepoints=life;
 }
 
-
-    void Artifact::setRarity(int rar){
-        this->rarity=rar;
-    }
+//set rarity from 1 to 4
+void Artifact::setRarity(int rar){
+    this->rarity=rar;
+}
 

@@ -13,10 +13,9 @@ protected:
     int rarity;
 
 public:
-    // constructor
+    // null constructor
     Artifact();
-    // artifact constructor with rarity, pos y, posx, tag (set it 111 by default)
-    // after creating an artifact you need to set  his tag and lifepoints with funct setArtifact()
+    // artifact constructor
     Artifact(int rarity, int lifepoints, int y, int x, chtype tag);
 
     // returns artifact life points
