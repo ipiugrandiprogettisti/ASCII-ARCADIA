@@ -18,9 +18,10 @@ public:
     //sets enemy's score
     void set_score(int c);
 
-    //return the enemy key
+    //return the enemy's key
     int get_enemyKey();
 
+    //sets the enemy's key
     void set_enemyKey(int key);
 
 };

@@ -157,11 +157,12 @@ void Room::place_enemies(bool b)
 
     Enemy en(0, 0, 0, 0, ' ');
 
-    int n = rand() % 3 + 1;
+    int n = rand() % 3 + 1; //number of enemies
 
     for (int i = 0; i < n; i++)
     {
-        int n_type = rand() % 100 + 1;
+        int n_type = rand() % 100 + 1; //enemies's type
+
         if (n_type <= 40)
         {
             en.set_tag(ACS_BLOCK);
@@ -186,6 +187,7 @@ void Room::place_enemies(bool b)
         chtype p = ' ';
         while (flag == true)
         {
+            //casual spwan position
             posEnemy.y = rand() % 24 + 3;
             posEnemy.x = rand() % 94 + 3;
 
@@ -997,6 +999,7 @@ void Room::enemyRemove(Enemy en)
     }
 }
 
+//moves the enemy one position away
 void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
 {
     pos now = e.getPosition();
@@ -1008,7 +1011,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         Room::placeObject(now, ' ');
         e.setPosition(next.y, next.x);
     }
-    else if (c_next == ACS_PI)
+    else if (c_next == ACS_PI) //collisone nemico-protagonista
     {
         P.takeDamage(P.getLife());
         P.setisAlive(FALSE);
@@ -1034,7 +1037,7 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         }
     }*/
 
-    else if (c_next == ACS_DEGREE)
+    else if (c_next == ACS_DEGREE) //collisione nemico- proiettile nemico
     {
         p_bulletsEnemies tmp_en = this->objects.bulletEnemies;
         while (tmp_en != NULL)
@@ -1051,15 +1054,14 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
     }
 };
 
+//all enemies move one position away
 void Room::allEnemyMov(Protagonist &p)
 {
-    // prendi lista nemici
     pListEnemies entmp = this->objects.enemies;
 
-    // scorri lista nemici
     while (entmp != NULL)
     {
-        int direction = rand() % 4;
+        int direction = rand() % 4; //estrazione della direzione in modo casuale
 
         if (entmp->e.get_enemyKey() != 1)
         {
@@ -1070,10 +1072,10 @@ void Room::allEnemyMov(Protagonist &p)
     }
 }
 
-// da rivedere
+//spwan a bullet for each enemy
 void Room::spawnEnBull()
 {
-    int n = rand() % 3;
+    int n = rand() % 3; //propabilità di sparare dei nemici
     if (n == 1)
     {
         pListEnemies en_tmp = objects.enemies;
@@ -1111,6 +1113,7 @@ void Room::spawnEnBull()
     }
 }
 
+//make a bullet move one position away
 void Room::enBullet_move(bullet &b, Protagonist &p)
 {
 
@@ -1123,6 +1126,9 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
         placeObject(next, b.bullet_tag);
         b.bulletpos = next;
     }
+
+    //collisioni
+
     else if (c_next == ACS_PI) // il proiettile incontra il player
     {
         placeObject(now, ' ');
@@ -1139,11 +1145,9 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
     }
     else if (c_next == ACS_VLINE || c_next == ACS_HLINE || c_next == ACS_CKBOARD || c_next == ACS_RTEE || c_next == ACS_LTEE || c_next == ACS_BTEE || c_next == ACS_TTEE) // COLLISIONI PROIETTILE-MURO
     {
-        // cancello il proiettile e lo rimuovo dalla lista
         placeObject(now, ' ');
         bullet_enemyRemove(b);
     }
-    // non ci sono collisioni tra i proiettili del nemico e i poteri
 
     else if (c_next == 'C' || c_next == 'R' || c_next == '$' || c_next == '%') // COLLISIONE PROIETTILE-ARTEFATTO
     {
@@ -1152,7 +1156,6 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
     }
     else if (c_next == ACS_BLOCK || c_next == ACS_NEQUAL || c_next == '@') // COLLISIONE PRIOETTILE NEMICO
     {
-        // cancello il proiettile e lo rimuovo dalla lista
         placeObject(now, ' ');
         bullet_enemyRemove(b);
     }
@@ -1201,6 +1204,7 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
     }
 }
 
+//all enemies move one position away
 void Room::allEnBullet_move(Protagonist &p)
 {
 
