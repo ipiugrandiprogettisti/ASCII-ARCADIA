@@ -136,25 +136,3 @@ bool Map::createRoom(door previousDoor)
 
     return success;
 }
-
-
-// returns the given door room's key. -1 if not found. parameter room: 0 = previous room; 1 = next room
-int Map::getKeyByDoor(int room)
-{
-    int key = -1;
-    switch (room)
-    {
-    case 0: // previous room
-        if (this->rooms->previousRoom != NULL)
-            key = this->rooms->previousRoom->currentRoom.getKey();
-        break;
-    case 1: // previous room
-        if (this->rooms->nextRoom != NULL)
-            key = this->rooms->nextRoom->currentRoom.getKey();
-        break;
-    default:
-        break;
-    }
-
-    return key;
-}

@@ -204,7 +204,7 @@ void Room::place_enemies(bool b)
     // FIXME: qui va funzione per aggiungere enemy en alla lista
 }
 
-// random path generator
+// random wall path generator
 void Room::randomPathWall(pos position, int h, int w)
 {
     w -= 2;

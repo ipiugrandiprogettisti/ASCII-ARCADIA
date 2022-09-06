@@ -41,12 +41,9 @@ public:
     // returns win of the given room
     WINDOW *getRoomWindow(int key);
 
-    // creates next room
+    // Creates next room. If already exists next room returns false
     bool createRoom(door previousDoor);
 
-    // returns the given door room's key. -1 if not found. parameter room: 0 = previous room; 1 = next room
-    int getKeyByDoor(int side);
-
-    // changes room, 1 = next room, 0 = previous room
+    // changes room, 1 = next room, 0 = previous room. returns true if succeeds
     bool changeRoom(int isNextRoom);
 };

@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     clear();
 
     WINDOW *myWin = newwin(maxY, maxX, offY, offX);
-    int choice = getMenu(myWin); // draw main menu and get user choice: 0: Play, 1: Credits, 2: Exit
+    int choice = getMenu(myWin); // draw main menu and get user choice: 0: Play, 1: Exit
     wclear(myWin);
     wrefresh(myWin);
 

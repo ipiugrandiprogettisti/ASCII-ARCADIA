@@ -82,8 +82,7 @@ void printMenu(int sel, int totItems, char menuItems[][MAX_LENGTH_ITEM])
 /*
 draw the main menu and returns choice taken by user:
 - 0: Play
-- 1: Credits
-- 2: Exit
+- 1: Exit
 */
 int getMenu(WINDOW *myWin)
 {

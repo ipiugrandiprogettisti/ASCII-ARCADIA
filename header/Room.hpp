@@ -124,16 +124,13 @@ private:
     // place a door. y and x are position, i is the side where the door is located
     void placeDoor(door doorInfo);
 
-    // aux function to free row and col
-    void freeRowCol(pos position);
-
     // aux function to place walls
     void createWall(int width, int heigth, int posY, int posX);
 
     // set the given door information
     void setDoor(int isNextRoom, struct door doorInfo);
 
-    // random path generator
+    // random wall path generator
     void randomPathWall(pos position, int h, int w);
 
     // check if tiles around wall are free
@@ -155,7 +152,7 @@ public:
     // returns the object list of the room
     objContainer getObjectList();
 
-    // returns the given room's door information; if door doesn't exist returns -1 door (check struct door)
+   // returns the given room's door information; if door doesn't exist returns a "-1" door (check struct door). 1 next room, 0 previous room
     struct door getDoor(int isNextRoom);
 
     // sets up the room if myDoor doesnt exist (-1), then it is the first room being set up. myDoor is previous door of the new room, empty if first room
@@ -164,7 +161,7 @@ public:
     // draws the room
     void drawLook();
 
-    // open = false -> close doors. and viceversa
+    // true open doors, false close doors
     void openDoors(bool open);
 
     // returns chtype for the given position in room
