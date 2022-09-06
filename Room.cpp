@@ -141,7 +141,7 @@ void Room::placeArtifacts()
         }
         else if (artRarity > 95 && artRarity >= 100)
         {
-            a.set_tag(ACS_DIAMOND);
+            a.set_tag('%');
             a.setRarity(4);
             a.setLifepoints(7);
         }
@@ -1006,16 +1006,16 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
     pos next = nextPos(now, dir);
     if (c_next == ' ')
     {
-        Room::placeObject(next, e.get_tag());
-        Room::placeObject(now, ' ');
+        placeObject(next, e.get_tag());
+        placeObject(now, ' ');
         e.setPosition(next.y, next.x);
     }
     else if (c_next == ACS_PI) //collisone nemico-protagonista
     {
         P.takeDamage(P.getLife());
         P.setisAlive(FALSE);
-        Room::placeObject(now, ' ');
-        Room::placeObject(next, e.get_tag());
+        placeObject(now, ' ');
+        placeObject(next, e.get_tag());
         e.setPosition(next.y, next.x);
     }
 
