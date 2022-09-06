@@ -21,8 +21,9 @@ Recarsi nella cartella `ASCII-ARCADIA/`
 ###  Per pulire i file compilati 
 
 - `make clean`
-##COME GIOCARE?
-###Muoversi
+- 
+## COME GIOCARE?
+### Muoversi
 Per spostarsi si usa il classico `wasd` che ci permette di spostarsi in tutte le direzioni che vogliamo.
-###Sparare
+### Sparare
 Per sparare si utilizzano le frecce direzionali della tastiera.
