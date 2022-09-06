@@ -1019,23 +1019,6 @@ void Room::enemy_movement(Protagonist &P, Enemy &e, int dir)
         Room::placeObject(next, e.get_tag());
         e.setPosition(next.y, next.x);
     }
-    /*else if (c_next == ACS_BULLET)
-    {
-        p_bulletlist tmp = P.getHeadB();
-
-        while (tmp != NULL)
-        {
-            if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.x == next.x)
-            {
-                P.set_score(e.get_score());
-                P.bulletRemove(tmp->B);
-                Room::enemyRemove(e);
-                Room::placeObject(now, ' ');
-                Room::placeObject(next, ' ');
-            }
-            tmp = tmp->next;
-        }
-    }*/
 
     else if (c_next == ACS_DEGREE) //collisione nemico- proiettile nemico
     {
@@ -1159,32 +1142,6 @@ void Room::enBullet_move(bullet &b, Protagonist &p)
         placeObject(now, ' ');
         bullet_enemyRemove(b);
     }
-    // COLLISIONE PROIETTILE - PROIETTILE
-    // da rivedere
-    /*
-    else if (c_next == ACS_BULLET)
-    {
-        p_bulletlist tmp = p.getHeadB();
-        bool flag = false;
-
-        while (tmp != NULL && !flag)
-        {
-            if (tmp->B.bulletpos.x == next.x && tmp->B.bulletpos.y == next.y)
-            {
-                flag = true;
-                this->placeObject(now, ' ');
-                this->bullet_enemyRemove(b);
-                this->placeObject(next, ' ');
-                p.bulletRemove(tmp->B);
-
-                //his->drawLook();
-                //wrefresh(this->getWindow());
-                //refresh();
-
-            }
-        }
-    }
-    */
     else if (c_next == ACS_DEGREE) // collisione col proiettile nemico
     {
         p_bulletsEnemies tmpEn = this->objects.bulletEnemies;
