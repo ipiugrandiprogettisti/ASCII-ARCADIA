@@ -366,12 +366,12 @@ void startGame(WINDOW *myWin)
                         myMap.rooms->currentRoom.placeObject(P.getPosition(), ' ');
                         P.setPosition(P.getPosition().y, 98);
                         tmplist = P.getHeadB();
-                        while (tmplist != NULL)
+                        while (tmplist != NULL)   //elimino gli eventuali proiettili sparati poco prima di cambiare stanza
                         {
                             myMap.rooms->currentRoom.placeObject(tmplist->B.bulletpos, ' ');
                             tmplist = tmplist->next;
                         }
-                        P.setHeadB(NULL);
+                        P.setHeadB(NULL);  //la lista dei proiettili alleati della stanza torna vuota
                         myMap = crossRoom(1, myMap);
                         myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
                         flag = false;
@@ -477,8 +477,6 @@ void startGame(WINDOW *myWin)
 
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
-
-                
 
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
@@ -580,7 +578,6 @@ void startGame(WINDOW *myWin)
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
                 
-
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -644,8 +641,6 @@ void startGame(WINDOW *myWin)
 
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
-
-                
 
                 myMap.rooms->currentRoom.drawLook();
                 refresh();

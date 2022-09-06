@@ -868,7 +868,6 @@ void Room::ProtagonistMovement(Protagonist &p, int direction)
     else if (Room::getTile(newPos) == ACS_DEGREE) // hits enemy bullet
     {
         p_bulletsEnemies tmp1 = this->objects.bulletEnemies;
-        // p_bulletlist tmp2 = p.getHeadB();
         while (tmp1 != NULL)
         {
             if (tmp1->B.bulletpos.y == newPos.y && tmp1->B.bulletpos.x == newPos.x)
@@ -1187,7 +1186,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
         newpos.y = p.getPosition().y + 1;
         newpos.x = p.getPosition().x;
 
-        if (Room::getTile(newpos) == ACS_BLOCK || Room::getTile(newpos) == ACS_NEQUAL || Room::getTile(newpos) == '@')
+        if (Room::getTile(newpos) == ACS_BLOCK || Room::getTile(newpos) == ACS_NEQUAL || Room::getTile(newpos) == '@') //hits enemy
         {
             tmpenList = this->objects.enemies;
             while (tmpenList != NULL)
@@ -1195,7 +1194,7 @@ void Room::spawnAllyBullet(Protagonist &p, int dir)
                 if (newpos.x == tmpenList->e.getPosition().x && newpos.y == tmpenList->e.getPosition().y)
                 {
                     p.set_score(tmpenList->e.get_score());
-                    this->enemyRemove(tmpenList->e);
+                    this->enemyRemove(tmpenList->e); //rimuovo en dalla lista
                     this->placeObject(newpos, ' '); // rimuovo en da mappa
                 }
                 tmpenList = tmpenList->next;

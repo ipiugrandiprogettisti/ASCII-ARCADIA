@@ -28,7 +28,7 @@ public:
     Character(int score, int y, int x, chtype tag);
 
     
-    //return the score
+    //returns the score
     int get_score();
 
     

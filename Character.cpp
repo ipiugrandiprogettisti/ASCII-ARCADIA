@@ -1,6 +1,6 @@
 #include "header/Character.hpp"
 
-
+// constructor
 Character::Character()
 {
     score = 0;
@@ -8,6 +8,7 @@ Character::Character()
     position.x = 0;
     tag = ' ';
 }
+
 // constructor
 Character::Character(int score, int y, int x, chtype tag) : Entity(y, x, tag)
 {
@@ -18,7 +19,7 @@ Character::Character(int score, int y, int x, chtype tag) : Entity(y, x, tag)
 }
 
 
-
+//returns the score
 int Character::get_score()
 {
     return this->score;

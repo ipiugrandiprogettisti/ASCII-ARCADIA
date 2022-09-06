@@ -108,7 +108,7 @@ bool Protagonist::takeDamage(int damage_received)
     return dead;
 }
 
-// add life
+// adds life
 void Protagonist::gainLife(int p)
 {
     this->current_life += p;

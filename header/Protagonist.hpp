@@ -30,8 +30,10 @@ public:
     // constructor
     Protagonist(bool isAlive, p_bulletlist headB, int current_life, int score, int y, int x, chtype tag);
 
+    //ritorna il bool isAlive
     bool getisAlive();
 
+    //modifica il bool isAlive
     void setisAlive(bool b);
 
     // returns head to list of ally bullets
