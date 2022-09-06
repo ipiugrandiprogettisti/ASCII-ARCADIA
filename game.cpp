@@ -178,7 +178,7 @@ int deathMenu(WINDOW *myWin)
     {
         switch (ch)
         {
-        case 10: // 10 is the ASCII for the enter key
+        case 10:
             return selectedItem;
             break;
         case KEY_DOWN:
@@ -241,7 +241,7 @@ Map crossRoom(int enteringSide, Map myMap)
         if (myMap.changeRoom(1)) // changeroom returns true if room has changed
         {
             myMap.rooms->currentRoom.drawLook();
-            // printRoomKey(myMap.rooms->currentRoom.getKey());
+
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
@@ -256,7 +256,7 @@ Map crossRoom(int enteringSide, Map myMap)
         if (myMap.changeRoom(0))
         {
             myMap.rooms->currentRoom.drawLook();
-            // printRoomKey(myMap.rooms->currentRoom.getKey());
+
             refresh();
             wrefresh(myMap.rooms->currentRoom.getWindow());
         }
@@ -278,7 +278,7 @@ void startGame(WINDOW *myWin)
 
     Map myMap = Map(myWin); // Map initialize
     door emptyDoor;         // empty door
-    // Now game draws first room, where the player spawns safely
+    // Now game draws first room
     myMap.rooms->currentRoom.setUp(COLS, LINES, emptyDoor);
 
     // spawns protagonist info
@@ -288,11 +288,11 @@ void startGame(WINDOW *myWin)
     myMap.rooms->currentRoom.placeObject(P.getPosition(), P.get_tag());
 
     myMap.rooms->currentRoom.drawLook();
-    // printRoomKey(myMap.rooms->currentRoom.getKey());
+
     refresh();
     wrefresh(myMap.rooms->currentRoom.getWindow());
 
-    pos position;
+    
     int ch; // pressed key
     bool flag = false;
     int count = 0;
@@ -380,7 +380,7 @@ void startGame(WINDOW *myWin)
 
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
-                // printInfo(P.getLife(), P.getScore());
+                
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -412,7 +412,7 @@ void startGame(WINDOW *myWin)
 
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
-                // printInfo(P.getLife(), P.getScore());
+                
 
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
@@ -445,7 +445,7 @@ void startGame(WINDOW *myWin)
 
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
-                // printInfo(P.getLife(), P.getScore());
+                
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -478,7 +478,7 @@ void startGame(WINDOW *myWin)
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
 
-                // printInfo(P.getLife(), P.getScore());
+                
 
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
@@ -503,15 +503,6 @@ void startGame(WINDOW *myWin)
 
             case KEY_DOWN:
                 myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
-                break;
-
-
-            case 'o': // opens all doors
-                myMap.rooms->currentRoom.openDoors(true);
-                break;
-
-            case 'p': // closes all doors
-                myMap.rooms->currentRoom.openDoors(false);
                 break;
 
             default:
@@ -556,7 +547,7 @@ void startGame(WINDOW *myWin)
 
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 1);
-                // printInfo(P.getLife(), P.getScore());
+                
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -588,7 +579,7 @@ void startGame(WINDOW *myWin)
 
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 3);
-                // printInfo(P.getLife(), P.getScore());
+                
 
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
@@ -621,7 +612,7 @@ void startGame(WINDOW *myWin)
 
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 2);
-                // printInfo(P.getLife(), P.getScore());
+                
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
                 wrefresh(myMap.rooms->currentRoom.getWindow());
@@ -654,7 +645,7 @@ void startGame(WINDOW *myWin)
                 // player's movement
                 myMap.rooms->currentRoom.ProtagonistMovement(P, 0);
 
-                // printInfo(P.getLife(), P.getScore());
+                
 
                 myMap.rooms->currentRoom.drawLook();
                 refresh();
@@ -679,14 +670,6 @@ void startGame(WINDOW *myWin)
 
             case KEY_DOWN:
                 myMap.rooms->currentRoom.spawnAllyBullet(P, 0);
-                break;
-
-            case 'o': // opens all doors
-                myMap.rooms->currentRoom.openDoors(true);
-                break;
-
-            case 'p': // closes all doors
-                myMap.rooms->currentRoom.openDoors(false);
                 break;
 
             default:
